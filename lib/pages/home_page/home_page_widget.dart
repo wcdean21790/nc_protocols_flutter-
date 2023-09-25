@@ -223,28 +223,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         decoration: BoxDecoration(
                           color: Color(0x00F1F4F8),
                         ),
-                        child: FFButtonWidget(
+                        child:FFButtonWidget(
                           onPressed: () {
                             print('Button pressed ...');
                           },
                           text: '',
-                          icon: Icon(
-                            Icons.home_filled,
-                            size: 15.0,
+                          icon: Image.asset(
+                            'assets/images/homeicon.png',
+                            width: 35.0,
+                            height: 35.0, // Adjust the width and height as needed
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Readex Pro',
+                              color: Colors.white,
+                            ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -252,7 +249,43 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
+                        )
+
+                      ),
+                      Container(
+                        width: 100.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: Color(0x00F1F4F8),
                         ),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('MajorListView');
+                            },
+                          text: '',
+                          icon: Image.asset(
+                            'assets/images/protocolicon.png',
+                            width: 40.0,
+                            height: 40.0, // Adjust the width and height as needed
+                          ),
+                          options: FFButtonOptions(
+                            height: 40.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            color: Color(0x00F1F4F8),
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Readex Pro',
+                              color: Colors.white,
+                            ),
+                            elevation: 3.0,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        )
+
                       ),
                       Container(
                         width: 100.0,
@@ -265,22 +298,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             print('Button pressed ...');
                           },
                           text: '',
-                          icon: FaIcon(
-                            FontAwesomeIcons.alignJustify,
+                          icon: Image.asset(
+                            'assets/images/toolboxicon.png',
+                            width: 30.0,
+                            height: 30.0, // Adjust the width and height as needed
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Readex Pro',
+                              color: Colors.white,
+                            ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -288,7 +319,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        ),
+                        )
+
                       ),
                       Container(
                         width: 100.0,
@@ -301,23 +333,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             print('Button pressed ...');
                           },
                           text: '',
-                          icon: Icon(
-                            Icons.topic_outlined,
-                            size: 15.0,
+                          icon: Image.asset(
+                            'assets/images/infoicon.png',
+                            width: 35.0,
+                            height: 35.0, // Adjust the width and height as needed
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Readex Pro',
+                              color: Colors.white,
+                            ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -325,44 +354,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        ),
-                      ),
-                      Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: BoxDecoration(
-                          color: Color(0x00F1F4F8),
-                        ),
-                        child: FFButtonWidget(
-                          onPressed: () {
-                            print('Button pressed ...');
-                          },
-                          text: '',
-                          icon: Icon(
-                            Icons.info_outline,
-                            size: 15.0,
-                          ),
-                          options: FFButtonOptions(
-                            height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
-                            elevation: 3.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
+                        )
+
                       ),
                     ],
                   ),

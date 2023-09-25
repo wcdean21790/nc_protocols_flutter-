@@ -8,7 +8,6 @@ import '../../globals.dart';
 import '../password_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class MajorListViewWidget extends StatefulWidget {
   const MajorListViewWidget({Key? key}) : super(key: key);
 
@@ -19,8 +18,6 @@ class MajorListViewWidget extends StatefulWidget {
 class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   late DatabaseReference _databaseReference;
   List<String> agencyNames = [];
-
-
 
   @override
   void initState() {
@@ -60,7 +57,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     EasyLoading.show(status: 'Downloading...');
 
     try {
-      // Fetch data under the "Protocols" node for the selected agency
+      // Fetch the "Protocols" node for the selected agency
       DatabaseEvent event =
       await _databaseReference.child(agencyName).child('Protocols').once();
       DataSnapshot snapshot = event.snapshot;
@@ -119,6 +116,9 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
               print("Invalid data structure in Firebase for category $categoryName");
             }
           });
+
+          // Download the Homescreen Picture
+          await downloadHomescreenPicture(agencyName);
         } else {
           print("Data is null in Firebase");
         }
@@ -151,6 +151,61 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     }
   }
 
+  Future<void> downloadHomescreenPicture(String agencyName) async {
+    EasyLoading.show(status: 'Downloading Homescreen Picture...');
+
+    try {
+      // Fetch the "Homescreen Picture" link for the selected agency
+      String? homescreenPictureLink = await _getHomescreenPictureLink(agencyName);
+
+      if (homescreenPictureLink != null) {
+        final response = await http.get(Uri.parse(homescreenPictureLink));
+
+        if (response.statusCode == 200) {
+          final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+          final agencyDirectory = Directory('${appDocumentsDirectory.path}/$agencyName');
+
+          // Create the agency directory if it doesn't exist
+          if (!await agencyDirectory.exists()) {
+            await agencyDirectory.create(recursive: true);
+          }
+
+          final fileName = '$agencyName.jpg'; // You can change the file name if needed
+          final filePath = '${agencyDirectory.path}/$fileName';
+          final file = File(filePath);
+
+          // Write the downloaded content to the file
+          await file.writeAsBytes(response.bodyBytes);
+
+          // Print the download status and file location to the terminal
+          print("Downloaded Homescreen Picture: $homescreenPictureLink");
+          print("Stored in: $filePath");
+        } else {
+          print("Failed to download Homescreen Picture: $homescreenPictureLink");
+        }
+      }
+    } catch (e) {
+      print("Error downloading Homescreen Picture: $e");
+    }
+
+    EasyLoading.dismiss();
+  }
+
+  Future<String?> _getHomescreenPictureLink(String agencyName) async {
+    // Fetch the "Homescreen Picture" link for the selected agency
+    DatabaseEvent event =
+    await _databaseReference.child(agencyName).child('data').once();
+    DataSnapshot snapshot = event.snapshot;
+    dynamic data = snapshot.value;
+
+    if (data is Map<dynamic, dynamic>?) {
+      if (data != null && data.containsKey('Homescreen Picture')) {
+        return data['Homescreen Picture'].toString();
+      }
+    }
+
+    return null;
+  }
 
   Future<void> _showPasswordDialog(String agencyName) async {
     final success = await showDialog<bool>(
@@ -162,12 +217,16 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
     if (success != null && success) {
       // Password was entered correctly, proceed with the download
+      downloadHomescreenPicture(agencyName);
       downloadProtocols(agencyName);
+      downloadHomescreenPicture(agencyName);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    EasyLoading.init(); // Initialize EasyLoading
+
     return MaterialApp(
       theme: ThemeData(
         backgroundColor: Colors.black, // Set the app's background color to black

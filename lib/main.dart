@@ -11,12 +11,15 @@ import 'flutter_flow/nav/nav.dart';
 import 'globals.dart';
 import 'index.dart';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
   await initFirebase();
-
+  EasyLoading.init();
   await FlutterFlowTheme.initialize();
 
   runApp(MyApp());
@@ -56,6 +59,7 @@ class _MyAppState extends State<MyApp> {
       });
 
   @override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'NC Protocols',
@@ -77,6 +81,7 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: _themeMode,
       routerConfig: _router,
+      builder: EasyLoading.init(), // Initialize EasyLoading
     );
   }
 }
