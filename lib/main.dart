@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:path_provider/path_provider.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
@@ -40,13 +43,19 @@ class _MyAppState extends State<MyApp> {
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
+  late Directory appDocumentsDirectory;
 
   @override
   void initState() {
     super.initState();
+    initializeAppDocumentsDirectory(); // Call this method to initialize appDocumentsDirectory
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
+  }
+
+  Future<void> initializeAppDocumentsDirectory() async {
+    appDocumentsDirectory = await getApplicationDocumentsDirectory();
   }
 
   void setLocale(String language) {

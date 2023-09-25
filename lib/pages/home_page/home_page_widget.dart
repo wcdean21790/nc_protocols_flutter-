@@ -1,17 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
-
 import '../../globals.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
-import '../protocol_listview.dart';
+import 'dart:io'; // Import the dart:io library
+import 'package:path_provider/path_provider.dart'; // Import the path_provider library
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -22,30 +19,36 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
+  late Directory? appDocumentsDirectory; // Declare the directory as nullable
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
-
-
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 
-
-
-
+  String agencyName = GlobalVariables.globalAgencyName;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
-  }
-  @override
-  void dispose() {
-    _model.dispose();
 
-    super.dispose();
+    // Fetch the directory in initState
+    getAppDocumentsDirectory();
   }
+
+  Future<void> getAppDocumentsDirectory() async {
+    appDocumentsDirectory = await getApplicationDocumentsDirectory();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Check if appDocumentsDirectory is null, and handle accordingly
+    if (appDocumentsDirectory == null) {
+      return CircularProgressIndicator(); // Show a loading indicator or any other widget
+    }
+
+    // Continue with the rest of your code, assuming appDocumentsDirectory is not null
+    final fileName = 'HomescreenPicture.jpg'; // Specify your file name here
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
@@ -63,7 +66,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   alignment: AlignmentDirectional(0.00, 0.00),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                    EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,10 +83,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .titleLarge
                                     .override(
-                                      fontFamily: 'Outfit',
-                                      color: Colors.white,
-                                      fontSize: 30.0,
-                                    ),
+                                  fontFamily: 'Outfit',
+                                  color: Colors.white,
+                                  fontSize: 30.0,
+                                ),
                               ),
                             ),
                           ),
@@ -110,9 +113,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                  ),
+                                fontFamily: 'Readex Pro',
+                                color: Colors.white,
+                              ),
                               elevation: 3.0,
                               borderSide: BorderSide(
                                 color: Colors.transparent,
@@ -140,11 +143,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                                builder: (context) => CategoryListViewWidget(
+                                  agencyName:
+                                  GlobalVariables.globalAgencyName,
+                                ),
                               ),
                             );
                           },
-
                           text: 'Protocols',
                           options: FFButtonOptions(
                             height: 40.0,
@@ -156,9 +161,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             textStyle: FlutterFlowTheme.of(context)
                                 .titleSmall
                                 .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Color(0xFF54D9E6),
-                                ),
+                              fontFamily: 'Readex Pro',
+                              color: Color(0xFF54D9E6),
+                            ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -186,9 +191,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             textStyle: FlutterFlowTheme.of(context)
                                 .titleSmall
                                 .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Color(0xFFD7B47A),
-                                ),
+                              fontFamily: 'Readex Pro',
+                              color: Color(0xFFD7B47A),
+                            ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -201,12 +206,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(
-                          'https://picsum.photos/seed/108/600',
+                          GlobalVariables.globalAgencyLogo, // Remove the double quotes
                           width: 350.0,
                           height: 250.0,
                           fit: BoxFit.cover,
                         ),
-                      ),
+                      )
+
+
                     ],
                   ),
                 ),
@@ -223,7 +230,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         decoration: BoxDecoration(
                           color: Color(0x00F1F4F8),
                         ),
-                        child:FFButtonWidget(
+                        child: FFButtonWidget(
                           onPressed: () {
                             print('Button pressed ...');
                           },
@@ -235,10 +242,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                               fontFamily: 'Readex Pro',
                               color: Colors.white,
                             ),
@@ -249,8 +260,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-
+                        ),
                       ),
                       Container(
                         width: 100.0,
@@ -258,10 +268,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         decoration: BoxDecoration(
                           color: Color(0x00F1F4F8),
                         ),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed('MajorListView');
-                            },
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            context.pushNamed('MajorListView');
+                          },
                           text: '',
                           icon: Image.asset(
                             'assets/images/protocolicon.png',
@@ -270,10 +280,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                               fontFamily: 'Readex Pro',
                               color: Colors.white,
                             ),
@@ -284,8 +298,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-
+                        ),
                       ),
                       Container(
                         width: 100.0,
@@ -305,10 +318,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                               fontFamily: 'Readex Pro',
                               color: Colors.white,
                             ),
@@ -319,8 +336,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-
+                        ),
                       ),
                       Container(
                         width: 100.0,
@@ -340,10 +356,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                               fontFamily: 'Readex Pro',
                               color: Colors.white,
                             ),
@@ -354,8 +374,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-
+                        ),
                       ),
                     ],
                   ),
@@ -369,3 +388,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 }
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalVariables.initialize(); // Initialize global variables from SharedPreferences
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Your App Title',
+      home: HomePageWidget(), // Your app's home page
+    );
+  }
+}

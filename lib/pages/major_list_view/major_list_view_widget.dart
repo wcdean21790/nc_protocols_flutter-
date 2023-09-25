@@ -8,6 +8,7 @@ import '../../globals.dart';
 import '../password_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class MajorListViewWidget extends StatefulWidget {
   const MajorListViewWidget({Key? key}) : super(key: key);
 
@@ -19,12 +20,18 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   late DatabaseReference _databaseReference;
   List<String> agencyNames = [];
 
+  late Directory appDocumentsDirectory;
+
   @override
   void initState() {
     super.initState();
+    initializeAppDocumentsDirectory();
     _databaseReference =
         FirebaseDatabase.instance.reference().child('Agency_Information');
     fetchDataFromFirebase();
+  }
+  Future<void> initializeAppDocumentsDirectory() async {
+    appDocumentsDirectory = await getApplicationDocumentsDirectory();
   }
 
   void fetchDataFromFirebase() {
@@ -55,6 +62,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
   Future<void> downloadProtocols(String agencyName) async {
     EasyLoading.show(status: 'Downloading...');
+
+    _updateGlobalVariables(agencyName);
 
     try {
       // Fetch the "Protocols" node for the selected agency
@@ -118,7 +127,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
           });
 
           // Download the Homescreen Picture
-          await downloadHomescreenPicture(agencyName);
+          await _getHomescreenPictureLink(agencyName);
         } else {
           print("Data is null in Firebase");
         }
@@ -151,61 +160,46 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     }
   }
 
-  Future<void> downloadHomescreenPicture(String agencyName) async {
-    EasyLoading.show(status: 'Downloading Homescreen Picture...');
 
-    try {
-      // Fetch the "Homescreen Picture" link for the selected agency
-      String? homescreenPictureLink = await _getHomescreenPictureLink(agencyName);
 
-      if (homescreenPictureLink != null) {
-        final response = await http.get(Uri.parse(homescreenPictureLink));
+  Future<void> _updateGlobalVariables(String agencyName) async {
+    String? imageUrl = await _getHomescreenPictureLink(agencyName);
+    if (imageUrl != null) {
+      // Store the URL in the globalAgencyLogo variable
+      GlobalVariables.globalAgencyLogo = imageUrl;
+      print(GlobalVariables.globalAgencyLogo);
 
-        if (response.statusCode == 200) {
-          final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-          final agencyDirectory = Directory('${appDocumentsDirectory.path}/$agencyName');
-
-          // Create the agency directory if it doesn't exist
-          if (!await agencyDirectory.exists()) {
-            await agencyDirectory.create(recursive: true);
-          }
-
-          final fileName = '$agencyName.jpg'; // You can change the file name if needed
-          final filePath = '${agencyDirectory.path}/$fileName';
-          final file = File(filePath);
-
-          // Write the downloaded content to the file
-          await file.writeAsBytes(response.bodyBytes);
-
-          // Print the download status and file location to the terminal
-          print("Downloaded Homescreen Picture: $homescreenPictureLink");
-          print("Stored in: $filePath");
-        } else {
-          print("Failed to download Homescreen Picture: $homescreenPictureLink");
-        }
-      }
-    } catch (e) {
-      print("Error downloading Homescreen Picture: $e");
+      // Save the updated global variables to SharedPreferences
+      GlobalVariables.saveGlobalVariables();
     }
-
-    EasyLoading.dismiss();
   }
 
-  Future<String?> _getHomescreenPictureLink(String agencyName) async {
-    // Fetch the "Homescreen Picture" link for the selected agency
+  Future<String> _getHomescreenPictureLink(String agencyName) async {
+
+
+    // Fetch the "Homescreen Picture" link for the selected agency under the "Data" node
     DatabaseEvent event =
-    await _databaseReference.child(agencyName).child('data').once();
+    await _databaseReference.child(agencyName).child('Data').once();
     DataSnapshot snapshot = event.snapshot;
     dynamic data = snapshot.value;
 
     if (data is Map<dynamic, dynamic>?) {
       if (data != null && data.containsKey('Homescreen Picture')) {
-        return data['Homescreen Picture'].toString();
+        final imageUrl = data['Homescreen Picture'].toString();
+        print('Image URL for $agencyName: $imageUrl'); // Print the URL to the console
+        return imageUrl;
       }
     }
 
-    return null;
+    // If the URL is not found or there's an error, you can return a default value or an empty string.
+    return "";
   }
+
+
+
+
+
+
 
   Future<void> _showPasswordDialog(String agencyName) async {
     final success = await showDialog<bool>(
@@ -217,9 +211,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
     if (success != null && success) {
       // Password was entered correctly, proceed with the download
-      downloadHomescreenPicture(agencyName);
       downloadProtocols(agencyName);
-      downloadHomescreenPicture(agencyName);
+      _getHomescreenPictureLink(agencyName);
     }
   }
 
@@ -259,6 +252,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
               itemCount: agencyNames.length,
               itemBuilder: (context, index) {
                 final agencyName = agencyNames[index];
+
                 return Column(
                   children: [
                     ElevatedButton(
@@ -273,26 +267,46 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                         _showPasswordDialog(agencyName);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // Change the button's background color as needed
+                        primary: Colors.blue,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(10), // Add 10 pixels of padding to the entire button
+                        padding: EdgeInsets.all(10),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align items at the start and end of the row
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset(
-                              'assets/images/favicon.png',  // Replace with the path to your image in the assets folder
-                              width: 80, // Adjust the width as needed
-                              height: 80, // Adjust the height as needed
+                            FutureBuilder<String?>(
+                              future: _getHomescreenPictureLink(agencyName),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  final imageUrl = snapshot.data!;
+                                  return Image.network(
+                                    imageUrl,
+                                    width: 80,
+                                    height: 80,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      // Handle any errors when loading the image
+                                      return Icon(Icons.error); // You can display an error icon or message here
+                                    },
+                                  );
+                                } else {
+                                  // You can display a placeholder image while loading
+                                  return Image.asset(
+                                    'assets/images/favicon.png', // Replace with your placeholder image
+                                    width: 80,
+                                    height: 80,
+                                  );
+                                }
+                              },
                             ),
                             Text(
                               agencyName,
                               style: TextStyle(
-                                color: Colors.black54, // Set the text color to white
-                                fontSize: 18, // Adjust the font size as needed
+                                color: Colors.black54,
+                                fontSize: 18,
                               ),
                             ),
-                            SizedBox(width: 8), // Add spacing between the image and text
+                            SizedBox(width: 8),
                           ],
                         ),
                       ),
@@ -308,4 +322,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       ),
     );
   }
+
+
 }
