@@ -128,7 +128,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
                         child: FFButtonWidget(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -145,7 +145,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
                             textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
+                                .titleLarge
                                 .override(
                               fontFamily: 'Readex Pro',
                               color: Color(0xFF54D9E6),
@@ -162,7 +162,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
                         child: FFButtonWidget(
-                          onPressed: () {
+                          onPressed: () async {
                             print('Button pressed ...');
                           },
                           text: 'More',
@@ -172,7 +172,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00F1F4F8),
                             textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
+                                .titleMedium
                                 .override(
                               fontFamily: 'Readex Pro',
                               color: Color(0xFFD7B47A),
@@ -200,7 +200,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
                 Align(
                   alignment: AlignmentDirectional(0.00, 0.00),
-                  child: BottomBar()
+
                 ),
               ],
             ),

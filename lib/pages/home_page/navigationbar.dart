@@ -9,65 +9,100 @@ import 'home_page_widget.dart';
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final iconSize = 50.0; // Set the desired width and height for the icons
+
     return BottomAppBar(
-        color: Colors.black, // Set the background color of the bottom app bar to black
-        child: Container(
-      width: double.infinity,
-      height: 100.0,
-      decoration: BoxDecoration(
-        color: Color(0x00F1F4F8),
+      color: Colors.black, // Set the background color of the bottom app bar to black
+      child: Container(
+        width: double.infinity,
+        height: 100.0,
+        decoration: BoxDecoration(
+          color: Color(0x00F1F4F8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomBottomButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePageWidget()),
+                );
+              },
+              iconPath: 'assets/images/homeicon.png',
+              iconSize: iconSize,
+            ),
+            CustomBottomButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProtocolListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                  ),
+                );
+              },
+              iconPath: 'assets/images/protocolicon.png',
+              iconSize: iconSize,
+            ),
+            CustomBottomButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToolsWidget(),
+                  ),
+                );
+              },
+              iconPath: 'assets/images/toolboxicon.png',
+              iconSize: iconSize,
+            ),
+            CustomBottomButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Info(),
+                  ),
+                );
+              },
+              iconPath: 'assets/images/infoicon.png',
+              iconSize: iconSize,
+            ),
+          ],
+        ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    );
+  }
+}
+
+class CustomBottomButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String iconPath;
+  final double iconSize;
+
+  CustomBottomButton({
+    required this.onPressed,
+    required this.iconPath,
+    required this.iconSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Column(
         children: [
-          BottomBarButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePageWidget()),
-              );
-            },
-            iconPath: 'assets/images/homeicon.png',
+          Image.asset(
+            iconPath,
+            width: iconSize,
+            height: iconSize,
           ),
-          BottomBarButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ProtocolListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                ),
-              );
-            },
-            iconPath: 'assets/images/protocolicon.png',
-          ),
-          BottomBarButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ToolsWidget(),
-                ),
-              );
-            },
-            iconPath: 'assets/images/toolboxicon.png',
-          ),
-          BottomBarButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Info(),
-                ),
-              );
-            },
-            iconPath: 'assets/images/infoicon.png',
-          ),
+          // You can add labels or text here if needed
         ],
       ),
-    ),
     );
   }
 }

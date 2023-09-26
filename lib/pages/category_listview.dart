@@ -5,7 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:n_c_protocols/globals.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart'; // Import PDF viewer package
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+
+import 'home_page/navigationbar.dart'; // Import PDF viewer package
 
 
 
@@ -116,6 +118,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             },
           ),
         ),
+        bottomNavigationBar: BottomBar()
       ),
     );
   }
