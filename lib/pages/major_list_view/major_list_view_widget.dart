@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../globals.dart';
@@ -30,6 +31,125 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
         FirebaseDatabase.instance.reference().child('Agency_Information');
     fetchDataFromFirebase();
   }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    EasyLoading.init(); // Initialize EasyLoading
+
+    return MaterialApp(
+      theme: ThemeData(
+        backgroundColor: Colors.black, // Set the app's background color to black
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text(
+            'Download Specific Agency Protocols',
+            style: TextStyle(
+              color: Colors.white, // Set the text color to white
+              fontSize: 18, // Adjust the font size as needed
+            ),
+            textAlign: TextAlign.center,
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // Navigate back to the previous screen
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: Container(
+          color: Colors.black, // Set the background color of the Container to black
+          child: Padding(
+            padding: EdgeInsets.all(10), // Add 10 pixels of padding around the ListView
+            child: ListView.builder(
+              itemCount: agencyNames.length,
+              itemBuilder: (context, index) {
+                final agencyName = agencyNames[index];
+
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        // Set the globalAgencyName first
+                        GlobalVariables.globalAgencyName = agencyName;
+
+                        // Save the changes to SharedPreferences
+                        await GlobalVariables.saveGlobalVariables();
+
+                        // Now, show the password dialog
+                        _showPasswordDialog(agencyName);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FutureBuilder<String?>(
+                              future: _getHomescreenPictureLink(agencyName),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  final imageUrl = snapshot.data!;
+                                  return Image.network(
+                                    imageUrl,
+                                    width: 80,
+                                    height: 80,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      // Handle any errors when loading the image
+                                      return Icon(Icons.error); // You can display an error icon or message here
+                                    },
+                                  );
+                                } else {
+                                  // You can display a placeholder image while loading
+                                  return Image.asset(
+                                    'assets/images/favicon.png', // Replace with your placeholder image
+                                    width: 80,
+                                    height: 80,
+                                  );
+                                }
+                              },
+                            ),
+                            Text(
+                              agencyName,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10), // Add spacing between buttons
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomBar()
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
   Future<void> initializeAppDocumentsDirectory() async {
     appDocumentsDirectory = await getApplicationDocumentsDirectory();
   }
@@ -216,112 +336,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    EasyLoading.init(); // Initialize EasyLoading
-
-    return MaterialApp(
-      theme: ThemeData(
-        backgroundColor: Colors.black, // Set the app's background color to black
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(
-            'Download Specific Agency Protocols',
-            style: TextStyle(
-              color: Colors.white, // Set the text color to white
-              fontSize: 18, // Adjust the font size as needed
-            ),
-            textAlign: TextAlign.center,
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              // Navigate back to the previous screen
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: Container(
-          color: Colors.black, // Set the background color of the Container to black
-          child: Padding(
-            padding: EdgeInsets.all(10), // Add 10 pixels of padding around the ListView
-            child: ListView.builder(
-              itemCount: agencyNames.length,
-              itemBuilder: (context, index) {
-                final agencyName = agencyNames[index];
-
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        // Set the globalAgencyName first
-                        GlobalVariables.globalAgencyName = agencyName;
-
-                        // Save the changes to SharedPreferences
-                        await GlobalVariables.saveGlobalVariables();
-
-                        // Now, show the password dialog
-                        _showPasswordDialog(agencyName);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FutureBuilder<String?>(
-                              future: _getHomescreenPictureLink(agencyName),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  final imageUrl = snapshot.data!;
-                                  return Image.network(
-                                    imageUrl,
-                                    width: 80,
-                                    height: 80,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      // Handle any errors when loading the image
-                                      return Icon(Icons.error); // You can display an error icon or message here
-                                    },
-                                  );
-                                } else {
-                                  // You can display a placeholder image while loading
-                                  return Image.asset(
-                                    'assets/images/favicon.png', // Replace with your placeholder image
-                                    width: 80,
-                                    height: 80,
-                                  );
-                                }
-                              },
-                            ),
-                            Text(
-                              agencyName,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 10), // Add spacing between buttons
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
 
 }

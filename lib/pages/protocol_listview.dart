@@ -3,6 +3,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
+import 'home_page/navigationbar.dart';
+
 class ProtocolListViewWidget extends StatefulWidget {
   final String agencyName;
 
@@ -109,9 +111,11 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
             },
           ),
         ),
+        bottomNavigationBar: BottomBar()
       ),
     );
   }
+
 }
 
 class SubfolderContentsPage extends StatelessWidget {
@@ -173,6 +177,8 @@ class SubfolderContentsPage extends StatelessWidget {
           }
         },
       ),
+      bottomNavigationBar: BottomBar()
     );
   }
+
 }
