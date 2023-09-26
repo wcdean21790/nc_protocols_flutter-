@@ -9,13 +9,13 @@ import 'home_page_widget.dart';
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final iconSize = 50.0; // Set the desired width and height for the icons
+    final iconSize = 40.0; // Set the desired width and height for the icons
 
     return BottomAppBar(
       color: Colors.black, // Set the background color of the bottom app bar to black
       child: Container(
         width: double.infinity,
-        height: 100.0,
+        height: 50.0,
         decoration: BoxDecoration(
           color: Color(0x00F1F4F8),
         ),
@@ -28,8 +28,21 @@ class BottomBar extends StatelessWidget {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePageWidget()),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
                 );
+
               },
               iconPath: 'assets/images/homeicon.png',
               iconSize: iconSize,
@@ -38,23 +51,46 @@ class BottomBar extends StatelessWidget {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ProtocolListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => ProtocolListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
+
               },
-              iconPath: 'assets/images/protocolicon.png',
+              iconPath: 'assets/images/protocolsicon.png',
               iconSize: iconSize,
             ),
+
+
             CustomBottomButton(
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ToolsWidget(),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => ToolsWidget(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
+
               },
               iconPath: 'assets/images/toolboxicon.png',
               iconSize: iconSize,
@@ -63,10 +99,21 @@ class BottomBar extends StatelessWidget {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Info(),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => Info(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
+
               },
               iconPath: 'assets/images/infoicon.png',
               iconSize: iconSize,
@@ -78,7 +125,7 @@ class BottomBar extends StatelessWidget {
   }
 }
 
-class CustomBottomButton extends StatelessWidget {
+class CustomBottomButton extends StatefulWidget {
   final VoidCallback onPressed;
   final String iconPath;
   final double iconSize;
@@ -90,50 +137,29 @@ class CustomBottomButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Column(
-        children: [
-          Image.asset(
-            iconPath,
-            width: iconSize,
-            height: iconSize,
-          ),
-          // You can add labels or text here if needed
-        ],
-      ),
-    );
-  }
+  _CustomBottomButtonState createState() => _CustomBottomButtonState();
 }
 
-class BottomBarButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String iconPath;
-
-  const BottomBarButton({
-    Key? key,
-    required this.onPressed,
-    required this.iconPath,
-  }) : super(key: key);
+class _CustomBottomButtonState extends State<CustomBottomButton> {
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        width: 100.0,
-        height: 100.0,
-        decoration: BoxDecoration(
-          color: Color(0x00F1F4F8),
-        ),
-        child: Center(
-          child: Image.asset(
-            iconPath,
-            width: 35.0,
-            height: 35.0,
-          ),
-        ),
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _isPressed = !_isPressed;
+        });
+        widget.onPressed();
+      },
+      style: ElevatedButton.styleFrom(
+        primary: _isPressed ? Colors.grey : Colors.transparent,
+        elevation: 0, // Remove the button elevation
+      ),
+      child: Image.asset(
+        widget.iconPath,
+        width: widget.iconSize,
+        height: widget.iconSize,
       ),
     );
   }

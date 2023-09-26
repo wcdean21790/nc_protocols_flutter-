@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:n_c_protocols/index.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
 import 'package:n_c_protocols/pages/protocol_listview.dart';
 import '../../globals.dart';
@@ -88,21 +89,36 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
                           child: FFButtonWidget(
                             onPressed: () async {
-                              context.pushNamed('MajorListView');
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    const beginOpacity = 0.0;
+                                    const endOpacity = 1.0;
+                                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                    var fadeAnimation = animation.drive(opacityTween);
+                                    return FadeTransition(
+                                      opacity: fadeAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+
                             },
                             text: '\n',
-                            icon: Icon(
-                              Icons.settings,
-                              size: 25.0,
+                            icon: Image.asset(
+                              'assets/images/settingsicon.png',
+                              width: 40.0,
+                              height: 40.0,
                             ),
                             options: FFButtonOptions(
                               height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
+                              padding: EdgeInsets.zero, // Set padding to zero to eliminate extra padding
+                              iconPadding: EdgeInsets.all(5.0), // Add icon padding if needed
                               color: Colors.black,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
+                              textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                                 fontFamily: 'Readex Pro',
                                 color: Colors.white,
                               ),
@@ -114,6 +130,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                           ),
+
                         ),
                       ],
                     ),
@@ -131,10 +148,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           onPressed: () async {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => CategoryListViewWidget(
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) => CategoryListViewWidget(
                                   agencyName: GlobalVariables.globalAgencyName,
                                 ),
+
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  const beginOpacity = 0.0;
+                                  const endOpacity = 1.0;
+                                  var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                  var fadeAnimation = animation.drive(opacityTween);
+                                  return FadeTransition(
+                                    opacity: fadeAnimation,
+                                    child: child,
+                                  );
+                                },
                               ),
                             );
                           },

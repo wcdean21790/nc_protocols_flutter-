@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
+import 'package:n_c_protocols/pages/tools.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
-import 'home_page/navigationbar.dart';
+import 'home_page/home_page_widget.dart';
+import 'info.dart';
+
+// Define a common function for the custom page route with a fade-in transition.
+PageRouteBuilder customPageRouteBuilder(Widget page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const beginOpacity = 0.0;
+      const endOpacity = 1.0;
+      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+      var fadeAnimation = animation.drive(opacityTween);
+      return FadeTransition(
+        opacity: fadeAnimation,
+        child: child,
+      );
+    },
+  );
+}
 
 class ProtocolListViewWidget extends StatefulWidget {
   final String agencyName;
@@ -44,8 +64,8 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
 
   void _navigateToSubfolderContents(String subfolderName) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SubfolderContentsPage(
+      customPageRouteBuilder(
+        SubfolderContentsPage(
           agencyName: widget.agencyName,
           subfolderName: subfolderName,
         ),
@@ -53,7 +73,6 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
     );
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -83,6 +102,7 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
             textAlign: TextAlign.center,
           ),
           centerTitle: true,
+          backgroundColor: Colors.black,
         ),
         body: Container(
           color: Colors.black,
@@ -112,12 +132,13 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
             },
           ),
         ),
-        bottomNavigationBar: BottomBar()
+        bottomNavigationBar: BottomBar(), // Include the bottom bar here
       ),
     );
   }
 
 }
+
 
 class SubfolderContentsPage extends StatelessWidget {
   final String agencyName;
@@ -178,8 +199,19 @@ class SubfolderContentsPage extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: BottomBar()
+      bottomNavigationBar: BottomBar(), // Include the bottom bar here
     );
   }
+}
 
+
+
+
+
+
+
+void main() {
+  runApp(MaterialApp(
+    home: ProtocolListViewWidget(agencyName: 'YourAgencyName'),
+  ));
 }

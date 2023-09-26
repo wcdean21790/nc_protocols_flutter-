@@ -7,10 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:n_c_protocols/globals.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
-import 'home_page/navigationbar.dart'; // Import PDF viewer package
-
-
-
+import 'home_page/navigationbar.dart';
 
 class CategoryListViewWidget extends StatefulWidget {
   final String agencyName;
@@ -25,6 +22,7 @@ class CategoryListViewWidget extends StatefulWidget {
 
 class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
   late List<String> subfolderNames = [];
+  List<bool> isFavoriteList = [];
 
   @override
   void initState() {
@@ -45,16 +43,18 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             .where((subdir) => subdir is Directory)
             .map((subdir) => p.basename(subdir.path))
             .toList();
+        isFavoriteList = List.generate(subfolderNames.length, (index) => false);
       });
     }
   }
 
-  void _navigateToSubfolderContents(String subfolderName) {
+  void _navigateToSubfolderContents(String subfolderName, int index) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SubfolderContentsPage(
           agencyName: widget.agencyName,
           subfolderName: subfolderName,
+          pdfIndex: index,
         ),
       ),
     );
@@ -89,6 +89,22 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             textAlign: TextAlign.center,
           ),
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: ImageIcon(
+                AssetImage('assets/images/favicon.png'), // Replace with your icon path
+                color: Colors.white, // Icon color
+              ),
+              onPressed: () {
+                // Open the favoriteProtocols class or navigate to it here
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => FavoriteProtocols(favoritePDFs: [],),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: Container(
           color: Colors.black,
@@ -100,7 +116,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _navigateToSubfolderContents(subfolderName);
+                      _navigateToSubfolderContents(subfolderName, index);
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFF639BDC),
@@ -118,28 +134,34 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             },
           ),
         ),
-        bottomNavigationBar: BottomBar()
+        bottomNavigationBar: BottomBar(),
       ),
     );
   }
 }
 
-
-
-
-class SubfolderContentsPage extends StatelessWidget {
+class SubfolderContentsPage extends StatefulWidget {
   final String agencyName;
   final String subfolderName;
+  final int pdfIndex;
 
   SubfolderContentsPage({
     required this.agencyName,
     required this.subfolderName,
+    required this.pdfIndex,
   });
+
+  @override
+  _SubfolderContentsPageState createState() => _SubfolderContentsPageState();
+}
+
+class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
+  bool isFavorite = false;
 
   Future<List<File>> fetchPDFFiles() async {
     final appDocumentsDirectory = await getApplicationDocumentsDirectory();
     final subfolderDirectory =
-    Directory('${appDocumentsDirectory.path}/$agencyName/$subfolderName');
+    Directory('${appDocumentsDirectory.path}/${widget.agencyName}/${widget.subfolderName}');
 
     if (await subfolderDirectory.exists()) {
       final pdfFiles = subfolderDirectory
@@ -158,83 +180,156 @@ class SubfolderContentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(subfolderName),
+        title: Text(widget.subfolderName),
         centerTitle: true,
-        backgroundColor: Colors.black, // Set app bar background color to black
+        backgroundColor: Colors.black,
       ),
-      body: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: EdgeInsets.all(15), // Add 15-point padding around the contents
-          child: FutureBuilder<List<File>>(
-            future: fetchPDFFiles(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('No PDF files in this subfolder.'));
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, index) {
-                    final pdfFile = snapshot.data![index];
-                    final fileName = pdfFile.path.split('/').last; // Get file name
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10), // Add vertical spacing
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Open the selected PDF file in an image viewer widget
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PDFViewerWidget(
-                                pdfFilePath: pdfFile.path,
-                                pdfFileName: fileName.replaceAll('.pdf', ''), // Pass the file name
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.black,
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: FutureBuilder<List<File>>(
+                  future: fetchPDFFiles(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No PDF files in this subfolder.'));
+                    } else {
+                      return ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          final pdfFile = snapshot.data![index];
+                          final fileName = pdfFile.path.split('/').last;
+
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Add a transition effect when opening a new widget
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                      return PDFViewerWidget(
+                                        pdfFilePath: pdfFile.path,
+                                        pdfFileName: fileName.replaceAll('.pdf', ''),
+                                      );
+                                    },
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      const beginOpacity = 0.0;
+                                      const endOpacity = 1.0;
+                                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                      var fadeAnimation = animation.drive(opacityTween);
+                                      return FadeTransition(
+                                        opacity: fadeAnimation,
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF639BDC),
+                                padding: EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                                minimumSize: Size(0, 40),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text(
+                                      fileName.replaceAll('.pdf', ''),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                                      color: Colors.red, // Change the color based on whether it's a favorite
+                                    ),
+                                    onPressed: () {
+                                      // Toggle the favorite status for the specific PDF
+                                      setState(() {
+                                        isFavorite = !isFavorite;
+                                      });
+
+                                      // Add logic to store or remove the PDF from favorites
+                                      if (isFavorite) {
+                                        // Add the PDF to favorites
+                                        // You can implement your favorite PDF storage logic here
+                                      } else {
+                                        // Remove the PDF from favorites
+                                        // You can implement your favorite PDF removal logic here
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           );
-
                         },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF639BDC), // Blue button color
-                          padding: EdgeInsets.all(0), // Remove padding
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ), // Round the left edges
-                          ),
-                          minimumSize: Size(0, 40), // Set minimum button size (adjust the height as needed)
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(horizontal: 20), // Set horizontal padding
-                          child: Text(
-                            fileName.replaceAll('.pdf', ''), // Display file name without extension
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      )
-
-
-                    );
+                      );
+                    }
                   },
-                );
-              }
-            },
+                ),
+              ),
+            ),
           ),
-        ),
+          BottomBar(), // Include the bottom bar here
+        ],
       ),
     );
   }
 }
+
+class FavoriteProtocols extends StatelessWidget {
+  final List<File> favoritePDFs;
+
+  FavoriteProtocols({required this.favoritePDFs});
+
+  @override
+  Widget build(BuildContext context) {
+    // Implement your UI for displaying favorite PDFs here
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Favorite Protocols'),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: favoritePDFs.length,
+        itemBuilder: (context, index) {
+          final pdfFile = favoritePDFs[index];
+          final fileName = pdfFile.path.split('/').last;
+
+          return ListTile(
+            title: Text(fileName.replaceAll('.pdf', '')),
+            // Add any other UI elements you want to display for favorite PDFs
+          );
+        },
+      ),
+    );
+  }
+}
+
 
 class PDFViewerWidget extends StatelessWidget {
   final String pdfFilePath;
@@ -254,26 +349,31 @@ class PDFViewerWidget extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black), // Set icon color to black
         centerTitle: true, // Center the title text
       ),
-      body: Container(
-        color: Colors.black, // Set body background color to black
-        child: PDFView(
-          filePath: pdfFilePath,
-          enableSwipe: true,
-          swipeHorizontal: false,
-          autoSpacing: false,
-          pageFling: false,
-          onRender: (pages) {
-            // PDF document is rendered
-          },
-          onError: (error) {
-            // Handle error while opening PDF
-            print(error);
-          },
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.black, // Set body background color to black
+              child: PDFView(
+                filePath: pdfFilePath,
+                enableSwipe: true,
+                swipeHorizontal: false,
+                autoSpacing: false,
+                pageFling: false,
+                onRender: (pages) {
+                  // PDF document is rendered
+                },
+                onError: (error) {
+                  // Handle error while opening PDF
+                  print(error);
+                },
+              ),
+            ),
+          ),
+          BottomBar(), // Include the bottom bar here
+        ],
       ),
     );
   }
-
-
 }
 
