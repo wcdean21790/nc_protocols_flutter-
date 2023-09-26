@@ -1,43 +1,31 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class FavoriteProtocols extends StatelessWidget {
-  final List<String> favoritePDFs; // Replace this with your data source
+  final List<File> favoritePDFs;
 
   FavoriteProtocols({required this.favoritePDFs});
 
   @override
   Widget build(BuildContext context) {
+    // Implement your UI for displaying favorite PDFs here
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorite Protocols'),
+        centerTitle: true,
       ),
       body: ListView.builder(
         itemCount: favoritePDFs.length,
         itemBuilder: (context, index) {
-          final pdfName = favoritePDFs[index];
+          final pdfFile = favoritePDFs[index];
+          final fileName = pdfFile.path.split('/').last;
 
           return ListTile(
-            title: Text(
-              pdfName,
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            onTap: () {
-              // Implement what should happen when a favorite PDF is tapped
-              // For example, open the PDF viewer for this PDF
-              _openPDFViewer(context, pdfName);
-            },
+            title: Text(fileName.replaceAll('.pdf', '')),
+            // Add any other UI elements you want to display for favorite PDFs
           );
         },
       ),
     );
-  }
-
-  // Function to open the PDF viewer for a specific PDF
-  void _openPDFViewer(BuildContext context, String pdfName) {
-    // Implement this function to navigate to the PDF viewer or take any other action.
-    // For example, you can use Navigator to navigate to the PDF viewer screen.
-    // Replace this with your own logic.
   }
 }

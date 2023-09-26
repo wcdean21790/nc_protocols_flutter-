@@ -67,30 +67,44 @@ class _MyAppState extends State<MyApp> {
         FlutterFlowTheme.saveThemeMode(mode);
       });
 
-  @override
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'NC Protocols',
-      localizationsDelegates: [
-        FFLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(
-        brightness: Brightness.light,
-        scrollbarTheme: ScrollbarThemeData(),
+    final Gradient backgroundGradient = LinearGradient(
+      colors: [Colors.blue, Colors.black],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: backgroundGradient,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        scrollbarTheme: ScrollbarThemeData(),
+      child: MaterialApp.router(
+        title: 'NC Protocols',
+        localizationsDelegates: [
+          FFLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        supportedLocales: const [Locale('en', '')],
+        theme: ThemeData(
+          brightness: Brightness.light,
+          scrollbarTheme: ScrollbarThemeData(),
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          scrollbarTheme: ScrollbarThemeData(),
+        ),
+        themeMode: _themeMode,
+        routerConfig: _router,
+        builder: EasyLoading.init(), // Initialize EasyLoading
       ),
-      themeMode: _themeMode,
-      routerConfig: _router,
-      builder: EasyLoading.init(), // Initialize EasyLoading
     );
   }
+
 }

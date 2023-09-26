@@ -20,13 +20,26 @@ class Info extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Info',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold, // Make the title bold
+            decoration: TextDecoration.underline, // Add underline to the title
+          ),
         ),
+
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
       ),
       body: Container(
-        color: Colors.black,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue, Colors.black], // Define your gradient colors here
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -34,14 +47,10 @@ class Info extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(25.0),
                 child: Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                      'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
-                      'Ut enim ad minim veniam, quis nostrud exercitation ullamco '
-                      'laboris nisi ut aliquip ex ea commodo consequat. '
-                      'Duis aute irure dolor in reprehenderit in voluptate velit '
-                      'esse cillum dolore eu fugiat nulla pariatur. '
-                      'Excepteur sint occaecat cupidatat non proident, '
-                      'sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                  "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
+                      "This app has been designed to display every county's protocols if they are available. Please an admin representative send email through app to discuss adding your county protocols to app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
+                      "For those interested, you may buy me a coffee to support the creation of this app through the donation button in button below. Ads are only on the general State protocols to help cover the fees to create and host the app. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through 'Contact' button in 'Info'.\n\n"
+                      "Please allow notifications for future update alerts. Version updated 9/26/23",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.0,
@@ -72,9 +81,10 @@ class Info extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomBar()
+      bottomNavigationBar: BottomBar(),
     );
   }
+
 
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:n_c_protocols/pages/category_listview.dart';
 
 import '../../globals.dart';
 import '../info.dart';
@@ -11,115 +12,105 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconSize = 40.0; // Set the desired width and height for the icons
 
-    return BottomAppBar(
-      color: Colors.black, // Set the background color of the bottom app bar to black
-      child: Container(
-        width: double.infinity,
-        height: 50.0,
-        decoration: BoxDecoration(
-          color: Color(0x00F1F4F8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomBottomButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-
-              },
-              iconPath: 'assets/images/homeicon.png',
-              iconSize: iconSize,
-            ),
-            CustomBottomButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => ProtocolListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-
-              },
-              iconPath: 'assets/images/protocolsicon.png',
-              iconSize: iconSize,
-            ),
-
-
-            CustomBottomButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => ToolsWidget(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-
-              },
-              iconPath: 'assets/images/toolboxicon.png',
-              iconSize: iconSize,
-            ),
-            CustomBottomButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => Info(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-
-              },
-              iconPath: 'assets/images/infoicon.png',
-              iconSize: iconSize,
-            ),
-          ],
-        ),
+    return Container(
+      width: double.infinity,
+      height: 50.0,
+      color: Colors.black,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CustomBottomButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const beginOpacity = 0.0;
+                    const endOpacity = 1.0;
+                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                    var fadeAnimation = animation.drive(opacityTween);
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            iconPath: 'assets/images/homeicon.png',
+            iconSize: iconSize,
+          ),
+          CustomBottomButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const beginOpacity = 0.0;
+                    const endOpacity = 1.0;
+                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                    var fadeAnimation = animation.drive(opacityTween);
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            iconPath: 'assets/images/protocolsicon.png',
+            iconSize: iconSize,
+          ),
+          CustomBottomButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => ToolsWidget(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const beginOpacity = 0.0;
+                    const endOpacity = 1.0;
+                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                    var fadeAnimation = animation.drive(opacityTween);
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            iconPath: 'assets/images/toolboxicon.png',
+            iconSize: iconSize,
+          ),
+          CustomBottomButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => Info(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const beginOpacity = 0.0;
+                    const endOpacity = 1.0;
+                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                    var fadeAnimation = animation.drive(opacityTween);
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            iconPath: 'assets/images/infoicon.png',
+            iconSize: iconSize,
+          ),
+        ],
       ),
     );
   }

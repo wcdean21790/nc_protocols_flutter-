@@ -37,11 +37,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   @override
   Widget build(BuildContext context) {
     EasyLoading.init(); // Initialize EasyLoading
-
     return MaterialApp(
-      theme: ThemeData(
-        backgroundColor: Colors.black, // Set the app's background color to black
-      ),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -63,7 +59,15 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
           ),
         ),
         body: Container(
-          color: Colors.black, // Set the background color of the Container to black
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.black], // Define your gradient colors here
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
           child: Padding(
             padding: EdgeInsets.all(10), // Add 10 pixels of padding around the ListView
             child: ListView.builder(
@@ -136,17 +140,10 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomBar()
+        bottomNavigationBar: BottomBar(),
       ),
     );
   }
-
-
-
-
-
-
-
 
 
 
@@ -199,45 +196,55 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
             if (categoryData is Map<dynamic, dynamic>?) {
               if (categoryData != null) {
-                categoryData.forEach((entryKey, entryValue) async {
+                final List<MapEntry<String, String>> filesToDownload = [];
+
+                categoryData.forEach((entryKey, entryValue) {
                   final childNodeKey = entryKey as String?;
                   final childNodeData = entryValue as String?;
 
                   if (childNodeKey != null && childNodeData != null) {
-                    final link = childNodeData.toString();
-
-                    try {
-                      final response = await http.get(Uri.parse(link));
-
-                      if (response.statusCode == 200) {
-                        final appDocumentsDirectory =
-                        await getApplicationDocumentsDirectory();
-                        final agencyDirectory = Directory(
-                            '${appDocumentsDirectory.path}/$agencyName/$categoryName');
-
-                        // Create the agency and category directories if they don't exist
-                        if (!await agencyDirectory.exists()) {
-                          await agencyDirectory.create(recursive: true);
-                        }
-
-                        final fileName = '$childNodeKey.pdf';
-                        final filePath = '${agencyDirectory.path}/$fileName';
-                        final file = File(filePath);
-
-                        // Write the downloaded content to the file
-                        await file.writeAsBytes(response.bodyBytes);
-
-                        // Print the download status and file location to the terminal
-                        print("Downloaded: $link");
-                        print("Stored in: $filePath");
-                      } else {
-                        print("Failed to download: $link");
-                      }
-                    } catch (e) {
-                      print("Error downloading $link: $e");
-                    }
+                    filesToDownload.add(MapEntry(childNodeKey, childNodeData));
                   }
                 });
+
+                // Sort the files alphabetically by key (file name)
+                filesToDownload.sort((a, b) => a.key.compareTo(b.key));
+
+                for (final entry in filesToDownload) {
+                  final childNodeKey = entry.key;
+                  final link = entry.value;
+
+                  try {
+                    final response = await http.get(Uri.parse(link));
+
+                    if (response.statusCode == 200) {
+                      final appDocumentsDirectory =
+                      await getApplicationDocumentsDirectory();
+                      final agencyDirectory = Directory(
+                          '${appDocumentsDirectory.path}/$agencyName/Protocols/$categoryName');
+
+                      // Create the agency and category directories if they don't exist
+                      if (!await agencyDirectory.exists()) {
+                        await agencyDirectory.create(recursive: true);
+                      }
+
+                      final fileName = '$childNodeKey.pdf';
+                      final filePath = '${agencyDirectory.path}/$fileName';
+                      final file = File(filePath);
+
+                      // Write the downloaded content to the file
+                      await file.writeAsBytes(response.bodyBytes);
+
+                      // Print the download status and file location to the terminal
+                      print("Downloaded: $link");
+                      print("Stored in: $filePath");
+                    } else {
+                      print("Failed to download: $link");
+                    }
+                  } catch (e) {
+                    print("Error downloading $link: $e");
+                  }
+                }
               } else {
                 print("Data is null in Firebase for category $categoryName");
               }
@@ -279,6 +286,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       EasyLoading.dismiss();
     }
   }
+
 
 
 
