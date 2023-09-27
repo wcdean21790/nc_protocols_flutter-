@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:n_c_protocols/pages/favorites.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page/navigationbar.dart';
 
 class CategoryListViewWidget extends StatefulWidget {
@@ -19,6 +20,8 @@ class CategoryListViewWidget extends StatefulWidget {
 }
 
 class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
+
+
   late List<String> subfolderNames = [];
   List<bool> isFavoriteList = [];
 
@@ -91,16 +94,27 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             IconButton(
               icon: ImageIcon(
                 AssetImage('assets/images/favicon.png'), // Replace with your icon path
-                color: Colors.white, // Icon color
+                color: Colors.white, // Icon colors
               ),
-              onPressed: () {
-                // Open the favoriteProtocols class or navigate to it here
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FavoriteProtocols(favoritePDFs: []), // Pass your favorite PDFs list here
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => FavoriteProtocols(globalFavorites: []),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
               },
+
             ),
           ],
         ),
@@ -199,33 +213,16 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   bool isFavorite = false;
 
 
-  Future<List<File>> fetchPDFFiles() async {
-    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    final subfolderDirectory = Directory(
-        '${appDocumentsDirectory.path}/${widget.agencyName}/Protocols/${widget.subfolderName}');
-
-    if (await subfolderDirectory.exists()) {
-      final pdfFiles = subfolderDirectory
-          .listSync()
-          .where((file) => file is File && file.path.endsWith('.pdf'))
-          .map((file) => File(file.path))
-          .toList();
-
-      return pdfFiles;
-    } else {
-      return [];
-    }
-  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            widget.subfolderName,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold, // Make the title bold
-                decoration: TextDecoration.underline, // Add underline to the title
-            ),
+          widget.subfolderName,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold, // Make the title bold
+            decoration: TextDecoration.underline, // Add underline to the title
+          ),
 
         ),
         centerTitle: true,
@@ -280,7 +277,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                 margin: EdgeInsets.symmetric(vertical: 5),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 25), // Add horizontal padding
-                                  child: ElevatedButton(
+                                  child: ElevatedButton( //PDF list button
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -332,18 +329,20 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(right: 25), // Add padding to the right of the "+"
-                                          child: Text(
-                                            '+',
-                                            style: TextStyle(
-                                              fontSize: 18, // Font size for "+"
-                                              color: Colors.red,
-                                            ),
+                                          padding: EdgeInsets.only(right: 25), // Add padding to the right of the IconButton
+                                          child: IconButton( //icon button
+                                            icon: Icon(Icons.add, size: 18, color: Colors.red), // Replace with your desired icon
+                                            onPressed: () {
+                                              addToFavorites(pdfFile.path); // Pass the pdfPath to the function
+                                              // Add any other actions you want when the "+" button is pressed here
+                                            },
+
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+
                                 ),
                               );
                             },
@@ -363,45 +362,73 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     );
   }
 
+  // Define a globalFavorites list to store the PDF paths
+  List<String> globalFavorites = [];
 
-}
+  // Function to add a PDF path to globalFavorites
+  void addToFavorites(String pdfPath) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> currentFavorites = prefs.getStringList('favorites') ?? [];
 
-class FavoriteProtocols extends StatelessWidget {
-  final List<File> favoritePDFs;
+    currentFavorites.add(pdfPath);
 
-  FavoriteProtocols({required this.favoritePDFs});
+    await prefs.setStringList('favorites', currentFavorites);
 
-  @override
-  Widget build(BuildContext context) {
-    // Implement your UI for displaying favorite PDFs here
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Favorite Protocols',
-          style: TextStyle(
-            fontWeight: FontWeight.bold, // Make the title bold
-            decoration: TextDecoration.underline, // Add underline to the title
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
-
-      body: ListView.builder(
-        itemCount: favoritePDFs.length,
-        itemBuilder: (context, index) {
-          final pdfFile = favoritePDFs[index];
-          final fileName = pdfFile.path.split('/').last;
-
-          return ListTile(
-            title: Text(fileName.replaceAll('.pdf', '')),
-            // Add any other UI elements you want to display for favorite PDFs
-          );
-        },
-      ),
-    );
+    setState(() {
+      globalFavorites = currentFavorites;
+      print(globalFavorites);
+    });
   }
+
+
+  // Function to remove a PDF path from globalFavorites
+  void removeFromFavorites(String pdfPath) {
+    setState(() {
+      globalFavorites.remove(pdfPath);
+    });
+  }
+
+
+
+
+
+  Future<List<File>> fetchPDFFiles() async {
+    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    final subfolderDirectory = Directory(
+        '${appDocumentsDirectory.path}/${widget.agencyName}/Protocols/${widget.subfolderName}');
+
+    if (await subfolderDirectory.exists()) {
+      final pdfFiles = subfolderDirectory
+          .listSync()
+          .where((file) => file is File && file.path.endsWith('.pdf'))
+          .map((file) => File(file.path))
+          .toList();
+
+      return pdfFiles;
+    } else {
+      return [];
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 class PDFViewerWidget extends StatelessWidget {

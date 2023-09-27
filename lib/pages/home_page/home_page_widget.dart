@@ -48,6 +48,67 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.transparent, // Set the background color of Scaffold to transparent
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: AppBar(
+            backgroundColor: Colors.blue,
+            title: Padding(
+              padding: EdgeInsets.only(right: 15.0), // Add 10 pixels of padding to the right
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${GlobalVariables.globalAgencyName} Protocols',
+                      style: FlutterFlowTheme.of(context)
+                          .titleLarge
+                          .override(
+                        fontFamily: 'Outfit',
+                        color: Color(0xFF000000),
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => CategoryListViewWidget(agencyName: agencyName),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const beginOpacity = 0.0;
+                        const endOpacity = 1.0;
+                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                        var fadeAnimation = animation.drive(opacityTween);
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                icon: ClipOval(
+                  child: Image.asset(
+                    'assets/images/settingsicon.png',
+                    width: 40.0,
+                    height: 40.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+
+
         body: Stack(
           children: [
             Container(
@@ -71,85 +132,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Align(
                       alignment: AlignmentDirectional(0.00, 0.00),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(1.00, 0.00),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 15.0),
-                                  child: Text(
-                                    '${GlobalVariables.globalAgencyName} Protocols',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                      fontFamily: 'Outfit',
-                                      color: Colors.white,
-                                      fontSize: 30.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
-                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                        const beginOpacity = 0.0;
-                                        const endOpacity = 1.0;
-                                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                                        var fadeAnimation = animation.drive(opacityTween);
-                                        return FadeTransition(
-                                          opacity: fadeAnimation,
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                text: '', // Remove the text to make it empty
-                                icon: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/settingsicon.png',
-                                    width: 40.0,
-                                    height: 40.0,
-                                  ),
-                                ),
-                                options: FFButtonOptions(
-                                  height: 40.0,
-                                  padding: EdgeInsets.zero, // Set padding to zero to eliminate extra padding
-                                  iconPadding: EdgeInsets.all(0.0), // Remove icon padding
-                                  color: Colors.transparent, // Set the background color to transparent
-                                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.transparent,
-                                  ),
-                                  elevation: 3.0,
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 0.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                              )
-
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional(0.00, 0.00),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -161,7 +143,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
+                                    pageBuilder: (context, animation, secondaryAnimation) =>
+                                        CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
                                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                       const beginOpacity = 0.0;
                                       const endOpacity = 1.0;
@@ -249,6 +232,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+
+
 }
 
 void main() async {
