@@ -81,7 +81,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => CategoryListViewWidget(agencyName: agencyName),
+                      pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
                       transitionsBuilder: (context, animation, secondaryAnimation, child) {
                         const beginOpacity = 0.0;
                         const endOpacity = 1.0;
