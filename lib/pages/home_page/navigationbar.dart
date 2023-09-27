@@ -85,7 +85,7 @@ class BottomBar extends StatelessWidget {
                 ),
               );
             },
-            iconPath: 'assets/images/toolboxicon.png',
+            iconPath: 'assets/images/favicon.png',
             iconSize: iconSize,
           ),
           CustomBottomButton(

@@ -69,7 +69,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         ),
         textTheme: TextTheme(
           headline6: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold, // Make the title bold
             decoration: TextDecoration.underline, // Add underline to the title
             fontSize: 24,
@@ -85,39 +85,46 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
           title: Text(
             'Protocol Categories',
             style: TextStyle(
+              color: Colors.black,
               fontSize: 24,
             ),
             textAlign: TextAlign.center,
           ),
           centerTitle: true,
           actions: <Widget>[
-            IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/images/favicon.png'), // Replace with your icon path
-                color: Colors.white, // Icon colors
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0), // Add padding to the right
+              child: IconButton(
+                icon: ImageIcon(
+                  AssetImage('assets/images/favicon.png'), // Replace with your icon path
+                  color: Colors.red, // Icon colors
+                ),
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          FavoriteProtocols(globalFavorites: []),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        const beginOpacity = 0.0;
+                        const endOpacity = 1.0;
+                        var opacityTween = Tween<double>(
+                            begin: beginOpacity, end: endOpacity);
+                        var fadeAnimation = animation.drive(opacityTween);
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => FavoriteProtocols(globalFavorites: []),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-              },
-
             ),
           ],
         ),
+
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -220,13 +227,44 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
           widget.subfolderName,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold, // Make the title bold
-            decoration: TextDecoration.underline, // Add underline to the title
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
           ),
-
         ),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0), // Add padding to the right
+            child: IconButton(
+              icon: ImageIcon(
+                AssetImage('assets/images/favicon.png'), // Replace with your icon path
+                color: Colors.red, // Icon colors
+              ),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        FavoriteProtocols(globalFavorites: []),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(
+                          begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -330,14 +368,21 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(right: 25), // Add padding to the right of the IconButton
-                                          child: IconButton( //icon button
-                                            icon: Icon(Icons.add, size: 18, color: Colors.red), // Replace with your desired icon
+                                          child: // Your IconButton code...
+                                          IconButton(
+                                            icon: Icon(Icons.add, size: 18, color: Colors.red),
                                             onPressed: () {
-                                              addToFavorites(pdfFile.path); // Pass the pdfPath to the function
-                                              // Add any other actions you want when the "+" button is pressed here
+                                              addToFavoritesAndShowDialog(pdfFile.path, context);
+                                              // Show a snackbar when the "+" button is pressed
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text('Protocol added to favorites!'),
+                                                  duration: Duration(seconds: 2), // Adjust the duration as needed
+                                                ),
+                                              );
                                             },
-
                                           ),
+
                                         ),
                                       ],
                                     ),
@@ -362,11 +407,17 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     );
   }
 
+
+
+
+
+
+
   // Define a globalFavorites list to store the PDF paths
   List<String> globalFavorites = [];
 
   // Function to add a PDF path to globalFavorites
-  void addToFavorites(String pdfPath) async {
+  Future<void> addToFavoritesAndShowDialog(String pdfPath, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> currentFavorites = prefs.getStringList('favorites') ?? [];
 
@@ -374,11 +425,19 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
     await prefs.setStringList('favorites', currentFavorites);
 
-    setState(() {
-      globalFavorites = currentFavorites;
-      print(globalFavorites);
-    });
+    globalFavorites = currentFavorites;
+    print(globalFavorites);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PopupDialog();
+      },
+    );
   }
+
+
+
 
 
   // Function to remove a PDF path from globalFavorites
@@ -421,8 +480,41 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
 }
 
+class IconButtonWithPopup extends StatelessWidget {
 
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.add, size: 18, color: Colors.red),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return PopupDialog();
+          },
+        );
+      },
+    );
+  }
+}
 
+class PopupDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Protocol added to favorites!'),
+      content: Text('Your custom content here.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Text('Close'),
+        ),
+      ],
+    );
+  }
+}
 
 
 

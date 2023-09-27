@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:n_c_protocols/pages/favorites.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
@@ -27,14 +25,9 @@ void main() async {
   EasyLoading.init();
   await FlutterFlowTheme.initialize();
 
-  runApp(
-    MultiProvider(
-      providers: [
 
-      ],
-      child: MyApp(),
-    ),
-  );
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
