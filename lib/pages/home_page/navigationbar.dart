@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
 
 import '../../globals.dart';
+import '../favorites.dart';
 import '../info.dart';
 import '../protocol_listview.dart';
 import '../tools.dart';
@@ -71,11 +72,14 @@ class BottomBar extends StatelessWidget {
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => ToolsWidget(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      FavoriteProtocols(globalFavorites: []),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
                     const beginOpacity = 0.0;
                     const endOpacity = 1.0;
-                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                    var opacityTween = Tween<double>(
+                        begin: beginOpacity, end: endOpacity);
                     var fadeAnimation = animation.drive(opacityTween);
                     return FadeTransition(
                       opacity: fadeAnimation,

@@ -60,77 +60,82 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
             final pdfPath = globalFavorites[index];
             final fileName = pdfPath.split('/').last;
 
-            return ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return PDFViewerWidget(
-                        pdfFilePath: pdfPath, // Pass the pdfPath here
-                        pdfFileName: fileName.replaceAll('.pdf', ''),
-                      );
-                    },
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const beginOpacity = 0.0;
-                      const endOpacity = 1.0;
-                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                      var fadeAnimation = animation.drive(opacityTween);
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: child,
-                      );
-                    },
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 15,
+              top: 25,
+              left: 35,
+              right: 35),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return PDFViewerWidget(
+                          pdfFilePath: pdfPath, // Pass the pdfPath here
+                          pdfFileName: fileName.replaceAll('.pdf', ''),
+                        );
+                      },
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const beginOpacity = 0.0;
+                        const endOpacity = 1.0;
+                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                        var fadeAnimation = animation.drive(opacityTween);
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF639BDC),
+                  padding: EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFF639BDC),
-                padding: EdgeInsets.all(0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
+                ).copyWith(
+                  minimumSize: MaterialStateProperty.all(Size(50, 40)), // Set the width to 100
                 ),
-              ).copyWith(
-                minimumSize: MaterialStateProperty.all(Size(50, 40)), // Set the width to 100
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          fileName.replaceAll('.pdf', ''),
-                          style: TextStyle(
-                            fontSize: 14, // Dynamic font size
-                            color: Colors.black,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            fileName.replaceAll('.pdf', ''),
+                            style: TextStyle(
+                              fontSize: 14, // Dynamic font size
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 25), // Add padding to the right of the IconButton
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.add,
-                        size: 18,
-                        color: Colors.red,
+                    Padding(
+                      padding: EdgeInsets.only(right: 15), // Add padding to the right of the IconButton
+                      child: IconButton(
+                        icon: ImageIcon(
+                          AssetImage('assets/images/trashicon.png'), // Provide the path to your image
+                          color: Colors.red, // Set the desired color
+                          size: 35, // Set the desired size
+                        ),
+                        onPressed: () {
+                          removeFromFavorites(pdfPath, context);
+                        },
                       ),
-                      onPressed: () {
-                        removeFromFavorites(pdfPath);
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
-
-
           },
         ),
+
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white, // Set the navigation bar background color to white
@@ -138,18 +143,60 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
       ),
     );
   }
-  Future<void> removeFromFavorites(String pdfPath) async {
+
+  Future<void> removeFromFavorites(String pdfPath, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Get the current list of favorites or create an empty list if it doesn't exist
     List<String> favorites = prefs.getStringList('favorites') ?? [];
 
     // Remove the item from the list if it exists
-    favorites.remove(pdfPath);
+    if (favorites.contains(pdfPath)) {
+      favorites.remove(pdfPath);
 
-    // Update SharedPreferences with the modified list
-    await prefs.setStringList('favorites', favorites);
+      // Update SharedPreferences with the modified list
+      await prefs.setStringList('favorites', favorites);
+
+      // Show an AlertDialog to inform the user
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Protocol removed from favorites.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          FavoriteProtocols(globalFavorites: []),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        const beginOpacity = 0.0;
+                        const endOpacity = 1.0;
+                        var opacityTween = Tween<double>(
+                            begin: beginOpacity, end: endOpacity);
+                        var fadeAnimation = animation.drive(opacityTween);
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
+
+
+
 
 
 

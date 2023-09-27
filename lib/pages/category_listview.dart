@@ -503,7 +503,6 @@ class PopupDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Protocol added to favorites!'),
-      content: Text('Your custom content here.'),
       actions: <Widget>[
         TextButton(
           onPressed: () {
