@@ -1,18 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:n_c_protocols/index.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
-import 'package:n_c_protocols/pages/protocol_listview.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../globals.dart';
-import '../info.dart';
-import '../tools.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
-import 'dart:io'; // Import the dart:io library
-import 'package:path_provider/path_provider.dart';
 
 import 'navigationbar.dart'; // Import the path_provider library
 
@@ -61,12 +57,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Text(
                       '${GlobalVariables.globalAgencyName} Protocols',
-                      style: FlutterFlowTheme.of(context)
-                          .titleLarge
+                      style: GoogleFonts.poppins()
                           .override(
-                        fontFamily: 'Outfit',
+                        fontFamily: 'Work Sans',
                         color: Color(0xFF000000),
-                        fontSize: 36.0,
+                        fontSize: 24.0,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),
@@ -100,6 +95,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     'assets/images/settingsicon.png',
                     width: 40.0,
                     height: 40.0,
+                    color: Colors.brown,
                   ),
                 ),
               ),

@@ -581,6 +581,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
+  progress_dialog_null_safe:
+    dependency: "direct main"
+    description:
+      name: progress_dialog_null_safe
+      sha256: c883b52d60e03c749865fe990fd117d8c787ded4db6eccc3278bbc1e937bc3e3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   provider:
     dependency: "direct main"
     description:

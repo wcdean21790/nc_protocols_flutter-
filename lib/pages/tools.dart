@@ -66,10 +66,14 @@ class ToolsWidget extends StatelessWidget {
   void _launchWebpage() async {
     const url = 'https://www.epocrates.com';
 
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
     }
   }
 
