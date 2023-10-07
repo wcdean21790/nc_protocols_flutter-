@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../globals.dart';
 import 'category_listview.dart';
 
 class FavoriteProtocols extends StatefulWidget {
@@ -47,7 +48,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+            colors: GlobalVariables.colorTheme, // Define your gradient colors here
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],

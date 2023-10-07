@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../globals.dart';
 import 'home_page/navigationbar.dart';
 
 class CategoryListViewWidget extends StatefulWidget {
@@ -63,9 +64,9 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
     subfolderNames.sort(); // Sort the subfolderNames list alphabetically
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.blueAccent, // Set the app's background color to transparent
+        scaffoldBackgroundColor: Colors.transparent, // Set the app's background color to transparent
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.transparent, // Set the app bar's background color to transparent
+          backgroundColor: Colors.blueAccent, // Set the app bar's background color to transparent
         ),
         textTheme: TextTheme(
           headline6: TextStyle(
@@ -128,7 +129,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+              colors: GlobalVariables.colorTheme, // Define your gradient colors here
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               stops: [0.0, 1.0],
@@ -169,9 +170,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF0D78EF),
-                      ),
+                      style: ButtonStyles.customButtonStyle(context),
                       child: Text(
                         subfolderName,
                         style: TextStyle(
@@ -220,6 +219,7 @@ class SubfolderContentsPage extends StatefulWidget {
 
 class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   bool isFavorite = false;
+  ButtonStyles buttonStyles = ButtonStyles();
 
 
   Widget build(BuildContext context) {
@@ -228,7 +228,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         title: Text(
           widget.subfolderName,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             decoration: TextDecoration.underline,
           ),
@@ -271,7 +271,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+            colors: GlobalVariables.colorTheme, // Define your gradient colors here
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
@@ -341,15 +341,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                         ),
                                       );
                                     },
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFF639BDC),
-                                      padding: EdgeInsets.all(0),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(100),
-                                      ),
-                                    ).copyWith(
-                                      minimumSize: MaterialStateProperty.all(Size(50, 40)), // Set the width to 100
-                                    ),
+                                    style: ButtonStyles.customButtonStyle(context),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -546,39 +538,51 @@ class PDFViewerWidget extends StatelessWidget {
           "$pdfFileName",
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold, // Make the title bold
-            decoration: TextDecoration.underline, // Add underline to the title
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
           ),
         ),
-        backgroundColor: Colors.blue, // Set app bar background color to black
-        iconTheme: IconThemeData(color: Colors.black), // Set icon color to black
-        centerTitle: true, // Center the title text
+        backgroundColor: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Expanded(
             child: Container(
-              color: Colors.black, // Set body background color to black
-              child: PDFView(
-                filePath: pdfFilePath,
-                enableSwipe: true,
-                swipeHorizontal: false,
-                autoSpacing: false,
-                pageFling: false,
-                onRender: (pages) {
-                  // PDF document is rendered
-                },
-                onError: (error) {
-                  // Handle error while opening PDF
-                  print(error);
-                },
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: GlobalVariables.colorTheme,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10), // Add padding around the ListView
+                child: PDFView(
+                  filePath: pdfFilePath,
+                  enableSwipe: true,
+                  swipeHorizontal: false,
+                  autoSpacing: false,
+                  pageFling: false,
+                  onRender: (pages) {
+                    // PDF document is rendered
+                  },
+                  onError: (error) {
+                    // Handle error while opening PDF
+                    print(error);
+                  },
+                ),
               ),
             ),
           ),
-          BottomBar(), // Include the bottom bar here
+          BottomBar(),
         ],
       ),
     );
   }
+
 }
 

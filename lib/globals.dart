@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'backend/backend.dart';
 
 class GlobalVariables {
   static late SharedPreferences _prefs;
@@ -7,6 +10,9 @@ class GlobalVariables {
   static String globalAgencyLogo = "";
   static String globalAgencyCode = "";
   static List<String> globalFavorites = [];
+  static List<Color> colorTheme = [Colors.blue, Colors.grey];
+
+
 
   // Initialize SharedPreferences in a static initializer
   static Future<void> initialize() async {
@@ -21,6 +27,8 @@ class GlobalVariables {
     if (favorites != null) {
       globalFavorites = favorites;
     }
+
+
   }
 
   // Store global variables in SharedPreferences
@@ -33,4 +41,33 @@ class GlobalVariables {
     await _prefs.setStringList('globalFavorites', globalFavorites);
   }
 }
+
+
+
+
+class ButtonStyles {
+  static ButtonStyle customButtonStyle(BuildContext context) {
+    return ElevatedButton.styleFrom(
+      primary: Colors.transparent,
+      padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0), // Match the padding
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0), // Match the borderRadius
+        side: BorderSide(color: Colors.white, width: 1.0), // Match the borderSide
+      ),
+      elevation: 3.0,
+      // You can set textStyle based on FlutterFlowTheme.of(context).titleLarge.override
+      // if that's defined in your app's theme.
+      textStyle: TextStyle(
+        fontFamily: 'Readex Pro',
+        color: Color(0xFF000000),
+        fontSize: 24.0, // Adjust the fontSize as needed
+        fontWeight: FontWeight.bold,
+        decoration: TextDecoration.none, // Match the decoration
+      ),
+    ).copyWith(
+      minimumSize: MaterialStateProperty.all(Size(50, 40)),
+    );
+  }
+}
+
 

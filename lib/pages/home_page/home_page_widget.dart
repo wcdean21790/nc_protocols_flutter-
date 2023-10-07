@@ -105,17 +105,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
             ],
           ),
-
         ),
-
-
-
         body: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+                  colors: GlobalVariables.colorTheme, // Define your gradient colors here
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: [0.0, 1.0],

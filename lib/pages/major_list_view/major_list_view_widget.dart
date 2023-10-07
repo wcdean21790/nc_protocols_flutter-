@@ -46,7 +46,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(0x2196F3FF),
           title: Padding(
             padding: EdgeInsets.only(right: 15.0), // Add 10 pixels of padding to the right
             child: Align(
@@ -92,7 +92,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+              colors: GlobalVariables.colorTheme, // Define your gradient colors here
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               stops: [0.0, 1.0],
@@ -118,13 +118,9 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
                         // Now, show the password dialog
                         _showPasswordDialog(agencyName);
-                        //print("Before calling downloadMoreDataFromFirebase()");
-                        //downloadMoreDataFromFirebase();
-                        //print("After calling downloadMoreDataFromFirebase()");
-
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        primary: Color(0xFF0D78EF), // Use the same primary color
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(10),
@@ -174,6 +170,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
               },
             ),
           ),
+
         ),
         bottomNavigationBar: BottomBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -485,7 +482,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
     if (success != null && success) {
       downloadMoreDataFromFirebase();
-      //downloadProtocols(agencyName);
+      downloadProtocols(agencyName);
       _getHomescreenPictureLink(agencyName);
     }
   }

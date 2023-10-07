@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../globals.dart';
 import 'home_page/navigationbar.dart';
 
 
@@ -25,7 +26,7 @@ class Info extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.grey], // Define your gradient colors here
+            colors: GlobalVariables.colorTheme, // Define your gradient colors here
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
