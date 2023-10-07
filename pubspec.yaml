@@ -65,7 +65,7 @@ dependencies:
   sqflite: ^2.2.6
   stream_transform: ^2.1.0
   timeago: ^3.2.2
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.11
   url_launcher_android: ^6.0.27
   url_launcher_ios: ^6.1.4
   url_launcher_platform_interface: ^2.1.2

@@ -55,7 +55,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 23
+        versionCode 24
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }

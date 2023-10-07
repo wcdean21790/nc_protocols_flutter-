@@ -316,8 +316,8 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 5),
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 25), // Add horizontal padding
-                                  child: ElevatedButton( //PDF list button
+                                  padding: EdgeInsets.symmetric(horizontal: 15), // Add horizontal padding
+                                  child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -341,29 +341,28 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                         ),
                                       );
                                     },
-                                    style: ButtonStyles.customButtonStyle(context),
+                                    style: ButtonStyles.customButtonStyle(context), // Use the customButtonStyle
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 40),
+                                            padding: EdgeInsets.symmetric(horizontal: 25),
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 fileName.replaceAll('.pdf', ''),
                                                 style: TextStyle(
-                                                  fontSize: 14, // Dynamic font size
                                                   color: Colors.black,
+                                                  fontSize: 18, // Adjust the font size here if needed
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(right: 25), // Add padding to the right of the IconButton
-                                          child: // Your IconButton code...
-                                          IconButton(
+                                          padding: EdgeInsets.only(right: 0), // Add padding to the right of the IconButton
+                                          child: IconButton(
                                             icon: Icon(Icons.add, size: 18, color: Colors.red),
                                             onPressed: () {
                                               addToFavoritesAndShowDialog(pdfFile.path, context);
@@ -376,12 +375,10 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                               );
                                             },
                                           ),
-
                                         ),
                                       ],
                                     ),
                                   ),
-
                                 ),
                               );
                             },
@@ -393,7 +390,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10), // Add spacing between ListView and BottomNavigationBar
+            SizedBox(height: 20), // Add spacing between ListView and BottomNavigationBar
             BottomBar(), // You should replace this with your actual widget
           ],
         ),

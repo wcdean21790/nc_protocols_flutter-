@@ -108,9 +108,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                               );
                             },
 
-                            style: ElevatedButton.styleFrom(
-                              primary: Color(0xFF0D78EF),
-                            ),
+                            style: ButtonStyles.customButtonStyle(context),
                             child: Text(
                               subfolderName,
                               style: TextStyle(
@@ -186,7 +184,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          currentFolderName, // Set the title to the current folder name
+          widget.subfolderName, // Set the title to the current folder name
           style: TextStyle(
             color: Colors.black,
             fontSize: 24,
@@ -231,7 +229,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 75),
+                                padding: EdgeInsets.symmetric(horizontal: 0),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).push(

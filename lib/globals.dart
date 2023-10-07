@@ -49,9 +49,9 @@ class ButtonStyles {
   static ButtonStyle customButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
       primary: Colors.transparent,
-      padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0), // Match the padding
+      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0), // Match the padding
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0), // Match the borderRadius
+        borderRadius: BorderRadius.circular(10.0), // Match the borderRadius
         side: BorderSide(color: Colors.white, width: 1.0), // Match the borderSide
       ),
       elevation: 3.0,
@@ -60,7 +60,7 @@ class ButtonStyles {
       textStyle: TextStyle(
         fontFamily: 'Readex Pro',
         color: Color(0xFF000000),
-        fontSize: 24.0, // Adjust the fontSize as needed
+        fontSize: 18.0, // Adjust the fontSize as needed
         fontWeight: FontWeight.bold,
         decoration: TextDecoration.none, // Match the decoration
       ),
