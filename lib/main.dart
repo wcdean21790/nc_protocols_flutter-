@@ -1,8 +1,5 @@
 import 'dart:io';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,9 +9,8 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'globals.dart';
-import 'index.dart';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 
 
 void main() async {
@@ -24,8 +20,6 @@ void main() async {
   await initFirebase();
   EasyLoading.init();
   await FlutterFlowTheme.initialize();
-
-
 
   runApp(MyApp());
 }
@@ -51,7 +45,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initializeAppDocumentsDirectory(); // Call this method to initialize appDocumentsDirectory
-
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
   }

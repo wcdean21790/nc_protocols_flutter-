@@ -15,7 +15,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 23.0.0+1
+
+
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -27,7 +29,7 @@ dependencies:
     sdk: flutter
   auto_size_text: ^3.0.0
   cached_network_image: ^3.2.1
-  cloud_firestore: ^4.8.0
+  cloud_firestore: ^4.9.3
   cloud_firestore_platform_interface: ^5.15.0
   cloud_firestore_web: ^3.6.0
   dio: ^5.3.3
@@ -69,6 +71,8 @@ dependencies:
   url_launcher_platform_interface: ^2.1.2
   firebase_database: ^10.2.5
   progress_dialog_null_safe: ^1.0.7
+  flutter_launcher_icons: ^0.13.1
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -76,14 +80,36 @@ dependencies:
   cupertino_icons: ^1.0.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
 
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/statelogo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/statelogo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/statelogo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/statelogo.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is

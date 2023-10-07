@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:n_c_protocols/pages/protocol_listview.dart';
-import 'package:n_c_protocols/pages/tools.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../globals.dart';
-import 'home_page/home_page_widget.dart';
 import 'home_page/navigationbar.dart';
 
 
 class Info extends StatelessWidget {
-
 
 
   @override
@@ -33,7 +25,7 @@ class Info extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.black], // Define your gradient colors here
+            colors: [Colors.blue, Colors.grey], // Define your gradient colors here
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
@@ -52,7 +44,7 @@ class Info extends StatelessWidget {
                       "For those interested, you may buy me a coffee to support the creation of this app through the donation button in button below. Ads are only on the general State protocols to help cover the fees to create and host the app. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through 'Contact' button in 'Info'.\n\n"
                       "Please allow notifications for future update alerts. Version updated 9/26/23",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16.0,
                   ),
                 ),

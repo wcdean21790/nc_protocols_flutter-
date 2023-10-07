@@ -3,6 +3,7 @@ import 'package:n_c_protocols/index.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../globals.dart';
+import '../More_Category.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -49,7 +50,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: AppBar(
             backgroundColor: Colors.blue,
             title: Padding(
-              padding: EdgeInsets.only(right: 15.0), // Add 10 pixels of padding to the right
+              padding: EdgeInsets.only(right: 35.0), // Add 50 pixels of padding to the right
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Column(
@@ -71,36 +72,40 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
             ),
             actions: [
-              IconButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        const beginOpacity = 0.0;
-                        const endOpacity = 1.0;
-                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                        var fadeAnimation = animation.drive(opacityTween);
-                        return FadeTransition(
-                          opacity: fadeAnimation,
-                          child: child,
-                        );
-                      },
+              Padding(
+                padding: EdgeInsets.only(right: 15.0), // Add 50 pixels of padding to the right
+                child: IconButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => MajorListViewWidget(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const beginOpacity = 0.0;
+                          const endOpacity = 1.0;
+                          var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                          var fadeAnimation = animation.drive(opacityTween);
+                          return FadeTransition(
+                            opacity: fadeAnimation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  icon: ClipOval(
+                    child: Image.asset(
+                      'assets/images/settingsicon.png',
+                      width: 40.0,
+                      height: 40.0,
+                      color: Colors.black,
                     ),
-                  );
-                },
-                icon: ClipOval(
-                  child: Image.asset(
-                    'assets/images/settingsicon.png',
-                    width: 40.0,
-                    height: 40.0,
-                    color: Colors.brown,
                   ),
                 ),
               ),
             ],
           ),
+
         ),
 
 
@@ -110,7 +115,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue, Colors.black], // Define your gradient colors here
+                  colors: [Colors.blue, Colors.grey], // Define your gradient colors here
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: [0.0, 1.0],
@@ -179,7 +184,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                print('Button pressed ...');
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) =>
+                                        MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      const beginOpacity = 0.0;
+                                      const endOpacity = 1.0;
+                                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                      var fadeAnimation = animation.drive(opacityTween);
+                                      return FadeTransition(
+                                        opacity: fadeAnimation,
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               text: 'More',
                               options: FFButtonOptions(

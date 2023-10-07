@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,16 +25,19 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   late DatabaseReference _databaseReference;
   List<String> agencyNames = [];
   String downloadStatus = ''; // Define the downloadStatus variable
+  String Moredata = "Data will be displayed here";
 
   late Directory appDocumentsDirectory;
 
   @override
   void initState() {
     super.initState();
+    Firebase.initializeApp();
     initializeAppDocumentsDirectory();
     _databaseReference =
         FirebaseDatabase.instance.reference().child('Agency_Information');
     fetchDataFromFirebase();
+    downloadMoreDataFromFirebase();
   }
 
   @override
@@ -65,25 +70,29 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
             ),
           ),
           actions: [
-            IconButton(
-              onPressed: () async {
-               _deleteAppData(context);
-              },
-              icon: ClipOval(
-                child: Image.asset(
-                  'assets/images/reseticon.png',
-                  width: 40.0,
-                  height: 40.0,
-                  color: Colors.red,
+            Padding(
+              padding: EdgeInsets.only(right: 15.0), // Add 15 pixels of padding to the right
+              child: IconButton(
+                onPressed: () async {
+                  _deleteAppData(context);
+                },
+                icon: ClipOval(
+                  child: Image.asset(
+                    'assets/images/reseticon.png',
+                    width: 40.0,
+                    height: 40.0,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
           ],
         ),
+
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.black], // Define your gradient colors here
+              colors: [Colors.blue, Colors.grey], // Define your gradient colors here
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               stops: [0.0, 1.0],
@@ -109,6 +118,10 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
                         // Now, show the password dialog
                         _showPasswordDialog(agencyName);
+                        //print("Before calling downloadMoreDataFromFirebase()");
+                        //downloadMoreDataFromFirebase();
+                        //print("After calling downloadMoreDataFromFirebase()");
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
@@ -187,7 +200,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
           data.keys.forEach((dynamic agencyName) {
             final agencyInfo = data[agencyName] as Map<dynamic, dynamic>;
 
-            if (agencyInfo != null && agencyInfo.containsKey("Protocols")) {
+            if (agencyInfo != null &&
+                (agencyInfo.containsKey("Protocols"))) {
               if (agencyName is String) {
                 newAgencyNames.add(agencyName);
               }
@@ -202,6 +216,122 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       print('Error fetching data: $error');
     });
   }
+
+  Future<void> downloadMoreDataFromFirebase() async {
+    print("Starting downloadMoreDataFromFirebase()");
+
+    // Ensure Firebase is initialized before using it.
+    await Firebase.initializeApp();
+
+    DatabaseReference databaseReference =
+    FirebaseDatabase.instance.reference().child('More');
+
+    try {
+      DataSnapshot snapshot = await databaseReference.get();
+
+      print("Fetched data: ${snapshot.value}");
+
+      if (snapshot.value != null && snapshot.value is Map<dynamic, dynamic>) {
+        final Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
+
+        // Call the _downloadData function to download the PDFs
+        await _downloadData(data, "", "More", []);
+
+        print("Download process completed successfully.");
+      } else {
+        print("Data in the 'More' node is not in the expected format.");
+      }
+    } catch (error) {
+      print("Error fetching data: $error"); // Debug: Print error message
+    }
+
+    print("Finishing downloadMoreDataFromFirebase()");
+  }
+
+
+
+
+
+
+
+  Future<void> downloadProtocols(String agencyName) async {
+    final downloadStatusList = <String>[];
+    String downloadStatus = '';
+
+    void updateStatus(String newStatus) {
+      downloadStatus = newStatus;
+      EasyLoading.show(status: downloadStatus);
+    }
+
+    updateStatus('Downloading $downloadStatus...do NOT close out of the app, as protocols are downloading in the background. May take several minutes depending on internet speed. Please report any bugs to ncprotocols@gmail.com (can be found in settings). Ads do not interfere with accessing any protocol and help fund hosting/development of the app.');
+
+    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    final directoryToDelete = Directory('${appDocumentsDirectory.path}/$agencyName');
+
+    if (await directoryToDelete.exists()) {
+      try {
+        await directoryToDelete.delete(recursive: true);
+        print("Deleted directory: ${directoryToDelete.path}");
+      } catch (e) {
+        print("Error deleting directory: $e");
+      }
+    }
+
+    _updateGlobalVariables(agencyName);
+
+    try {
+      final protocolsEvent = await _databaseReference.child(agencyName).child('Protocols').once();
+
+
+      final protocolsSnapshot = protocolsEvent.snapshot;
+
+      dynamic protocolsData = protocolsSnapshot.value;
+
+      if (protocolsData is Map<dynamic, dynamic>?) {
+        if (protocolsData != null) {
+          await _downloadData(protocolsData, agencyName, 'Protocols', downloadStatusList);
+        } else {
+          print("Data is null in Protocols");
+        }
+      } else {
+        print("Invalid data structure in Protocols");
+      }
+
+      final downloadStatus = downloadStatusList.join('\n');
+
+      EasyLoading.dismiss();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Download Complete'),
+            content: Text(downloadStatus),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print("Error downloading files: $e");
+      EasyLoading.dismiss();
+    }
+  }
+
+
+
+
+
+
+
+
+
 
   void _deleteAppData(BuildContext context) async {
     final appDocumentsDirectory = await getApplicationDocumentsDirectory();
@@ -246,128 +376,62 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
 
 
-  Future<void> downloadProtocols(String agencyName) async {
-    EasyLoading.show(status: 'Downloading...do NOT close out of app, as protocols are downloading in background. May take several minutes depending on internet speed. Please report any bugs to ncprotocols@gmail.com (can be found in settings). Ads do not interfere with accessing any protocol and help fund hosting / development of the app.');
 
+  Future<void> _downloadData(Map<dynamic, dynamic> data, String agencyName, String node, List<String> downloadStatusList) async {
+    await Future.forEach(data.entries, (entry) async {
+      final categoryKey = entry.key.toString();
+      final categoryData = entry.value as Map<dynamic, dynamic>;
 
-    // Define the path to the directory you want to delete
-    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    final directoryToDelete = Directory('${appDocumentsDirectory.path}/$agencyName');
+      final filesToDownload = <MapEntry<String, String>>[];
 
-    // Check if the directory exists, and if so, delete it and its contents
-    if (await directoryToDelete.exists()) {
-      try {
-        await directoryToDelete.delete(recursive: true);
-        print("Deleted directory: ${directoryToDelete.path}");
-      } catch (e) {
-        print("Error deleting directory: $e");
-      }
-    }
+      categoryData.forEach((entryKey, entryValue) {
+        final childNodeKey = entryKey.toString();
+        final childNodeData = entryValue.toString();
+        filesToDownload.add(MapEntry(childNodeKey, childNodeData));
+      });
 
-    _updateGlobalVariables(agencyName);
+      filesToDownload.sort((a, b) => a.key.compareTo(b.key));
 
-    try {
-      // Fetch the "Protocols" node for the selected agency
-      DatabaseEvent event = await _databaseReference.child(agencyName).child('Protocols').once();
-      DataSnapshot snapshot = event.snapshot;
-      dynamic data = snapshot.value;
+      for (final entry in filesToDownload) {
+        final childNodeKey = entry.key;
+        final link = entry.value;
 
-      if (data is Map<dynamic, dynamic>?) {
-        if (data != null) {
-          final downloadStatusList = <String>[]; // List to store download statuses
+        try {
+          final response = await http.get(Uri.parse(link));
 
-          await Future.forEach(data.entries, (entry) async {
-            final categoryKey = entry.key.toString();
-            final categoryData = entry.value as Map<dynamic, dynamic>;
+          if (response.statusCode == 200) {
+            final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+            final agencyDirectory = Directory(
+              '${appDocumentsDirectory.path}/$agencyName/$node/$categoryKey',
+            );
 
-            final filesToDownload = <MapEntry<String, String>>[];
-
-            categoryData.forEach((entryKey, entryValue) {
-              final childNodeKey = entryKey.toString();
-              final childNodeData = entryValue.toString();
-              filesToDownload.add(MapEntry(childNodeKey, childNodeData));
-            });
-
-            // Sort the files alphabetically by key (file name)
-            filesToDownload.sort((a, b) => a.key.compareTo(b.key));
-
-            for (final entry in filesToDownload) {
-              final childNodeKey = entry.key;
-              final link = entry.value;
-
-              try {
-                final response = await http.get(Uri.parse(link));
-
-                if (response.statusCode == 200) {
-                  final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-                  final agencyDirectory = Directory(
-                    '${appDocumentsDirectory.path}/$agencyName/Protocols/$categoryKey',
-                  );
-
-                  // Create the agency and category directories if they don't exist
-                  if (!await agencyDirectory.exists()) {
-                    await agencyDirectory.create(recursive: true);
-                  }
-
-                  final fileName = '$childNodeKey.pdf';
-                  final filePath = '${agencyDirectory.path}/$fileName';
-                  final file = File(filePath);
-
-                  // Write the downloaded content to the file
-                  await file.writeAsBytes(response.bodyBytes);
-
-                  downloadStatusList.add('Downloaded: $childNodeKey');
-                  print("Downloaded: $link");
-                  print("Stored in: $filePath");
-                } else {
-                  downloadStatusList.add('Failed to download: $childNodeKey');
-                  print("Failed to download: $link");
-                }
-              } catch (e) {
-                downloadStatusList.add('Error downloading $childNodeKey: $e');
-                print("Error downloading $link: $e");
-              }
+            if (!await agencyDirectory.exists()) {
+              await agencyDirectory.create(recursive: true);
             }
-          });
 
-          // Rest of your code...
+            final fileName = '$childNodeKey.pdf';
+            final filePath = '${agencyDirectory.path}/$fileName';
+            final file = File(filePath);
 
-          // Combine download statuses into one string
-          final downloadStatus = downloadStatusList.join('\n');
+            await file.writeAsBytes(response.bodyBytes);
 
-          // Move EasyLoading.dismiss() here to dismiss the loading indicator after all downloads
-          EasyLoading.dismiss();
-
-          // Move showDialog here to display after all protocols have been processed
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Download Complete'),
-                content: Text(downloadStatus), // Display download status
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      // Close the dialog
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        } else {
-          print("Data is null in Firebase");
+            downloadStatusList.add('Downloaded: $childNodeKey');
+            print('Downloaded $childNodeKey.pdf');
+            print('Stored in: $filePath'); // Added for debugging
+          } else {
+            downloadStatusList.add('Failed to download: $childNodeKey');
+            print('Failed to download $childNodeKey.pdf. Status code: ${response.statusCode}');
+            // You can also print response.body for more details if needed.
+          }
+        } catch (e) {
+          downloadStatusList.add('Error downloading $childNodeKey: $e');
+          print('Error downloading $childNodeKey.pdf: $e');
         }
-      } else {
-        print("Invalid data structure in Firebase");
       }
-    } catch (e) {
-      print("Error downloading files: $e");
-      EasyLoading.dismiss();
-    }
+    });
   }
+
+
 
   Future<void> _updateGlobalVariables(String agencyName) async {
     String? imageUrl = await _getHomescreenPictureLink(agencyName);
@@ -408,6 +472,9 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
 
 
+
+
+
   Future<void> _showPasswordDialog(String agencyName) async {
     final success = await showDialog<bool>(
       context: context,
@@ -417,8 +484,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     );
 
     if (success != null && success) {
-      // Password was entered correctly, proceed with the download
-      downloadProtocols(agencyName);
+      downloadMoreDataFromFirebase();
+      //downloadProtocols(agencyName);
       _getHomescreenPictureLink(agencyName);
     }
   }

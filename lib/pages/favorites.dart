@@ -47,7 +47,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.black], // Define your gradient colors here
+            colors: [Colors.blue, Colors.grey], // Define your gradient colors here
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],

@@ -1,11 +1,83 @@
 {
   "project_info": {
     "project_number": "860169251888",
-    "firebase_url": "https://ncprotocols-661da-default-rtdb.firebaseio.com/",
+    "firebase_url": "https://ncprotocols-661da-default-rtdb.firebaseio.com",
     "project_id": "ncprotocols-661da",
     "storage_bucket": "ncprotocols-661da.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860169251888:android:23b56bcb2104b3c3f251f5",
+        "android_client_info": {
+          "package_name": "com.dean.ncprotocols_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860169251888-daf4al64hrggt1en294le7crgqfenv54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP4YTDjV5Ngi0yGva5rFxg7JTfOhNRLYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860169251888-daf4al64hrggt1en294le7crgqfenv54.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "860169251888-t86kpp428fhtncm4203snbn9dslj935d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.deanapps.ncstateprotocols"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860169251888:android:66c5dca2dbde15f7f251f5",
+        "android_client_info": {
+          "package_name": "com.fcems.poweruser.stateprotocolsandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860169251888-daf4al64hrggt1en294le7crgqfenv54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP4YTDjV5Ngi0yGva5rFxg7JTfOhNRLYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860169251888-daf4al64hrggt1en294le7crgqfenv54.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "860169251888-t86kpp428fhtncm4203snbn9dslj935d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.deanapps.ncstateprotocols"
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:860169251888:android:b035bba38275ca62f251f5",

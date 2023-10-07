@@ -1,4 +1,4 @@
-package com.mycompany.ncprotocols
+package com.fcems.poweruser.stateprotocolsandroid
 
 import io.flutter.embedding.android.FlutterActivity
 

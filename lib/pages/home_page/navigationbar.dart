@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
-
 import '../../globals.dart';
 import '../favorites.dart';
 import '../info.dart';
-import '../protocol_listview.dart';
-import '../tools.dart';
 import 'home_page_widget.dart';
 
 class BottomBar extends StatelessWidget {
@@ -16,7 +13,7 @@ class BottomBar extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 50.0,
-      color: Colors.black,
+      color: Colors.grey,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

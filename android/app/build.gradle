@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '23'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '23.0'
 }
 
 apply plugin: 'com.android.application'
@@ -35,6 +35,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 33
+
+
     
 
     sourceSets {
@@ -48,11 +50,14 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.mycompany.ncprotocols"
-        minSdkVersion 21
+        applicationId "com.fcems.poweruser.stateprotocolsandroid"
+        minSdkVersion 30
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        versionCode 23
+
+        namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }
 
    signingConfigs {

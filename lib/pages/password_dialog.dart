@@ -11,7 +11,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Enter Password'),
+      title: Text('Enter Agency Password'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -21,25 +21,37 @@ class _PasswordDialogState extends State<PasswordDialog> {
             decoration: InputDecoration(labelText: 'Password'),
           ),
           SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              // Check the entered password
-              final enteredPassword = _passwordController.text;
-              if (enteredPassword == 'ems') {
-                Navigator.of(context).pop(true); // Close dialog with a success result
-              } else {
-                // Show an error message or handle incorrect password
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Incorrect password. Try again.'),
-                  ),
-                );
-              }
-            },
-            child: Text('Submit'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Check the entered password
+                  final enteredPassword = _passwordController.text;
+                  if (enteredPassword == 'ems') {
+                    Navigator.of(context).pop(true); // Close dialog with a success result
+                  } else {
+                    // Show an error message or handle incorrect password
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Incorrect password. Try again.'),
+                      ),
+                    );
+                  }
+                },
+                child: Text('Submit'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Close dialog with a failure result (Close button)
+                },
+                child: Text('Close'),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+
 }
