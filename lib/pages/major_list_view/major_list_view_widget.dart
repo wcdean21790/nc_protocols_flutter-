@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:n_c_protocols/flutter_flow/flutter_flow_theme.dart';
@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../globals.dart';
 import '../password_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MajorListViewWidget extends StatefulWidget {
@@ -22,6 +21,14 @@ class MajorListViewWidget extends StatefulWidget {
 }
 
 class _MajorListViewWidgetState extends State<MajorListViewWidget> {
+
+  InterstitialAd? _interstitialAd;
+// TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-9944401739416572/7656349965'
+      : 'ca-app-pub-9944401739416572~3810859326';
+
+
   late DatabaseReference _databaseReference;
   List<String> agencyNames = [];
   String downloadStatus = ''; // Define the downloadStatus variable
@@ -46,23 +53,26 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0x2196F3FF),
+          backgroundColor: Colors.blue,
           title: Padding(
-            padding: EdgeInsets.only(right: 15.0), // Add 10 pixels of padding to the right
+            padding: EdgeInsets.only(right: 25), // Add 10 pixels of padding to the right
             child: Align(
               alignment: Alignment.centerRight,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Download Specific Agency Protocols',
-                    style: GoogleFonts.poppins()
-                        .override(
-                      fontFamily: 'Work Sans',
-                      color: Color(0xFF000000),
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+                  Padding(
+                    padding: EdgeInsets.only(right: 0), // Add 10 pixels of padding to the top
+                    child: Text(
+                      'Download Protocols',
+                      style: GoogleFonts.poppins()
+                          .override(
+                        fontFamily: 'Work Sans',
+                        color: Color(0xFF000000),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],
@@ -71,7 +81,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.only(right: 15.0), // Add 15 pixels of padding to the right
+              padding: EdgeInsets.only(right: 10.0), // Add 15 pixels of padding to the right
               child: IconButton(
                 onPressed: () async {
                   _deleteAppData(context);
@@ -79,8 +89,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                 icon: ClipOval(
                   child: Image.asset(
                     'assets/images/reseticon.png',
-                    width: 40.0,
-                    height: 40.0,
+                    width: 25.0,
+                    height: 25.0,
                     color: Colors.red,
                   ),
                 ),
@@ -88,6 +98,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
             ),
           ],
         ),
+
 
         body: Container(
           decoration: BoxDecoration(
@@ -110,12 +121,12 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        // Set the globalAgencyName first
+                        //Show Ad
+                        _interstitialAd?.show();
+                        print("Ad code should have run");
                         GlobalVariables.globalAgencyName = agencyName;
-
                         // Save the changes to SharedPreferences
                         await GlobalVariables.saveGlobalVariables();
-
                         // Now, show the password dialog
                         _showPasswordDialog(agencyName);
                       },
@@ -178,7 +189,14 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     );
   }
 
-
+  String? getInterstitialAdUnitId() {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544/4411468910';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-3940256099942544/1033173712';
+    }
+    return null;
+  }
 
 
 
@@ -245,12 +263,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     print("Finishing downloadMoreDataFromFirebase()");
   }
 
-
-
-
-
-
-
   Future<void> downloadProtocols(String agencyName) async {
     final downloadStatusList = <String>[];
     String downloadStatus = '';
@@ -302,7 +314,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Download Complete'),
+            title: Text('Download Completed.'),
             content: Text(downloadStatus),
             actions: <Widget>[
               TextButton(
@@ -321,15 +333,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     }
   }
 
-
-
-
-
-
-
-
-
-
   void _deleteAppData(BuildContext context) async {
     final appDocumentsDirectory = await getApplicationDocumentsDirectory();
 
@@ -343,6 +346,8 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
           actions: [
             TextButton(
               onPressed: () {
+                _interstitialAd?.show();
+                print("Ad code run");
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: Text("Cancel"),
@@ -350,6 +355,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
             TextButton(
               onPressed: () async {
                 // Close the dialog
+
                 Navigator.of(context).pop();
 
                 try {
@@ -369,10 +375,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       },
     );
   }
-
-
-
-
 
   Future<void> _downloadData(Map<dynamic, dynamic> data, String agencyName, String node, List<String> downloadStatusList) async {
     await Future.forEach(data.entries, (entry) async {
@@ -412,9 +414,9 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
 
             await file.writeAsBytes(response.bodyBytes);
 
-            downloadStatusList.add('Downloaded: $childNodeKey');
-            print('Downloaded $childNodeKey.pdf');
-            print('Stored in: $filePath'); // Added for debugging
+            //downloadStatusList.add('Downloaded: $childNodeKey');
+            //print('Downloaded $childNodeKey.pdf');
+            //print('Stored in: $filePath'); // Added for debugging
           } else {
             downloadStatusList.add('Failed to download: $childNodeKey');
             print('Failed to download $childNodeKey.pdf. Status code: ${response.statusCode}');
@@ -427,8 +429,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       }
     });
   }
-
-
 
   Future<void> _updateGlobalVariables(String agencyName) async {
     String? imageUrl = await _getHomescreenPictureLink(agencyName);
@@ -454,7 +454,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     if (data is Map<dynamic, dynamic>?) {
       if (data != null && data.containsKey('Homescreen Picture')) {
         final imageUrl = data['Homescreen Picture'].toString();
-        print('Image URL for $agencyName: $imageUrl'); // Print the URL to the console
+        //print('Image URL for $agencyName: $imageUrl'); // Print the URL to the console
         return imageUrl;
       }
     }
@@ -463,29 +463,67 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     return "";
   }
 
-
-
-
-
-
-
-
-
-
   Future<void> _showPasswordDialog(String agencyName) async {
-    final success = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return PasswordDialog(); // Show the custom password dialog
-      },
-    );
+    GlobalVariables.globalAgencyName = agencyName;
 
-    if (success != null && success) {
+    if (GlobalVariables.globalAgencyName == "State") {
+      // If agencyName is "state," directly call downloadMoreDataFromFirebase
       downloadMoreDataFromFirebase();
       downloadProtocols(agencyName);
       _getHomescreenPictureLink(agencyName);
+    } else {
+      final success = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return PasswordDialog(); // Show the custom password dialog
+        },
+      );
+
+      if (success != null && success) {
+        downloadMoreDataFromFirebase();
+        downloadProtocols(agencyName);
+        _getHomescreenPictureLink(agencyName);
+      }
     }
   }
+
+  void loadAd() {
+    InterstitialAd.load(
+        adUnitId: adUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          // Called when an ad is successfully received.
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              // Called when the ad showed the full screen content.
+                onAdShowedFullScreenContent: (ad) {},
+                // Called when an impression occurs on the ad.
+                onAdImpression: (ad) {},
+                // Called when the ad failed to show full screen content.
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when the ad dismissed full screen content.
+                onAdDismissedFullScreenContent: (ad) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when a click is recorded for an ad.
+                onAdClicked: (ad) {});
+
+            debugPrint('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
+            _interstitialAd = ad;
+          },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
+
 
 
 

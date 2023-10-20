@@ -55,7 +55,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 24
+        versionCode 25
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }
@@ -84,4 +84,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
+
 }

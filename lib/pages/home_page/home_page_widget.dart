@@ -2,15 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:n_c_protocols/index.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../flutter_flow/flutter_flow_util.dart';
 import '../../globals.dart';
 import '../More_Category.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'home_page_model.dart';
-export 'home_page_model.dart';
-
 import 'navigationbar.dart'; // Import the path_provider library
 
 class HomePageWidget extends StatefulWidget {
@@ -21,9 +19,8 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+
   late HomePageModel _model;
-
-
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -50,7 +47,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: AppBar(
             backgroundColor: Colors.blue,
             title: Padding(
-              padding: EdgeInsets.only(right: 35.0), // Add 50 pixels of padding to the right
+              padding: EdgeInsets.only(right: 15.0), // Add 50 pixels of padding to the right
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Column(
@@ -62,7 +59,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           .override(
                         fontFamily: 'Work Sans',
                         color: Color(0xFF000000),
-                        fontSize: 24.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),
@@ -73,7 +70,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 15.0), // Add 50 pixels of padding to the right
+                padding: EdgeInsets.only(right: 25.0), // Add 50 pixels of padding to the right
                 child: IconButton(
                   onPressed: () async {
                     Navigator.push(
@@ -208,7 +205,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     .titleMedium
                                     .override(
                                   fontFamily: 'Readex Pro',
-                                  color: Color(0xFFD7B47A),
+                                  color: Color(0xFF000000),
                                 ),
                                 elevation: 3.0,
                                 borderSide: BorderSide(
@@ -223,8 +220,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             borderRadius: BorderRadius.circular(8.0),
                             child: Image.network(
                               GlobalVariables.globalAgencyLogo,
-                              width: 350.0,
-                              height: 375.0,
+                              width: 400.0,
+                              height: 450.0,
                               fit: BoxFit.cover,
                             ),
                           )

@@ -1,8 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../globals.dart';
 import 'home_page/navigationbar.dart';
@@ -20,10 +22,14 @@ class MoreListViewWidget extends StatefulWidget {
 class _MoreListViewWidgetState extends State<MoreListViewWidget> {
   late List<String> subfolderNames = [];
   List<bool> isFavoriteList = [];
+  late DatabaseReference _databaseReference;
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
+
 
   @override
   void initState() {
     super.initState();
+    _databaseReference = FirebaseDatabase.instance.reference();
     fetchDataFromLocalDirectory();
   }
 
@@ -48,6 +54,22 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
       });
     }
   }
+
+  Future fetchPhoneNumbers() async {
+    print(GlobalVariables.globalAgencyName); // Print the agency name for debugging
+
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+    final snapshot = await ref.child('Agency_Information').child('${GlobalVariables.globalAgencyName}').child('Data').child('PhoneNumbers').get();
+
+    if (snapshot.exists) {
+      final data = snapshot.value!; // Get the data as a Map
+
+      // Debugging: Print the data
+      print("Data: $data");
+    }
+  }
+
 
 
   @override
@@ -79,59 +101,116 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(15),
-                child: ListView.builder(
-                  itemCount: subfolderNames.length,
-                  itemBuilder: (context, index) {
-                    final subfolderName = subfolderNames[index];
-                    return Column(
-                      children: [
-                        SizedBox(
-                          width: 250,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) {
-                                    return SubfolderContentsPage(
-                                      agencyName: widget.agencyName,
-                                      subfolderName: subfolderName,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: subfolderNames.length,
+                        itemBuilder: (context, index) {
+                          final subfolderName = subfolderNames[index];
+                          return Column(
+                            children: [
+                              SizedBox(
+                                width: 250,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) {
+                                          return SubfolderContentsPage(
+                                            agencyName: widget.agencyName,
+                                            subfolderName: subfolderName,
+                                          );
+                                        },
+                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                          return FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-
+                                  style: ButtonStyles.customButtonStyle(context),
+                                  child: Text(
+                                    subfolderName,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-
-                            style: ButtonStyles.customButtonStyle(context),
-                            child: Text(
-                              subfolderName,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
                               ),
+                              SizedBox(height: 10),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 10), // Add spacing after the ListView
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10), // Add bottom padding
+                      child: SizedBox(
+                        width: 250, // Set the button width
+                        child: ElevatedButton(
+                          onPressed: () {
+                            fetchPhoneNumbers();
+                            // Navigate to the PhoneNumbersListView when the button is clicked
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PhoneNumbersListView()),
+                            );
+                          },
+                          style: ButtonStyles.customButtonStyle(context),
+                          child: Text(
+                            "Phone Numbers (coming soon)",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
-                      ],
-                    );
-                  },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 300), // Add bottom padding
+                      child: SizedBox(
+                        width: 250, // Set the button width
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("Directions coming soon");
+                          },
+                          style: ButtonStyles.customButtonStyle(context),
+                          child: Text(
+                            "Directions (coming soon)",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ],
       ),
+
+
+
       // Bottom Navigation Bar
       bottomNavigationBar: BottomBar(),
     );
   }
+
+
+
+
+
+
 
 
 
@@ -266,6 +345,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                     }
                   },
                 ),
+
               ),
             ),
           ],
@@ -324,9 +404,121 @@ class PDFViewerWidget extends StatelessWidget {
     );
   }
 }
-
 void main() {
   runApp(MaterialApp(
     home: MoreListViewWidget(agencyName: 'YourAgencyName'), // Replace 'YourAgencyName' with your agency name
   ));
 }
+
+
+
+
+
+class PhoneNumbersListView extends StatefulWidget {
+  @override
+  _PhoneNumbersListViewState createState() => _PhoneNumbersListViewState();
+}
+class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
+  Map<String, String> data = {}; // Declare data at the class level
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    fetchPhoneNumbers().then((phoneData) {
+      setState(() {
+        data = phoneData;
+      });
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.blue, // Make the app bar background transparent
+        title: Text(
+          "Phone Numbers",
+          style: TextStyle(color: Colors.black), // Set text color to black
+        ),
+        titleSpacing: 50, // Add left padding
+      ),
+
+      body: data.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: GlobalVariables.colorTheme, // Replace with your gradient colors
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: ListView(
+          children: data.keys.map((key) {
+            final phoneNumber = data[key];
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 10), // Add vertical padding
+              child: SizedBox(
+                width: 50, // Set the button width to 50
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 75), // Add horizontal padding
+                  child: OutlinedButton(
+                    style: ButtonStyles.customButtonStyle(context),
+                    onPressed: () {
+                      _makePhoneCall(phoneNumber!);
+                    },
+                    child: Text(
+                      key,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,// Text color
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+      bottomNavigationBar: BottomBar(),
+    );
+  }
+
+  // Add a function to initiate a phone call
+  _makePhoneCall(String phoneNumber) {
+    final url = 'tel:$phoneNumber';
+    launch(url);
+  }
+
+  Future<Map<String, String>> fetchPhoneNumbers() async {
+    // Replace with your Firebase Database reference path
+    DatabaseEvent event = await FirebaseDatabase.instance
+        .reference()
+        .child('Agency_Information')
+        .child(GlobalVariables.globalAgencyName)
+        .child('Data')
+        .child('PhoneNumbers')
+        .once();
+    DataSnapshot snapshot = event.snapshot;
+    dynamic data = snapshot.value;
+
+    // Process the data and extract phone numbers and titles
+    Map<String, String> phoneNumbers = {};
+
+    if (data is Map) {
+      data.forEach((key, value) {
+        if (value is String) {
+          phoneNumbers[key] = value;
+        }
+      });
+    }
+
+    return phoneNumbers;
+  }
+}
+
+
+

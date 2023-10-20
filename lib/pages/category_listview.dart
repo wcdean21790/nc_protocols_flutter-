@@ -66,7 +66,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.transparent, // Set the app's background color to transparent
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blueAccent, // Set the app bar's background color to transparent
+          backgroundColor: Colors.blue, // Set the app bar's background color to transparent
         ),
         textTheme: TextTheme(
           headline6: TextStyle(
@@ -137,6 +137,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             ),
           ),
           child: ListView.builder(
+            padding: const EdgeInsets.only(top: 10.0),
             itemCount: subfolderNames.length,
             itemBuilder: (context, index) {
               final subfolderName = subfolderNames[index];

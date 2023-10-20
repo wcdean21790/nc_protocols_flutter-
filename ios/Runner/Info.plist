@@ -16,6 +16,8 @@
 	<string>NC Protocols</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-9944401739416572~3810859326</string>
 
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>

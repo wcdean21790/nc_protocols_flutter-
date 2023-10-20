@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+
   usePathUrlStrategy();
   await GlobalVariables.initialize();
   await initFirebase();
@@ -25,6 +28,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+
   // This widget is the root of your application.
   @override
   State<MyApp> createState() => _MyAppState();
@@ -40,6 +44,14 @@ class _MyAppState extends State<MyApp> {
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
   late Directory appDocumentsDirectory;
+
+  InterstitialAd? _interstitialAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/1033173712'
+      : 'ca-app-pub-3940256099942544/4411468910';
+
 
   @override
   void initState() {
@@ -101,5 +113,27 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
+
+  void loadAd() {
+    InterstitialAd.load(
+        adUnitId: adUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          // Called when an ad is successfully received.
+          onAdLoaded: (ad) {
+            debugPrint('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
+            _interstitialAd = ad;
+          },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
+
+
 
 }
