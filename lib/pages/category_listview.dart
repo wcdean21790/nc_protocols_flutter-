@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/pages/favorites.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -6,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart';
+import '../service/ad_mob_service.dart';
 import 'home_page/navigationbar.dart';
 
 class CategoryListViewWidget extends StatefulWidget {
@@ -22,13 +24,19 @@ class CategoryListViewWidget extends StatefulWidget {
 
 class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
 
+  InterstitialAd? _interstitialAd;
+  BannerAd? _banner;
+// TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-9944401739416572/7656349965'
+      : 'ca-app-pub-9944401739416572/3035384613';
 
   late List<String> subfolderNames = [];
   List<bool> isFavoriteList = [];
-
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     print("SubfolderContentsPage initialized"); // Add this line
     fetchDataFromLocalDirectory();
   }
@@ -56,189 +64,26 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
   }
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
     subfolderNames.sort(); // Sort the subfolderNames list alphabetically
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.transparent, // Set the app's background color to transparent
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blue, // Set the app bar's background color to transparent
-        ),
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold, // Make the title bold
-            decoration: TextDecoration.underline, // Add underline to the title
-            fontSize: 24,
-          ),
-          button: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-          ),
-        ),
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Protocol Categories',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          centerTitle: true,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0), // Add padding to the right
-              child: IconButton(
-                icon: ImageIcon(
-                  AssetImage('assets/images/favicon.png'), // Replace with your icon path
-                  color: Colors.red, // Icon colors
-                ),
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          FavoriteProtocols(globalFavorites: []),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        const beginOpacity = 0.0;
-                        const endOpacity = 1.0;
-                        var opacityTween = Tween<double>(
-                            begin: beginOpacity, end: endOpacity);
-                        var fadeAnimation = animation.drive(opacityTween);
-                        return FadeTransition(
-                          opacity: fadeAnimation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
 
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: GlobalVariables.colorTheme, // Define your gradient colors here
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            ),
-          ),
-          child: ListView.builder(
-            padding: const EdgeInsets.only(top: 10.0),
-            itemCount: subfolderNames.length,
-            itemBuilder: (context, index) {
-              final subfolderName = subfolderNames[index];
-              return Column(
-                children: [
-                  SizedBox(
-                    width: 250, // Set the desired fixed width here
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) {
-                              return SubfolderContentsPage(
-                                agencyName: widget.agencyName,
-                                subfolderName: subfolderName,
-                                pdfIndex: index, // Pass the index to the SubfolderContentsPage
-                                subfolderNames: subfolderNames, // Pass subfolderNames here
-                                isFavoriteList: isFavoriteList, // Pass isFavoriteList here
-                              );
-                            },
-                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                              const beginOpacity = 0.0;
-                              const endOpacity = 1.0;
-                              var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                              var fadeAnimation = animation.drive(opacityTween);
-                              return FadeTransition(
-                                opacity: fadeAnimation,
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      style: ButtonStyles.customButtonStyle(context),
-                      child: Text(
-                        subfolderName,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                ],
-              );
-            },
-          ),
-        ),
-        bottomNavigationBar: BottomBar(),
-      ),
-    );
-  }
-
-
-
-}
-
-class SubfolderContentsPage extends StatefulWidget {
-  final String agencyName;
-  final String subfolderName;
-  final int pdfIndex;
-  final List<String> subfolderNames; // Add subfolderNames as a parameter
-  final List<bool> isFavoriteList; // Add isFavoriteList as a parameter
-
-  SubfolderContentsPage({
-    required this.agencyName,
-    required this.subfolderName,
-    required this.pdfIndex,
-    required this.subfolderNames, // Add subfolderNames here
-    required this.isFavoriteList, // Add isFavoriteList here
-  });
-
-  @override
-  _SubfolderContentsPageState createState() => _SubfolderContentsPageState();
-}
-
-
-
-
-class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
-  bool isFavorite = false;
-  ButtonStyles buttonStyles = ButtonStyles();
-
-
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF242935),
         title: Text(
-          widget.subfolderName,
+          'Protocol Categories',
           style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
+            color: Colors.grey,
+            fontSize: 24,
           ),
+
+          textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 10.0), // Add padding to the right
+            padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
               icon: ImageIcon(
                 AssetImage('assets/images/favicon.png'), // Replace with your icon path
@@ -271,21 +116,206 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: GlobalVariables.colorTheme, // Define your gradient colors here
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
+          color: Color(0xFF242935),
+        ),
+        child: ListView.builder(
+          padding: const EdgeInsets.only(top: 10.0),
+          itemCount: subfolderNames.length,
+          itemBuilder: (context, index) {
+            final subfolderName = subfolderNames[index];
+            return Column(
+              children: [
+                SizedBox(
+                  width: 250, // Set the desired fixed width here
+                  child: Container(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) {
+                              return SubfolderContentsPage(
+                                agencyName: widget.agencyName,
+                                subfolderName: subfolderName,
+                                pdfIndex: index,
+                                subfolderNames: subfolderNames,
+                                isFavoriteList: isFavoriteList,
+                              );
+                            },
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              const beginOpacity = 0.0;
+                              const endOpacity = 1.0;
+                              var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                              var fadeAnimation = animation.drive(opacityTween);
+                              return FadeTransition(
+                                opacity: fadeAnimation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        onPrimary: Color(0xA510D3FA),
+                        onSurface: Colors.transparent,
+                        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
+                        elevation: 3.0,
+                        side: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        subfolderName,
+                        style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                if (index == subfolderNames.length - 1)
+                  buildAdContainer(), // Add the ad container below the last button
+              ],
+            );
+          },
+        ),
+      ),
+
+
+      bottomNavigationBar: BottomBar(),
+    );
+  }
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId!,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest(),
+      )..load();
+    } }
+
+
+
+}
+
+class SubfolderContentsPage extends StatefulWidget {
+  final String agencyName;
+  final String subfolderName;
+  final int pdfIndex;
+  final List<String> subfolderNames; // Add subfolderNames as a parameter
+  final List<bool> isFavoriteList; // Add isFavoriteList as a parameter
+
+  SubfolderContentsPage({
+    required this.agencyName,
+    required this.subfolderName,
+    required this.pdfIndex,
+    required this.subfolderNames, // Add subfolderNames here
+    required this.isFavoriteList, // Add isFavoriteList here
+  });
+
+  @override
+  _SubfolderContentsPageState createState() => _SubfolderContentsPageState();
+}
+
+
+
+
+class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
+  bool isFavorite = false;
+  ButtonStyles buttonStyles = ButtonStyles();
+  BannerAd? _banner;
+// TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-9944401739416572/7656349965'
+      : 'ca-app-pub-9944401739416572/3035384613';
+
+  @override
+  void initState() {
+    super.initState();
+
+    _createBannerAd();
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.subfolderName,
+          style: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
           ),
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xFF242935),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 0.0), // Add padding to the right
+            child: IconButton(
+              icon: ImageIcon(
+                AssetImage('assets/images/favicon.png'), // Replace with your icon path
+                color: Colors.red, // Icon colors
+              ),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        FavoriteProtocols(globalFavorites: []),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(
+                          begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF242935),
         ),
         child: Column(
           children: [
             Expanded(
               child: Container(
-                color: Colors.transparent, // Set the inner container's color to transparent
+                color: Colors.transparent,
                 child: Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(0),
                   child: FutureBuilder<List<File>>(
                     future: fetchPDFFiles(),
                     builder: (context, snapshot) {
@@ -297,11 +327,10 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                         return Center(child: Text('No PDF files in this subfolder.'));
                       } else {
                         return Padding(
-                          padding: EdgeInsets.only(bottom: 25), // Add spacing between ListView and BottomNavigationBar
+                          padding: EdgeInsets.only(bottom: 20), // Add spacing between ListView and BottomNavigationBar
                           child: ListView.builder(
                             itemCount: snapshot.data?.length,
                             itemBuilder: (context, index) {
-                              // Sort the PDF files numerically by extracting and comparing the numeric part of file names
                               final pdfFiles = snapshot.data!;
                               pdfFiles.sort((a, b) {
                                 final aName = a.path.split('/').last.replaceAll('.pdf', '');
@@ -317,7 +346,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 5),
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15), // Add horizontal padding
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -342,7 +371,20 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                         ),
                                       );
                                     },
-                                    style: ButtonStyles.customButtonStyle(context), // Use the customButtonStyle
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.transparent,
+                                      onPrimary: Color(0xFFFFFFFF),
+                                      onSurface: Colors.transparent,
+                                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                                      elevation: 3.0,
+                                      side: BorderSide(
+                                        color: Colors.black,
+                                        width: 1.0,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -354,24 +396,23 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                               child: Text(
                                                 fileName.replaceAll('.pdf', ''),
                                                 style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18, // Adjust the font size here if needed
+                                                  color: Color(0xFFFFFFFF),
+                                                  fontSize: 18,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(right: 0), // Add padding to the right of the IconButton
+                                          padding: EdgeInsets.only(right: 0),
                                           child: IconButton(
                                             icon: Icon(Icons.add, size: 18, color: Colors.red),
                                             onPressed: () {
                                               addToFavoritesAndShowDialog(pdfFile.path, context);
-                                              // Show a snackbar when the "+" button is pressed
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text('Protocol added to favorites!'),
-                                                  duration: Duration(seconds: 2), // Adjust the duration as needed
+                                                  duration: Duration(seconds: 2),
                                                 ),
                                               );
                                             },
@@ -390,15 +431,43 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                   ),
                 ),
               ),
+
             ),
-            SizedBox(height: 20), // Add spacing between ListView and BottomNavigationBar
-            BottomBar(), // You should replace this with your actual widget
+            SizedBox(height: 20),
+            buildAdContainer(), // You should replace this with your actual widget
           ],
         ),
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 
+
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId!,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest(),
+      )..load();
+    } }
 
 
 
@@ -494,17 +563,31 @@ class PopupDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Protocol added to favorites!'),
+      title: Text(
+        'Protocol added to favorites!',
+        style: TextStyle(
+          color: Colors.black, // Change text color to black
+        ),
+      ),
       actions: <Widget>[
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
           },
-          child: Text('Close'),
+          child: Text(
+            'Close',
+            style: TextStyle(
+              color: Colors.blue, // Change button text color to blue (iOS style)
+            ),
+          ),
         ),
       ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0), // Add rounded corners to the entire dialog
+      ),
     );
   }
+
 }
 
 
@@ -535,12 +618,12 @@ class PDFViewerWidget extends StatelessWidget {
         title: Text(
           "$pdfFileName",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.grey,
             fontWeight: FontWeight.bold,
             decoration: TextDecoration.underline,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF242935),
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
       ),
@@ -549,13 +632,7 @@ class PDFViewerWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: GlobalVariables.colorTheme,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp,
-                ),
+                color: Color(0xFF242935),
               ),
               child: Padding(
                 padding: EdgeInsets.all(10), // Add padding around the ListView

@@ -10,8 +10,8 @@ import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../globals.dart';
+import '../../service/ad_mob_service.dart';
 import '../password_dialog.dart';
-
 
 class MajorListViewWidget extends StatefulWidget {
   const MajorListViewWidget({Key? key}) : super(key: key);
@@ -21,12 +21,10 @@ class MajorListViewWidget extends StatefulWidget {
 }
 
 class _MajorListViewWidgetState extends State<MajorListViewWidget> {
-
   InterstitialAd? _interstitialAd;
+  BannerAd? _banner;
+  int maxFailedLoadAttempts = 3;
 // TODO: replace this test ad unit with your own ad unit.
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-9944401739416572/7656349965'
-      : 'ca-app-pub-9944401739416572~3810859326';
 
 
   late DatabaseReference _databaseReference;
@@ -39,6 +37,9 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   @override
   void initState() {
     super.initState();
+    MobileAds.instance.initialize();
+    _createBannerAd();
+    _createInterstitialAd();
     Firebase.initializeApp();
     initializeAppDocumentsDirectory();
     _databaseReference =
@@ -48,154 +49,215 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   }
 
   @override
+  void dispose() {
+    _interstitialAd?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     EasyLoading.init(); // Initialize EasyLoading
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: Padding(
-            padding: EdgeInsets.only(right: 25), // Add 10 pixels of padding to the right
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 0), // Add 10 pixels of padding to the top
-                    child: Text(
-                      'Download Protocols',
-                      style: GoogleFonts.poppins()
-                          .override(
-                        fontFamily: 'Work Sans',
-                        color: Color(0xFF000000),
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
+          backgroundColor: Color(0xFF242935),
+          title: Align(
+            alignment: Alignment.centerRight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Download Protocols',
+                  style: GoogleFonts.poppins().override(
+                    fontFamily: 'Work Sans',
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.only(right: 10.0), // Add 15 pixels of padding to the right
+              padding: EdgeInsets.only(right: 15.0, left: 10), // Add 10 pixels of padding to the right
               child: IconButton(
                 onPressed: () async {
                   _deleteAppData(context);
                 },
-                icon: ClipOval(
-                  child: Image.asset(
-                    'assets/images/reseticon.png',
-                    width: 25.0,
-                    height: 25.0,
-                    color: Colors.red,
-                  ),
+                icon: Image.asset(
+                  'assets/images/trashicon.png',
+                  width: 25.0,
+                  height: 25.0,
+                  color: Colors.white,
                 ),
               ),
             ),
           ],
         ),
-
-
         body: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: GlobalVariables.colorTheme, // Define your gradient colors here
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            ),
+            color: Color(0xFF242935),
           ),
           child: Padding(
-            padding: EdgeInsets.all(10), // Add 10 pixels of padding around the ListView
-            child: ListView.builder(
-              itemCount: agencyNames.length,
-              itemBuilder: (context, index) {
-                final agencyName = agencyNames[index];
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: agencyNames.length,
+                    itemBuilder: (context, index) {
+                      // Sort the agencyNames list alphabetically
+                      agencyNames.sort();
 
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        //Show Ad
-                        _interstitialAd?.show();
-                        print("Ad code should have run");
-                        GlobalVariables.globalAgencyName = agencyName;
-                        // Save the changes to SharedPreferences
-                        await GlobalVariables.saveGlobalVariables();
-                        // Now, show the password dialog
-                        _showPasswordDialog(agencyName);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF0D78EF), // Use the same primary color
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FutureBuilder<String?>(
-                              future: _getHomescreenPictureLink(agencyName),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  final imageUrl = snapshot.data!;
-                                  return Image.network(
-                                    imageUrl,
-                                    width: 80,
-                                    height: 80,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      // Handle any errors when loading the image
-                                      return Icon(Icons.error); // You can display an error icon or message here
-                                    },
-                                  );
-                                } else {
-                                  // You can display a placeholder image while loading
-                                  return Image.asset(
-                                    'assets/images/favicon.png', // Replace with your placeholder image
-                                    width: 80,
-                                    height: 80,
-                                  );
-                                }
-                              },
-                            ),
-                            Text(
-                              agencyName,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 18,
+                      final agencyName = agencyNames[index];
+
+                      return Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              // Show Ad
+                              _showInterstitialAd();
+                              print("Ad code should have run");
+                              GlobalVariables.globalAgencyName = agencyName;
+                              // Save the changes to SharedPreferences
+                              await GlobalVariables.saveGlobalVariables();
+                              // Now, show the password dialog
+                              _showPasswordDialog(agencyName);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xD78EF), // Background color
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10), // Round the button
+                                side: BorderSide(color: Colors.black), // Add black outline
                               ),
                             ),
-                            SizedBox(width: 8),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10), // Add spacing between buttons
-                  ],
-                );
-              },
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  FutureBuilder<String?>(
+                                    future: _getHomescreenPictureLink(agencyName),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.done &&
+                                          snapshot.hasData) {
+                                        final imageUrl = snapshot.data!;
+                                        return Image.network(
+                                          imageUrl,
+                                          width: 80,
+                                          height: 80,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            // Handle any errors when loading the image
+                                            return Icon(Icons.error); // You can display an error icon or message here
+                                          },
+                                        );
+                                      } else {
+                                        // You can display a placeholder image while loading
+                                        return Image.asset(
+                                          'assets/images/favicon.png', // Replace with your placeholder image
+                                          width: 80,
+                                          height: 80,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    agencyName,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 15), // Add spacing between buttons
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                buildAdContainer(),
+
+              ],
             ),
           ),
-
         ),
+
+
         bottomNavigationBar: BottomBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
 
-  String? getInterstitialAdUnitId() {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/4411468910';
-    } else if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/1033173712';
+
+
+
+
+
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
     }
-    return null;
+  }
+
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+    _banner = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  } }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdMobService.interstitialAdUnitId!,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) => _interstitialAd = ad,
+        onAdFailedToLoad: (error) => _interstitialAd = null,
+      ),
+    );
+  }
+
+  void _showInterstitialAd() {
+
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+      );
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }}
   }
 
 
@@ -314,7 +376,10 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Download Completed.'),
+            title: Text('Download Completed.',
+              style: TextStyle(
+                color: Colors.black, // Change the text color to blue
+              ),),
             content: Text(downloadStatus),
             actions: <Widget>[
               TextButton(
@@ -341,7 +406,10 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirm Delete"),
+          title: Text("Confirm Delete",
+            style: TextStyle(
+              color: Colors.black, // Change the text color to blue
+            ),),
           content: Text("Are you sure you want to delete application directory data?"),
           actions: [
             TextButton(
@@ -464,10 +532,11 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   }
 
   Future<void> _showPasswordDialog(String agencyName) async {
+    _showInterstitialAd;
     GlobalVariables.globalAgencyName = agencyName;
 
     if (GlobalVariables.globalAgencyName == "State") {
-      // If agencyName is "state," directly call downloadMoreDataFromFirebase
+      // If agencyName is "state," directly call downloadMoreDataFromFirebas
       downloadMoreDataFromFirebase();
       downloadProtocols(agencyName);
       _getHomescreenPictureLink(agencyName);
@@ -487,41 +556,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     }
   }
 
-  void loadAd() {
-    InterstitialAd.load(
-        adUnitId: adUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          // Called when an ad is successfully received.
-          onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              // Called when the ad showed the full screen content.
-                onAdShowedFullScreenContent: (ad) {},
-                // Called when an impression occurs on the ad.
-                onAdImpression: (ad) {},
-                // Called when the ad failed to show full screen content.
-                onAdFailedToShowFullScreenContent: (ad, err) {
-                  // Dispose the ad here to free resources.
-                  ad.dispose();
-                },
-                // Called when the ad dismissed full screen content.
-                onAdDismissedFullScreenContent: (ad) {
-                  // Dispose the ad here to free resources.
-                  ad.dispose();
-                },
-                // Called when a click is recorded for an ad.
-                onAdClicked: (ad) {});
-
-            debugPrint('$ad loaded.');
-            // Keep a reference to the ad so you can show it later.
-            _interstitialAd = ad;
-          },
-          // Called when an ad request failed.
-          onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('InterstitialAd failed to load: $error');
-          },
-        ));
-  }
 
 
 

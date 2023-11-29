@@ -22,7 +22,7 @@ class FFButtonOptions {
     this.hoverBorderSide,
     this.hoverTextColor,
     this.hoverElevation,
-    this.maxLines,
+    this.maxLines, required Alignment alignment,
   });
 
   final TextStyle? textStyle;

@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
@@ -7,7 +8,9 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../globals.dart';
+import '../service/ad_mob_service.dart';
 import 'home_page/navigationbar.dart';
+import 'hospitals.dart';
 
 class MoreListViewWidget extends StatefulWidget {
   final String agencyName;
@@ -24,6 +27,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
   List<bool> isFavoriteList = [];
   late DatabaseReference _databaseReference;
   DatabaseReference ref = FirebaseDatabase.instance.ref();
+  BannerAd? _banner;
 
 
   @override
@@ -31,6 +35,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
     super.initState();
     _databaseReference = FirebaseDatabase.instance.reference();
     fetchDataFromLocalDirectory();
+    _createBannerAd();
   }
 
   void fetchDataFromLocalDirectory() async {
@@ -70,7 +75,15 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
     }
   }
 
-
+  ButtonStyle customButtonStyle(BuildContext context) {
+    return TextButton.styleFrom(
+      backgroundColor: Color(0xFF242935), // Background color
+      primary: Color(0xA510D3FA), // Text color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25), // Adjust the border radius as needed
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,25 +92,21 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
         title: Text(
           'More Categories',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.grey,
             fontSize: 24,
           ),
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
+        backgroundColor: Color(0xFF242935), // Set the background color here
       ),
-      body: Column(
+
+        body: Column(
         children: [
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: GlobalVariables.colorTheme,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp,
-                ),
+                color: Color(0xFF242935),
               ),
               child: Padding(
                 padding: EdgeInsets.all(15),
@@ -135,7 +144,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                                   child: Text(
                                     subfolderName,
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(0xFFFFFFFF),
                                       fontSize: 18,
                                     ),
                                   ),
@@ -147,6 +156,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         },
                       ),
                     ),
+
                     SizedBox(height: 10), // Add spacing after the ListView
                     Padding(
                       padding: EdgeInsets.only(bottom: 10), // Add bottom padding
@@ -163,9 +173,9 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                           },
                           style: ButtonStyles.customButtonStyle(context),
                           child: Text(
-                            "Phone Numbers (coming soon)",
+                            "Phone Numbers",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Color(0xFFFFEA00),
                               fontSize: 16,
                             ),
                           ),
@@ -178,25 +188,32 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         width: 250, // Set the button width
                         child: ElevatedButton(
                           onPressed: () {
-                            print("Directions coming soon");
+                            // Navigate to the PhoneNumbersListView when the button is clicked
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Hospitals()),
+                            );
                           },
                           style: ButtonStyles.customButtonStyle(context),
                           child: Text(
-                            "Directions (coming soon)",
+                            "Directions",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Color(0xFF36AD8D),
                               fontSize: 18,
                             ),
                           ),
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),
             ),
           ),
+          buildAdContainer(),
         ],
+
       ),
 
 
@@ -206,7 +223,29 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
     );
   }
 
-
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
 
 
 
@@ -265,22 +304,17 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         title: Text(
           widget.subfolderName, // Set the title to the current folder name
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.grey,
             fontSize: 24,
           ),
           textAlign: TextAlign.center,
         ),
+        backgroundColor: Color(0xFF242935),
         centerTitle: true,
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: GlobalVariables.colorTheme,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          ),
+          color: Color(0xFF242935),
         ),
         child: Column(
           children: [
@@ -308,7 +342,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 0),
+                                padding: EdgeInsets.symmetric(horizontal: 50),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).push(
@@ -333,7 +367,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                     fileName.replaceAll('.pdf', ''),
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.black, // Use the same text color
+                                      color: Color(0xA510D3FA), // Use the same text color
                                     ),
                                   ),
                                 ),
@@ -373,11 +407,11 @@ class PDFViewerWidget extends StatelessWidget {
         title: Text(
           "$pdfFileName",
           style: TextStyle(
-            color: Colors.black,
+            color: Color(0xFF242935),
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF242935),
         centerTitle: true,
       ),
       body: Column(
@@ -437,52 +471,60 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.blue, // Make the app bar background transparent
+        backgroundColor: Color(0xFF242935), // Make the app bar background transparent
         title: Text(
           "Phone Numbers",
-          style: TextStyle(color: Colors.black), // Set text color to black
+          style: TextStyle(color: Colors.white), // Set text color to black
         ),
         titleSpacing: 50, // Add left padding
       ),
-
       body: data.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: GlobalVariables.colorTheme, // Replace with your gradient colors
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: Color(0xFF242935),
         ),
-        child: ListView(
-          children: data.keys.map((key) {
-            final phoneNumber = data[key];
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 10), // Add vertical padding
-              child: SizedBox(
-                width: 50, // Set the button width to 50
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 75), // Add horizontal padding
-                  child: OutlinedButton(
-                    style: ButtonStyles.customButtonStyle(context),
-                    onPressed: () {
-                      _makePhoneCall(phoneNumber!);
-                    },
-                    child: Text(
-                      key,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,// Text color
+        child: Scrollbar(
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final sortedKeys = data.keys.toList()..sort(); // Sort the keys alphabetically
+              final key = sortedKeys[index];
+              final phoneNumber = data[key];
+
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: SizedBox(
+                  width: 50,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 75),
+                    child: OutlinedButton(
+                      style: ButtonStyles.customButtonStyle(context),
+                      onPressed: () {
+                        _makePhoneCall(phoneNumber!);
+                      },
+                      child: Center(
+                        child: Text(
+                          key,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }).toList(),
+              );
+            },
+          ),
         ),
       ),
+
+
+
+
+
       bottomNavigationBar: BottomBar(),
     );
   }

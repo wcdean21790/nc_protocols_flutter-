@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:n_c_protocols/provider/revenuecat.dart';
+import 'package:n_c_protocols/service/ad_mob_service.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'api/purchase_api.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
@@ -17,14 +21,24 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-
+  await PurchaseApi.init();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
   await initFirebase();
   EasyLoading.init();
   await FlutterFlowTheme.initialize();
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<RevenueCatProvider>(
+          create: (_) => RevenueCatProvider(),
+        ),
+        // Add other providers if needed
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -46,6 +60,7 @@ class _MyAppState extends State<MyApp> {
   late Directory appDocumentsDirectory;
 
   InterstitialAd? _interstitialAd;
+  BannerAd? _banner;
 
   // TODO: replace this test ad unit with your own ad unit.
   final adUnitId = Platform.isAndroid
@@ -55,6 +70,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    _createBannerAd();
+    _createInterstitialAd();
     super.initState();
     initializeAppDocumentsDirectory(); // Call this method to initialize appDocumentsDirectory
     _appStateNotifier = AppStateNotifier.instance;
@@ -115,22 +133,39 @@ class _MyAppState extends State<MyApp> {
   }
 
 
-  void loadAd() {
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+  void _createInterstitialAd() {
     InterstitialAd.load(
-        adUnitId: adUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          // Called when an ad is successfully received.
-          onAdLoaded: (ad) {
-            debugPrint('$ad loaded.');
-            // Keep a reference to the ad so you can show it later.
-            _interstitialAd = ad;
-          },
-          // Called when an ad request failed.
-          onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('InterstitialAd failed to load: $error');
-          },
-        ));
+      adUnitId: AdMobService.interstitialAdUnitId!,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) => _interstitialAd = ad,
+        onAdFailedToLoad: (error) => _interstitialAd = null,
+      ),
+    );
+  }
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+      );
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }
   }
 
 

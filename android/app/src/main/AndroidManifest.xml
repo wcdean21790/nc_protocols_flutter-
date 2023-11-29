@@ -1,10 +1,8 @@
     <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-
-
-
         xmlns:tools="http://schemas.android.com/tools">
         <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.vending.BILLING"/>
         package="com.fcems.poweruser.stateprotocolsandroid">
         <queries>
             <intent>
@@ -73,7 +71,6 @@
                 </intent-filter>
 
             </activity>
-
             <!-- Don't delete the meta-data below.
                  This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
             <meta-data

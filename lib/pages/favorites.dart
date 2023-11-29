@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../globals.dart';
+import '../service/ad_mob_service.dart';
 import 'category_listview.dart';
 
 class FavoriteProtocols extends StatefulWidget {
@@ -17,12 +19,13 @@ class FavoriteProtocols extends StatefulWidget {
 
 class _FavoriteProtocolsState extends State<FavoriteProtocols> {
   List<String> globalFavorites = [];
-
+  BannerAd? _banner;
 
   @override
   void initState() {
     super.initState();
     loadFavorites();
+    _createBannerAd();
   }
 
   Future<void> loadFavorites() async {
@@ -40,21 +43,19 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
       appBar: AppBar(
         title: Text(
           'Favorite Protocols',
-          style: TextStyle(color: Colors.black), // Set app bar text color to black
+          style: TextStyle(color: Color(0xFFFFFFFF)), // Set app bar text color to black
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue, // Set app bar background color to white
+        backgroundColor: Color(0xFF242935), // Set app bar background color to white
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: GlobalVariables.colorTheme, // Define your gradient colors here
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          ),
+          color: Color(0xFF242935),
         ),
+        child:
+        Column(
+          children: [
+        Expanded(
         child: ListView.builder(
           itemCount: globalFavorites.length,
           itemBuilder: (context, index) {
@@ -62,10 +63,12 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
             final fileName = pdfPath.split('/').last;
 
             return Padding(
-              padding: const EdgeInsets.only(bottom: 15,
-              top: 25,
-              left: 35,
-              right: 35),
+              padding: const EdgeInsets.only(
+                bottom: 15,
+                top: 25,
+                left: 35,
+                right: 35,
+              ),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -90,15 +93,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF639BDC),
-                  padding: EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ).copyWith(
-                  minimumSize: MaterialStateProperty.all(Size(50, 40)), // Set the width to 100
-                ),
+                style: ButtonStyles.customButtonStyle(context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -110,24 +105,29 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
                           child: Text(
                             fileName.replaceAll('.pdf', ''),
                             style: TextStyle(
-                              fontSize: 14, // Dynamic font size
-                              color: Colors.black,
+                              fontSize: 14,
                             ),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(right: 15), // Add padding to the right of the IconButton
-                      child: IconButton(
-                        icon: ImageIcon(
-                          AssetImage('assets/images/trashicon.png'), // Provide the path to your image
-                          color: Colors.red, // Set the desired color
-                          size: 35, // Set the desired size
-                        ),
-                        onPressed: () {
+                      padding: EdgeInsets.only(right: 15),
+                      child: GestureDetector(
+                        onTap: () {
                           removeFromFavorites(pdfPath, context);
                         },
+                        child: IconButton(
+                          icon: Image.asset(
+                            'assets/images/trashicon.png', // Replace with the path to your trash icon image
+                            width: 25,
+                            height: 25,
+                            color: Colors.white
+                          ),
+                          onPressed: () {
+                            removeFromFavorites(pdfPath, context);
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -136,14 +136,42 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
             );
           },
         ),
-
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white, // Set the navigation bar background color to white
-        child: BottomBar(),
+        buildAdContainer(),
+      ],
+        ),
       ),
+      bottomNavigationBar: BottomBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId!,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest(),
+      )..load();
+    } }
+
+
 
   Future<void> removeFromFavorites(String pdfPath, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

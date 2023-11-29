@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/index.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,10 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'home_page_model.dart';
 import 'navigationbar.dart'; // Import the path_provider library
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -19,7 +24,11 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  BannerAd? _bannerAd;
 
+  final String _adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-3940256099942544/2934735716';
   late HomePageModel _model;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -41,36 +50,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.transparent, // Set the background color of Scaffold to transparent
+        backgroundColor: Color(0xFF242935), // Set the background color of Scaffold to transparent
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: AppBar(
-            backgroundColor: Colors.blue,
-            title: Padding(
-              padding: EdgeInsets.only(right: 15.0), // Add 50 pixels of padding to the right
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${GlobalVariables.globalAgencyName} Protocols',
-                      style: GoogleFonts.poppins()
-                          .override(
-                        fontFamily: 'Work Sans',
-                        color: Color(0xFF000000),
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
+            backgroundColor: Color(0xFF242935),
+            centerTitle: true,
+            title: Text(
+              '${GlobalVariables.globalAgencyName} Protocols',
+              style: GoogleFonts.poppins().override(
+                fontFamily: 'Work Sans',
+                color: Color(0xFFFFFFFF),
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
               ),
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 25.0), // Add 50 pixels of padding to the right
+                padding: EdgeInsets.only(right: 25.0),
                 child: IconButton(
                   onPressed: () async {
                     Navigator.push(
@@ -93,9 +91,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   icon: ClipOval(
                     child: Image.asset(
                       'assets/images/settingsicon.png',
-                      width: 40.0,
-                      height: 40.0,
-                      color: Colors.black,
+                      width: 35.0,
+                      height: 35.0,
                     ),
                   ),
                 ),
@@ -103,148 +100,158 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ],
           ),
         ),
-        body: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: GlobalVariables.colorTheme, // Define your gradient colors here
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp,
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF242935),
                 ),
               ),
-            ),
-            SafeArea(
-              top: true,
-              child: Align(
-                alignment: AlignmentDirectional(0.00, 0.00),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional(0.00, 0.00),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) =>
-                                        CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      const beginOpacity = 0.0;
-                                      const endOpacity = 1.0;
-                                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                                      var fadeAnimation = animation.drive(opacityTween);
-                                      return FadeTransition(
-                                        opacity: fadeAnimation,
-                                        child: child,
-                                      );
-                                    },
+              SafeArea(
+                top: true,
+                child: Align(
+                  alignment: AlignmentDirectional(0.00, 0.00),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(0.00, 0.00),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                          CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                        const beginOpacity = 0.0;
+                                        const endOpacity = 1.0;
+                                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                        var fadeAnimation = animation.drive(opacityTween);
+                                        return FadeTransition(
+                                          opacity: fadeAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                text: 'Protocols',
+                                options: FFButtonOptions(
+                                  alignment: Alignment.center,
+                                  height: 40.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                  color: Colors.transparent,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: Color(0xA510D3FA),
                                   ),
-                                );
-                              },
-                              text: 'Protocols',
-                              options: FFButtonOptions(
-                                height: 40.0,
-                                padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                                iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                color: Colors.transparent,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .titleLarge
-                                    .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Color(0xFF000000),
+                                  elevation: 3.0,
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                elevation: 3.0,
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) =>
-                                        MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      const beginOpacity = 0.0;
-                                      const endOpacity = 1.0;
-                                      var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                                      var fadeAnimation = animation.drive(opacityTween);
-                                      return FadeTransition(
-                                        opacity: fadeAnimation,
-                                        child: child,
-                                      );
-                                    },
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 50.0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                          MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                        const beginOpacity = 0.0;
+                                        const endOpacity = 1.0;
+                                        var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                        var fadeAnimation = animation.drive(opacityTween);
+                                        return FadeTransition(
+                                          opacity: fadeAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                text: 'More',
+                                options: FFButtonOptions(
+                                  alignment: Alignment.center,
+                                  height: 40.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                  color: Color(0x00F1F4F8),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: Color(0xA510D3FA),
                                   ),
-                                );
-                              },
-                              text: 'More',
-                              options: FFButtonOptions(
-                                height: 40.0,
-                                padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                                iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                color: Color(0x00F1F4F8),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .titleMedium
-                                    .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Color(0xFF000000),
+                                  elevation: 3.0,
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                elevation: 3.0,
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              GlobalVariables.globalAgencyLogo,
-                              width: 400.0,
-                              height: 450.0,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        ],
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image(
+                                image: NetworkImage(GlobalVariables.globalAgencyLogo),
+                                width: 350.0,
+                                height: 400.0,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // Display the local asset image if there is an error loading the network image
+                                  return Image.asset(
+                                    'assets/images/newapp.jpg',
+                                    width: 350.0,
+                                    height: 400.0,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
+
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional(0.00, 0.00),
-                      // Add any additional widgets here as needed
-                    ),
-                  ],
+                      Align(
+                        alignment: AlignmentDirectional(0.00, 0.00),
+                        // Add any additional widgets here as needed
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: BottomBar(),
       ),
     );
   }
-
-
 }
+
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

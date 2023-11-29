@@ -2,41 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../flutter_flow/flutter_flow_util.dart';
 import '../globals.dart';
 import 'home_page/navigationbar.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+import '../api/purchase_api.dart';
+import '../model/entitlement.dart';
+import '../utils.dart';
+import '../widget/paywall_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+
+import '../api/purchase_api.dart';
+import '../model/entitlement.dart';
+import '../provider/revenuecat.dart';
+import '../utils.dart';
+import '../widget/paywall_widget.dart';
 
 
-class Info extends StatelessWidget {
 
+class Info extends StatefulWidget {
+  const Info({Key? key}) : super(key: key);
+
+  @override
+  InfoState createState() => InfoState();
+}
+
+class InfoState extends State<Info> {
+  bool isLoading = false;
   final Uri _url = Uri.parse('https://www.buymeacoffee.com/wcdean217');
 
 
   @override
   Widget build(BuildContext context) {
+    final entitlement = context.watch<RevenueCatProvider>().entitlement;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Info',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.grey,
             fontWeight: FontWeight.bold, // Make the title bold
             decoration: TextDecoration.underline, // Add underline to the title
           ),
         ),
 
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF242935),
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: GlobalVariables.colorTheme,
-            // Define your gradient colors here
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          ),
+          color: Color(0xFF242935),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,10 +68,10 @@ class Info extends StatelessWidget {
                     child: Text(
                       "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
-                          "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are only on the general State protocols to help cover the fees to create and host the app. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
-                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 10/17/23",
+                          "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are in a few areas to help cover the fees to create and host the app. They will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
+                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 11/2/23",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white60,
                         fontSize: 16.0,
                       ),
                     ),
@@ -67,23 +85,41 @@ class Info extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(0), // Padding for "Contact" button
-                    child: ElevatedButton(
-                      onPressed: () {
-                       // FlutterEmailSender.send(email);
-                        _launchEmail(context); // Pass the context
-                      },
-                      child: Text('Contact'),
+                    child: Container(
+                      width: 250.0, // Set your desired width here
+                      child: ElevatedButton(
+                        style: ButtonStyles.customButtonStyle(context),
+                        onPressed: () {
+                          _launchEmail(context); // Pass the context
+                        },
+                        child: Text('Contact'),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10), // 10 pixels of padding below "Contact" button
+                  ), // 10 pixels of padding below "Contact" button
                   Padding(
-                    padding: EdgeInsets.all(20), // Padding for "Donate" button
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _launchUrl();// Pass the context
-                      },
-                      child: Text('Donate'),
+                    padding: EdgeInsets.all(10), // Padding for "Donate" button
+                    child: Container(
+                      width: 250.0, // Set your desired width here
+                      child: ElevatedButton(
+                        style: ButtonStyles.customButtonStyle(context),
+                        onPressed: () {
+                          _launchUrl();// Pass the context
+                        },
+                        child: Text('Donate'),
+                      ),
                     ),
+                  ), // 10 pixels of padding below "Contact" button
+                  Padding(
+                    padding: EdgeInsets.all(10), // Padding for "Donate" button
+                    child: Container(
+                      width: 250.0, // Set your desired width here
+                      child: ElevatedButton(
+                        style: ButtonStyles.customButtonStyle(context),
+                        onPressed: isLoading ? null : fetchOffers,
+                        child: Text('Remove Ads'),
+                      ),
+                    ),
+
                   ),
                 ],
               ),
@@ -93,7 +129,65 @@ class Info extends StatelessWidget {
 
       ),
       bottomNavigationBar: BottomBar(),
+
     );
+  }
+  Widget buildEntitlement(Entitlement entitlement) {
+    switch (entitlement) {
+      case Entitlement.allCourses:
+        return buildEntitlementIcon(
+          text: 'You are on Paid plan',
+          icon: Icons.paid,
+        );
+      case Entitlement.free:
+      default:
+        return buildEntitlementIcon(
+          text: 'You are on Free plan',
+          icon: Icons.lock,
+        );
+    }
+  }
+
+  Widget buildEntitlementIcon({
+    required String text,
+    required IconData icon,
+  }) =>
+      Column(
+        children: [
+          Icon(icon, size: 100),
+          const SizedBox(height: 8),
+          Text(text, style: const TextStyle(fontSize: 24)),
+        ],
+      );
+
+
+
+  Future fetchOffers() async {
+    final offerings = await Purchases.getOfferings();
+    if (!mounted) return;
+
+    if (offerings.current == null) {
+      const snackBar = SnackBar(content: Text('No Plans Found'));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final packages = offerings.current!.availablePackages;
+
+      Utils.showSheet(
+        context,
+            (context) => PaywallWidget(
+          packages: packages,
+          title: '⭐  Remove Ads ⭐',
+          description: 'Support app development by removing ads!',
+          onClickedPackage: (package) async {
+            await PurchaseApi.purchasePackage(package);
+            if (!mounted) return;
+
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
   }
 
 

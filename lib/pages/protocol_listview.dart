@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:n_c_protocols/pages/tools.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
+import '../globals.dart';
+import '../service/ad_mob_service.dart';
 import 'home_page/home_page_widget.dart';
 import 'info.dart';
 
@@ -38,7 +41,12 @@ class ProtocolListViewWidget extends StatefulWidget {
 
 class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
   late List<String> subfolderNames = [];
-
+  InterstitialAd? _interstitialAd;
+  BannerAd? _banner;
+// TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-9944401739416572/7656349965'
+      : 'ca-app-pub-9944401739416572/3035384613';
   @override
   void initState() {
     super.initState();
@@ -83,7 +91,7 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
         ),
         textTheme: TextTheme(
           headline6: TextStyle(
-            color: Colors.black,
+            color: Color(0xA510D3FA),
             fontSize: 24,
           ),
           button: TextStyle(
@@ -106,36 +114,80 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
         ),
         body: Container(
           color: Colors.black,
-          child: ListView.builder(
-            itemCount: subfolderNames.length,
-            itemBuilder: (context, index) {
-              final subfolderName = subfolderNames[index];
-              return Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _navigateToSubfolderContents(subfolderName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF639BDC),
-                    ),
-                    child: Text(
-                      subfolderName,
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                ],
-              );
-            },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: subfolderNames.length,
+                  itemBuilder: (context, index) {
+                    final subfolderName = subfolderNames[index];
+                    return Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            _navigateToSubfolderContents(subfolderName);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF639BDC),
+                          ),
+                          child: Text(
+                            subfolderName,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        if (index == subfolderNames.length - 1)
+                          buildAdContainer(), // Add the ad container below the last button
+                      ],
+                    );
+                  },
+                ),
+
+              ),
+              buildAdContainer(),
+            ],
           ),
         ),
+
         bottomNavigationBar: BottomBar(), // Include the bottom bar here
       ),
     );
   }
+
+
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId!,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest(),
+      )..load();
+    } }
+
+
+
+
+
+
 
 }
 
@@ -143,6 +195,7 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
 class SubfolderContentsPage extends StatelessWidget {
   final String agencyName;
   final String subfolderName;
+
 
   const SubfolderContentsPage({
     required this.agencyName,
@@ -183,25 +236,38 @@ class SubfolderContentsPage extends StatelessWidget {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No PDF files in this subfolder.'));
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data?.length,
-              itemBuilder: (context, index) {
-                final pdfFile = snapshot.data![index];
-                return ListTile(
-                  title: Text(pdfFile.path),
-                  onTap: () {
-                    // Open the selected PDF file
-                    // You can navigate to a PDF viewer here
-                  },
-                );
-              },
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, index) {
+                      final pdfFile = snapshot.data![index];
+                      return ListTile(
+                        title: Text(pdfFile.path),
+                        onTap: () {
+                          // Open the selected PDF file
+                          // You can navigate to a PDF viewer here
+                        },
+                      );
+                    },
+                  ),
+                ), // Add the ad container below the ListView.builder
+              ],
             );
           }
         },
       ),
+
       bottomNavigationBar: BottomBar(), // Include the bottom bar here
     );
   }
+
+
+
+
+
+
 }
 
 
