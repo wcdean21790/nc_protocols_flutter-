@@ -27,8 +27,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   BannerAd? _bannerAd;
 
   final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
+      ? 'ca-app-pub-9944401739416572/9028378015'
+      : 'ca-app-pub-9944401739416572/9028378015';
   late HomePageModel _model;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -156,7 +156,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .titleLarge
                                       .override(
                                     fontFamily: 'Readex Pro',
-                                    color: Color(0xA510D3FA),
+                                    color: Color(0xAE00FFFF),
                                   ),
                                   elevation: 3.0,
                                   borderSide: BorderSide(
@@ -200,7 +200,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .titleMedium
                                       .override(
                                     fontFamily: 'Readex Pro',
-                                    color: Color(0xA510D3FA),
+                                    color: Color(0xAE00FFFF),
                                   ),
                                   elevation: 3.0,
                                   borderSide: BorderSide(

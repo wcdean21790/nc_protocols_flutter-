@@ -62,11 +62,6 @@ class _MyAppState extends State<MyApp> {
   InterstitialAd? _interstitialAd;
   BannerAd? _banner;
 
-  // TODO: replace this test ad unit with your own ad unit.
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/1033173712'
-      : 'ca-app-pub-3940256099942544/4411468910';
-
 
   @override
   void initState() {

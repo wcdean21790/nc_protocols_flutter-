@@ -22,8 +22,8 @@ class BannerExampleState extends State<BannerExample> {
   BannerAd? _bannerAd;
 
   final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
+      ? 'ca-app-pub-9944401739416572/3708634126'
+      : 'ca-app-pub-9944401739416572/3708634126';
 
   @override
   void initState() {

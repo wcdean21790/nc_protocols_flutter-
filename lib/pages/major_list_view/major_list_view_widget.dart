@@ -535,7 +535,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     _showInterstitialAd;
     GlobalVariables.globalAgencyName = agencyName;
 
-    if (GlobalVariables.globalAgencyName == "State") {
+    if (GlobalVariables.globalAgencyName == ["State"]) {
       // If agencyName is "state," directly call downloadMoreDataFromFirebas
       downloadMoreDataFromFirebase();
       downloadProtocols(agencyName);
