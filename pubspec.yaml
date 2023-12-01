@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 31.0.0+31
+version: 32.0.0+32
 
 
 
@@ -100,20 +100,20 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/statelogos.png"
+  image_path: "assets/images/statelogo.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/images/statelogos.png"
+    image_path: "assets/images/statelogo.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"
   windows:
     generate: true
-    image_path: "assets/images/statelogos.png"
+    image_path: "assets/images/statelogo.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/images/statelogos.png"
+    image_path: "assets/images/statelogo.png"
 
 flutter:
 

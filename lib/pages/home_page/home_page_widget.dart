@@ -221,7 +221,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 errorBuilder: (context, error, stackTrace) {
                                   // Display the local asset image if there is an error loading the network image
                                   return Image.asset(
-                                    'assets/images/newapp.jpg',
+                                    'assets/icon/statelogo.jpg',
                                     width: 350.0,
                                     height: 400.0,
                                     fit: BoxFit.cover,
