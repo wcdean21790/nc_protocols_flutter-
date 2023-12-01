@@ -230,7 +230,7 @@ class InfoState extends State<Info> {
   }
 
   final Email email = Email(
-    body: '*-----Please.include.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
+    body: '*-----Please.include.your.agency.and.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
     subject: 'NC.Protocol.Hub',
     recipients: ['ncprotocols@gmail.com.com'],
     isHTML: false,
