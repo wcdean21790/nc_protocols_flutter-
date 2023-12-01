@@ -1,0 +1,120 @@
+"Ashe": {
+  "Data": {
+    "County Name": "Ashe",
+    "Homescreen Picture": "https://firebasestorage.googleapis.com/v0/b/ncprotocols-661da.appspot.com/o/Logos%2Fashelogo.png?alt=media&token=3b74e88c-eb4c-4706-bafd-7164586422e5&_gl=1*1cm8s6r*_ga*MTgzNzc1MTgxLjE2OTY5MDcxNDg.*_ga_CW55HF8NVT*MTY5Nzc1NTcwOS40My4xLjE2OTc3NTY3ODguNi4wLjA."
+  },
+  "Protocols": {
+    "Adult Cardiac": {
+      "AC1 Asystole PEA": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219769&authkey=AOjkWRYXQ5NI-I8&em=2",
+      "AC10 Post Resuscitation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219774&authkey=ANjvoeMXdUffy6w&em=2",
+      "AC11 TEAM Focused CPR": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219776&authkey=AB8Zz_lyE_RM9MM&em=2",
+      "AC12 Termination of CPR": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219779&authkey=AB5l9xenF6tb9Rg&em=2",
+      "AC13 Targeted Temperature Management": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219782&authkey=AMZWKAyk1vRx1l4&em=2",
+      "AC14 LVAD Emergency": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219787&authkey=ABc6ZIPlmWTUvgU&em=2",
+      "AC15 Total Mechanical Circulation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219793&authkey=ANsJXueSqithLv8&em=2",
+      "AC16 Wearable Cardioverter Defib Vest": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219791&authkey=AKXINaDK_VMVk98&em=2",
+      "AC2 Bradycardia Pulse Present": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219799&authkey=AIHFON6lcYoJRkY&em=2",
+      "AC3 Cardiac Arrest": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219800&authkey=APOJgiA5YNxjqjc&em=2",
+      "AC4 Chest Pain and STEMI": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219805&authkey=AB7MUnaWODHndRs&em=2",
+      "AC5 CHF or Pulmonary Edema": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219804&authkey=AORI_HOM0_-0DoE&em=2",
+      "AC6 Adult Tachycardia Narrow": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219809&authkey=ALhbNoqzaNc-rAQ&em=2",
+      "AC7 Adult Tachycardia Wide": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219814&authkey=AC_3GOO4RyUNJvE&em=2",
+      "AC8 Adult Tachycardia Polymorphic": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219816&authkey=AEnNoPrd0zCLQAo&em=2",
+      "AC9 VF or Pulseless VT": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219819&authkey=AMain6uAfLe7t5g&em=2"
+    },
+    "Adult Medical": {
+      "AM1 Allergic Reaction and Anaphylaxis": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219822&authkey=AFQcv0jntkTfaOc&em=2",
+      "AM2 Diabetic Adult": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219828&authkey=AHiiPqCLdnMWT2k&em=2",
+      "AM3 Dialysis Renal Failure": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219827&authkey=AKbES30P4rOr7mQ&em=2",
+      "AM4 Hypertension": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219829&authkey=AJafZcpPc8Ov34Y&em=2",
+      "AM5 Hypotension and Shock": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219833&authkey=AMZOioxw6jeLNrw&em=2",
+      "AM6 Suspected Stroke and t-PA": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219832&authkey=AGxW6Q22RCUapZg&em=2"
+    },
+    "Adult Obstetrical": {
+      "AO1 Childbirth and Labor": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219840&authkey=AEG7_fZiAv_a5pc&em=2",
+      "AO2 Newly Born": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219841&authkey=APWHdvknBowlIdQ&em=2",
+      "AO3 Obstetrical Emergency": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219845&authkey=ANNVJJiZwW_Au8I&em=2"
+    },
+    "Adult Respiratory": {
+      "AR1 Adult Airway": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219849&authkey=AIOHHaZnyhK_bOE&em=2",
+      "AR10 Tracheostomy Tube Emergencies": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219847&authkey=AL0XLzQ9jsJfQMA&em=2",
+      "AR11 Mechanical Ventilation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219857&authkey=AAf0QsEfNFuUFXI&em=2",
+      "AR2 Adult Failed Airway": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219854&authkey=AJ0g0FhFIuPv3Go&em=2",
+      "AR3 Airway Drug Assisted Intubation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219858&authkey=AAG8iSqQGkgf9u8&em=2",
+      "AR4 COPD and Asthma": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219861&authkey=AKJSOKNc4cMqL0w&em=2",
+      "AR5 Pediatric Airway Protocol": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219869&authkey=AP218L2XJMYYcMc&em=2",
+      "AR6 Pediatric Failed Airway": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219867&authkey=AK3R99jmcALOOdg&em=2",
+      "AR7 Pediatric Respiratory Distress": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219870&authkey=ABekW0chOmin6Vo&em=2",
+      "AR8 Post Intubation BIAD Management": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219880&authkey=AMJhEDbGMpOLeO0&em=2",
+      "AR9 Ventilator Emergencies": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219874&authkey=AKiCsYOBxjsUIp8&em=2"
+    },
+    "Pediatric Cardiac": {
+      "PC1 Pediatric Asystole and PEA": "https://drive.google.com/uc?export=download&id=1KiJ8sjz9OJ8nXN_ZcAyUCOaJoDuccT7i",
+      "PC2 Pediatric Bradycardia and Poor Perfusion": "https://drive.google.com/uc?export=download&id=1HOQx4CtAU3PVeo3fpu810jPu2hry4P-g",
+      "PC3 Pediatric CHF and Pulmonary Edema": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219883&authkey=AHRRor3wArunNGI&em=2",
+      "PC4 Pediatric Cardiac Arrest": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219890&authkey=AEyK8f0FomySpMY&em=2",
+      "PC5 Pediatric Tachycardia Narrow": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219889&authkey=APiZ8nfjfqt_xzo&em=2	",
+      "PC6 Pediatric Tachycardia Wide": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219892&authkey=AKirp9wP26QkV_E&em=2",
+      "PC7 Pediatric VF and Pulseless VT": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219897&authkey=APZabbH3xrPcQTE&em=2",
+      "PC8 Pediatric Post Resuscitation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219905&authkey=ADiKDHqnauM9rAw&em=2"
+    },
+    "Pediatric Medical": {
+      "PM1 Pediatric Allergic Reacion": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219902&authkey=AHDiH-m7h5oT5i4&em2",
+      "PM2 Pediatric Diabetic": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219904&authkey=AIMCWW5FTZmrv7E&em=2",
+      "PM3 Pediatric Hypotension and Shock": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219914&authkey=AH50Lnwatx9a0QU&em=2"
+    },
+    "Special Circumstances": {
+      "SC1 Suspected Ebola Protocol": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219915&authkey=AAfSQRx-pveP9gg&em=2",
+      "SC2 Respiratory Disease High Consequence Pathogens": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219938&authkey=AEQDmdAXNReYtgE&em=2",
+      "SC3 Hospice or Palliative Care": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219919&authkey=AJM4Nc81j_wxRbU&em=2",
+      "SC4 Vaccination Medication": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219921&authkey=AEnOoAgnz2IBopg&em=2",
+      "SC5 SARS and Cov2 Monoclonal Antibody Infusion": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219925&authkey=AP-4xRXRDMyOIWE&em=2"
+    },
+    "Special Operations": {
+      "SO1 Scene Rehabilitation General": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219930&authkey=APlnzyTFo9qUnck&em=2"
+    },
+    "Toxic - Environmental": {
+      "TE1 Bites and Envenomations": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219962&authkey=APbqlFo4LgAktpo&em=2",
+      "TE2 Carbon Monoxide and Cyanide": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219961&authkey=ACQ95Z7s4M725zw&em=2",
+      "TE3 Drowning and Submersion Injury": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219970&authkey=ABgeTA3Ezw8YAxg&em=2",
+      "TE4 Hyperthermia": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219967&authkey=AFMqGkcr-2iqU-A&em=2",
+      "TE5 Hypothermia": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219971&authkey=ABqLVFUdUlE8O2o&em=2",
+      "TE6 Marine Envenomations": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219975&authkey=AOu0Ni6SzXhi_ao&em=2",
+      "TE7 Overdose and Toxic Ingestion": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219984&authkey=AIjobW816whEtFk&em=2",
+      "TE8 WMD Nerve Agent": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219981&authkey=ACM7sogic4boHts&em=2"
+    },
+    "Trauma and Burns": {
+      "TB1 Blast Injury": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219932&authkey=ANgMbPb2Fc_NGKs&em=2",
+      "TB10 Traumatic Arrest": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219936&authkey=AHms1Ktnkb-UCo0&em=2",
+      "TB2 Chemical and Electrical Burn": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219937&authkey=AOX63rX_s6WIWmI&em=2",
+      "TB3 Crush Syndrome": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219944&authkey=AFtnV3mMMzAHwew&em=2",
+      "TB4 Extremity Trauma": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219943&authkey=AKJa3McOBKJO5aM&em=2",
+      "TB5 Head Trauma": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219948&authkey=ALy4P6kV_otja-k&em=2",
+      "TB6 Multiple Trauma": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219951&authkey=AL3vG5MNoPGtuY4&em=2",
+      "TB7 Radiation Incident": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219951&authkey=AL3vG5MNoPGtuY4&em=2",
+      "TB8 Selective Spinal Immobilization": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219954&authkey=ACnDH0zeQpU2edw&em=2",
+      "TB9 Thermal Burn": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219958&authkey=AIP4GHvF4-YQCys&em=2"
+    },
+    "Universal Protocols": {
+      "UP1 Universal Protocol": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219982&authkey=AMpks9OlautZvyo&em=2",
+      "UP10 Fever": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219986&authkey=AE2NV6DVFizfwF0&em=2",
+      "UP11 Pain Control": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219990&authkey=AKYzbokH_yVxYwU&em=2",
+      "UP12 Police Custody": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219992&authkey=AA2wN04JBaafPDg&em=2",
+      "UP13 Seizure": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219993&authkey=AFvVb98siFGiCFc&em=2",
+      "UP14 Stroke": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%219998&authkey=AFmMFShBZlo7b8o&em=2",
+      "UP15 Sepsis": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110004&authkey=AL3281P4Kb821DQ&em=2",
+      "UP16 Syncope": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110002&authkey=ADEja_lwNXskMo0&em=2",
+      "UP17 Behavioral Health Crisis": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110013&authkey=ACPSmXvxnUp_g8A&em=2",
+      "UP18 Behavioral Agitation Sedation": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110007&authkey=ANvMeOAnnaBxHoo&em=2",
+	"UP19 Behavioral Agitation Delerium": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110021&authkey=AEAIZxmlWnCoWTE&em=2",
+      "UP2 Triage": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110012&authkey=ALxFgy5DeXTMMvA&em=2",
+      "UP3 Abd Pain Vom and Diarrhea": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110019&authkey=ADWq9jh4PiMUR_Y&em=2",
+      "UP4 Altered Mental status": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110025&authkey=ALEYe0_lIq9n7UI&em=2",
+      "UP5 Back Pain": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110022&authkey=ABmjCmsC9POo10s&em=2",
+      "UP6 IV pr IO Access": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110029&authkey=AMBlDJgwkvFWWwA&em=2",
+      "UP7 Dental Problems": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110032&authkey=AAIxzdxBS1yRilQ&em=2",
+      "UP8 Central Line Emergency": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110030&authkey=ANrje3HHJ_0Vg1c&em=2",
+      "UP9 Epistaxis": "https://onedrive.live.com/download?cid=57B6B3EC180131F4&resid=57B6B3EC180131F4%2110033&authkey=APYojgRo9Qalr1w&em=2"
+    }
+  },
+}

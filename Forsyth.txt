@@ -1,0 +1,119 @@
+"Forsyth": {
+    "Data": {
+      "County Name": "Forsyth",
+      "Homescreen Picture": "234"
+    },
+    "Protocols": {
+      "Adult Cardiac": {
+        "AC1 Asystole PEA": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=874&download=1",
+        "AC10 Post Resuscitation": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=887&download=1",
+        "AC11 TEAM Focused CPR": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=888&download=1",
+        "AC12 Termination of CPR": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=889&download=1",
+        "AC13 Targeted Temperature Management": "",
+        "AC14 LVAD Emergency": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=890&download=1",
+        "AC15 Total Mechanical Circulation": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=891&download=1",
+        "AC16 Wearable Cardioverter Defib Vest": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=892&download=1",
+        "AC2 Bradycardia Pulse Present": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=876&download=1",
+        "AC3 Cardiac Arrest": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=875&download=1",
+        "AC4 Chest Pain and STEMI": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=879&download=1",
+        "AC5 CHF or Pulmonary Edema": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=946&download=1",
+        "AC6 Adult Tachycardia Narrow": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=948&download=1",
+        "AC7 Adult Tachycardia Wide": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=884&download=1",
+        "AC8 Adult Tachycardia Polymorphic": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=885&download=1",
+        "AC9 VF or Pulseless VT": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=886&download=1"
+      },
+      "Adult Medical": {
+        "AM1 Allergic Reaction and Anaphylaxis": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=797&download=1",
+        "AM2 Diabetic Adult": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=893&download=1",
+        "AM3 Dialysis Renal Failure": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=894&download=1",
+        "AM4 Hypertension": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=794&download=1",
+        "AM5 Hypotension and Shock": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=947&download=1",
+        "AM6 Suspected Stroke and t-PA": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=792&download=1"
+      },
+      "Adult Obstetrical": {
+        "AO1 Childbirth and Labor": "https://forsyth.cc/emergencyServices/ems/FileVBDoc.ashx?Id=767&download=",
+        "AO2 Newly Born": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=769&download=1",
+        "AO3 Obstetrical Emergency": "https://forsyth.cc/emergencyServices/ems/FileVBDoc.ashx?Id=768&download=1"
+      },
+      "Adult Respiratory": {
+        "AR1 Adult Airway": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=896&download=1",
+        "AR10 Tracheostomy Tube Emergencies": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=904&download=1",
+        "AR2 Adult Failed Airway": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=897&download=1",
+        "AR3 Airway Drug Assisted Intubation": "",
+        "AR4 COPD and Asthma": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=899&download=1",
+        "AR5 Pediatric Airway Protocol": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=900&download=1",
+        "AR6 Pediatric Failed Airway": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=901&download=1",
+        "AR7 Pediatric Respiratory Distress": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=902&download=1",
+        "AR8 Post Intubation BIAD Management": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=903&download=1",
+        "AR9 Ventilator Emergencies": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=895&download=1"
+      },
+      "Pediatric Cardiac": {
+        "PC1 Pediatric Asystole and PEA": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=835&download=1",
+        "PC2 Pediatric Bradycardia and Poor Perfusion": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=905&download=1",
+        "PC3 Pediatric CHF and Pulmonary Edema": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=906&download=1",
+        "PC4 Pediatric Cardiac Arrest": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=907&download=1",
+        "PC5 Pediatric Tachycardia Narrow": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=831&download=1",
+        "PC6 Pediatric Tachycardia Wide": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=908&download=1",
+        "PC7 Pediatric VF and Pulseless VT": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=909&download=1",
+        "PC8 Pediatric Post Resuscitation": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=828&download=1"
+      },
+      "Pediatric Medical": {
+        "PM1 Pediatric Allergic Reacion": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=791&download=1",
+        "PM2 Pediatric Diabetic": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=910&download=1",
+        "Pediatric Hypotension and Shock": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=945&download=1"
+      },
+      "Special Circumstances": {
+        "SC1 Suspected Ebola Protocol": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=788&download=1",
+        "SC2 Respiratory Disease High Consequence Pathogens": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=787&download=1",
+        "SC3 Hospice or Palliative Care": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=786&download=1",
+        "SC4 Vaccination Medication": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=785&download=1"
+      },
+      "Special Operations": {
+        "SO1 Scene Rehabilitation General": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=784&download=1",
+        "SO2 Scene Rehabilitation Responder": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=783&download=1"
+      },
+      "Toxic - Environmental": {
+        "TE1 Bites and Envenomations": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=912&download=1",
+        "TE2 Carbon Monoxide and Cyanide": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=913&download=1",
+        "TE3 Drowning and Submersion Injury": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=914&download=1",
+        "TE4 Hyperthermia": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=915&download=1",
+        "TE5 Hypothermia": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=916&download=1",
+        "TE6 Marine Envenomations": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=917&download=1",
+        "TE7 Overdose and Toxic Ingestion": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=918&download=1",
+        "TE8 WMD Nerve Agent": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=919&download=1"
+      },
+      "Trauma and Burns": {
+        "TB1 Blast Injury": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=919&download=1",
+        "TB2 Chemical and Electrical Burn": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=920&download=1",
+        "TB3 Crush Syndrome": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=849&download=1",
+        "TB4 Extremity Trauma": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=848&download=1",
+        "TB5 Head Trauma": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=921&download=1",
+        "TB6 Multiple Trauma": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=941&download=1",
+        "TB7 Radiation Incident": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=845&download=1",
+        "TB8 Selective Spinal Immobilization": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=944&download=1",
+        "TB9 Thermal Burn": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=923&download=1",
+        "TB10 Traumatic Arrest": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=924&download=1"
+      },
+      "Universal Protocols": {
+        "UP1 Universal Protocol": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=861&download=1",
+        "UP10 Fever": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=931&download=1",
+        "UP11 Pain Control": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=932&download=1",
+        "UP12 Police Custody": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=933&download=1",
+        "UP13 Seizure": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=934&download=1",
+        "UP14 Stroke": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=935&download=1",
+        "UP15 Sepsis": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=949&download=1",
+        "UP16 Syncope": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=937&download=1",
+        "UP17 Behavioral Health Crisis": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=938&download=1",
+        "UP18 Behavioral Agitation Sedation": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=939&download=1",
+        "UP19 Behavioral Agitation Delerium": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=940&download=1",
+        "UP2 Triage": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=925&download=1",
+        "UP3 Abd Pain Vom and Diarrhea": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=926&download=1",
+        "UP4 Altered Mental status": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=927&download=1",
+        "UP5 Back Pain": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=857&download=1",
+        "UP6 IV pr IO Access": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=928&download=1",
+        "UP7 Dental Problems": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=929&download=1",
+        "UP8 Central Line Emergency": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=854&download=1",
+        "UP9 Epistaxis": "https://forsyth.cc/emergencyservices/ems/FileVBDoc.ashx?Id=930&download=1"
+      }
+    }
+  }

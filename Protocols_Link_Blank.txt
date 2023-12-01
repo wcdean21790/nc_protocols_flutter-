@@ -1,0 +1,125 @@
+"": {
+  "Data": {
+    "County Name": "",
+    "Homescreen Picture": "",
+      "PhoneNumbers": {
+        "Poison Control": "1-800-222-1222"
+      }
+  },
+  "Protocols": {
+    "Adult Cardiac": {
+      "AC1 Asystole PEA": "",
+      "AC10 Post Resuscitation": "",
+      "AC11 TEAM Focused CPR": "",
+      "AC12 Termination of CPR": "",
+      "AC13 Targeted Temperature Management": "",
+      "AC14 LVAD Emergency": "",
+      "AC15 Total Mechanical Circulation": "",
+      "AC16 Wearable Cardioverter Defib Vest": "",
+      "AC2 Bradycardia Pulse Present": "",
+      "AC3 Cardiac Arrest": "",
+      "AC4 Chest Pain and STEMI": "",
+      "AC5 CHF or Pulmonary Edema": "",
+      "AC6 Adult Tachycardia Narrow": "",
+      "AC7 Adult Tachycardia Wide": "",
+      "AC8 Adult Tachycardia Polymorphic": "",
+      "AC9 VF or Pulseless VT": ""
+    },
+    "Adult Medical": {
+      "AM1 Allergic Reaction and Anaphylaxis": "",
+      "AM2 Diabetic Adult": "",
+      "AM3 Dialysis Renal Failure": "",
+      "AM4 Hypertension": "",
+      "AM5 Hypotension and Shock": "",
+      "AM6 Suspected Stroke and t-PA": ""
+    },
+    "Adult Obstetrical": {
+      "AO1 Childbirth and Labor": "",
+      "AO2 Newly Born": "",
+      "AO3 Obstetrical Emergency": ""
+    },
+    "Adult Respiratory": {
+      "AR1 Adult Airway": "",
+      "AR10 Tracheostomy Tube Emergencies": "",
+      "AR11 Mechanical Ventilation": "",
+      "AR2 Adult Failed Airway": "",
+      "AR3 Airway Drug Assisted Intubation": "",
+      "AR4 COPD and Asthma": "",
+      "AR5 Pediatric Airway Protocol": "",
+      "AR6 Pediatric Failed Airway": "",
+      "AR7 Pediatric Respiratory Distress": "",
+      "AR8 Post Intubation BIAD Management": "",
+      "AR9 Ventilator Emergencies": ""
+    },
+    "Pediatric Cardiac": {
+      "PC1 Pediatric Asystole and PEA": "",
+      "PC2 Pediatric Bradycardia and Poor Perfusion": "",
+      "PC3 Pediatric CHF and Pulmonary Edema": "",
+      "PC4 Pediatric Cardiac Arrest": "",
+      "PC5 Pediatric Tachycardia Narrow": "",
+      "PC6 Pediatric Tachycardia Wide": "",
+      "PC7 Pediatric VF and Pulseless VT": "",
+      "PC8 Pediatric Post Resuscitation": ""
+    },
+    "Pediatric Medical": {
+      "PM1 Pediatric Allergic Reacion": "",
+      "PM2 Pediatric Diabetic": "",
+      "PM3 Pediatric Hypotension and Shock": ""
+    },
+    "Special Circumstances": {
+      "SC1 Suspected Ebola Protocol": "",
+      "SC2 Respiratory Disease High Consequence Pathogens": "",
+      "SC3 Hospice or Palliative Care": "",
+      "SC4 Vaccination Medication": "",
+      "SC5 SARS and Cov2 Monoclonal Antibody Infusion": ""
+    },
+    "Special Operations": {
+      "SO1 Scene Rehabilitation General": "",
+      "SO2 Scene Rehabilitation Responder": ""
+    },
+    "Trauma and Burns": {
+      "TB1 Blast Injury": "",
+      "TB10 Traumatic Arrest": "",
+      "TB2 Chemical and Electrical Burn": "",
+      "TB3 Crush Syndrome": "",
+      "TB4 Extremity Trauma": "",
+      "TB5 Head Trauma": "",
+      "TB6 Multiple Trauma": "",
+      "TB7 Radiation Incident": "",
+      "TB8 Selective Spinal Immobilization": "",
+      "TB9 Thermal Burn": ""
+    },
+    "Toxic - Environmental": {
+      "TE1 Bites and Envenomations": "",
+      "TE2 Carbon Monoxide and Cyanide": "",
+      "TE3 Drowning and Submersion Injury": "",
+      "TE4 Hyperthermia": "",
+      "TE5 Hypothermia": "",
+      "TE6 Marine Envenomations": "",
+      "TE7 Overdose and Toxic Ingestion": "",
+      "TE8 WMD Nerve Agent": "",
+"TE9 Naloxone for Law Enforcement": ""
+    },
+    "Universal Protocols": {
+      "UP1 Universal Protocol": "",
+      "UP10 Fever": "",
+      "UP11 Pain Control": "",
+      "UP12 Police Custody": "",
+      "UP13 Seizure": "",
+      "UP14 Stroke": "",
+      "UP15 Sepsis": "",
+      "UP16 Syncope": "",
+      "UP17 Behavioral Health Crisis": "",
+      "UP18 Behavioral Agitation Sedation": "",
+	"UP19 Behavioral Agitation Delerium": "",
+      "UP2 Triage": "",
+      "UP3 Abd Pain Vom and Diarrhea": "",
+      "UP4 Altered Mental status": "",
+      "UP5 Back Pain": "",
+      "UP6 IV pr IO Access": "",
+      "UP7 Dental Problems": "",
+      "UP8 Central Line Emergency": "",
+      "UP9 Epistaxis": ""
+    }
+  }
+}

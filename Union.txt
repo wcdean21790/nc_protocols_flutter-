@@ -1,0 +1,111 @@
+"Union": {
+  "Data": {
+    "County Name": "Union",
+    "Homescreen Picture": "",
+      "PhoneNumbers": {
+        "Poison Control": "1-800-222-1222"
+      }
+  },
+  "Protocols": {
+    "Adult Cardiac": {
+      "AC1 Asystole PEA": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Adult%20Asystole-Pulseless%20Electrical%20Activity.pdf",
+      "AC10 Post Resuscitation": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Post%20Resuscitation.pdf",
+      "AC11 TEAM Focused CPR": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Team%20Focused%20CPR%20Adult%20and%20Pediatric.pdf",
+      "AC12 Termination of CPR": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/On%20Scene%20Resuscitation-Termination%20of%20CPR.pdf",
+      "AC2 Bradycardia Pulse Present": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Bradycardia%20Pulse%20Present.pdf",
+      "AC3 Cardiac Arrest": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Cardiac%20Arrest%20Adult.pdf",
+      "AC4 Chest Pain and STEMI": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Chest%20Pain%20Cardiac%20and%20STEMI.pdf",
+      "AC5 CHF or Pulmonary Edema": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/CHF-Pulmonary%20Edema.pdf",
+      "AC6 Adult Tachycardia Narrow": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Adult%20Tachcardia%20Narrow%20Complex.pdf",
+      "AC7 Adult Tachycardia Wide": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Adult%20Tachycardia%20Wide%20Complex.pdf",
+      "AC8 Adult Tachycardia Polymorphic": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Ventricular%20Febrillation-Pulseless%20Ventricular%20Tachycardia.pdf",
+      "AC9 VF or Pulseless VT": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Cardiac/Ventricular%20Febrillation-Pulseless%20Ventricular%20Tachycardia.pdf"
+    },
+    "Adult Medical": {
+      "AM1 Allergic Reaction and Anaphylaxis": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Allergic%20Reaction%20Anaphylaxis.pdf?dl=1",
+      "AM2 Diabetic Adult": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Diabetic%20Adult.pdf?download=1",
+      "AM3 Dialysis Renal Failure": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Dialysis-Renal%20Failure.pdf",
+      "AM4 Hypertension": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Hypertension.pdf",
+      "AM5 Hypotension and Shock": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Hypotension-Shock.pdf",
+      "AM6 Suspected Stroke and t-PA": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Medical/Suspected%20Stroke%20Activase-t-PA.pdf"
+    },
+    "Adult Obstetrical": {
+      "AO1 Childbirth and Labor": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Obstetrical/Childbirth%20Labor.pdf?dl=1",
+      "AO2 Newly Born": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Obstetrical/Newly%20Born.pdfdl=1",
+      "AO3 Obstetrical Emergency": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Adult%20Obstetrical/Obstetrical%20Emergency.pdfdl=1"
+    },
+    "Adult Respiratory": {
+      "AR1 Adult Airway": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Adult%20Airway.pdf",
+      "AR10 Tracheostomy Tube Emergencies": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Tracheostomy%20Tube%20Emergencies.pdf",
+      "AR2 Adult Failed Airway": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Adult%20Failed%20Airway.pdf",
+      "AR4 COPD and Asthma": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Adult%20COPD-Asthma%20Respiratory%20Distress.pdf",
+      "AR5 Pediatric Airway Protocol": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Pediatric%20Airway.pdf",
+      "AR6 Pediatric Failed Airway": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Pediatric%20Failed%20Airway.pdf",
+      "AR7 Pediatric Respiratory Distress": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Pediatric%20Asthma%20Respiratory%20Distress.pdf",
+      "AR8 Post Intubation BIAD Management": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Post-Intubation-BIAD%20Management.pdf",
+      "AR9 Ventilator Emergencies": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Airway%20Respiratory/Ventilator%20Emergencies.pdf"
+    },
+    "Pediatric Cardiac": {
+      "PC1 Pediatric Asystole and PEA": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Asystole%20PEA.pdf",
+      "PC2 Pediatric Bradycardia and Poor Perfusion": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Bradycardia%20With%20Poor%20Perfusion.pdf",
+      "PC3 Pediatric CHF and Pulmonary Edema": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Pulmonary%20Edema%20CHF.pdf",
+      "PC4 Pediatric Cardiac Arrest": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Cardiac%20Arrest.pdf",
+      "PC5 Pediatric Tachycardia Narrow": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Tachycardia.pdf",
+      "PC7 Pediatric VF and Pulseless VT": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Ventricular%20Fibrillation%20Pulseless%20Ventricular%20Tachycardia.pdf",
+      "PC8 Pediatric Post Resuscitation": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Cardiac/Pediatric%20Post%20Resuscitation.pdf"
+    },
+    "Pediatric Medical": {
+      "PM1 Pediatric Allergic Reacion": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Medical/Pediatric%20Allergic%20Reaction.pdf",
+      "PM2 Pediatric Diabetic": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Medical/Pediatric%20Diabetic.pdf",
+      "PM3 Pediatric Hypotension and Shock": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Pediatric%20Medical/Pediatric%20Hypotension%20Shock.pdf"
+    },
+    "Special Circumstances": {
+      "SC1 Suspected Ebola Protocol": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Special%20Circumstances/Pathogens%20of%20Consequence.pdf",
+    },
+    "Special Operations": {
+      "SO1 Scene Rehabilitation General": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Special%20Operations/Scene%20Rehabilitation%20General.pdf",
+      "SO2 Scene Rehabilitation Responder": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Special%20Operations/Scene%20Rehabilitation%20Responder.pdf"
+    },
+    "Trauma and Burns": {
+      "TB1 Blast Injury": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Blast%20Injury%20Incident.pdf	",
+      "TB10 Traumatic Arrest": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Traumatic%20Arrest.pdf",
+      "TB2 Chemical and Electrical Burn": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Chemical%20and%20Electrical%20Burn.pdf",
+      "TB3 Crush Syndrome": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Crush%20Syndrome%20Trauma.pdf",
+      "TB4 Extremity Trauma": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Extremity%20Trauma.pdf",
+      "TB5 Head Trauma": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Head%20Trauma.pdf",
+      "TB6 Multiple Trauma": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Multiple%20Trauma.pdf",
+      "TB7 Radiation Incident": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Radiation%20Incident.pdf",
+      "TB8 Selective Spinal Immobilization": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Selective%20Spinal%20Motion%20Restriction.pdf",
+      "TB9 Thermal Burn": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Trauma%20and%20Burn/Thermal%20Burn.pdf"
+    },
+    "Toxic - Environmental": {
+      "TE1 Bites and Envenomations": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Bites%20and%20Envenomations.pdf",
+      "TE2 Carbon Monoxide and Cyanide": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Carbon%20Monoxide%20Cyanide.pdf",
+      "TE3 Drowning and Submersion Injury": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Drowning.pdf",
+      "TE4 Hyperthermia": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Hyperthermia.pdf",
+      "TE5 Hypothermia": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Hypothermia%20Frostbite.pdf",
+      "TE6 Marine Envenomations": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Marine%20Envenomations%20Injury.pdf",
+      "TE7 Overdose and Toxic Ingestion": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Overdose%20Toxic%20Ingestion.pdf",
+      "TE8 WMD Nerve Agent": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/WMD-Nerve%20Agent%20Protocol.pdf",
+	"TE9 Naloxone for Law Enforcement": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Toxins-Environmental/Naloxone%20for%20Law%20Enforcement.pdf"
+    },
+    "Universal Protocols": {
+      "UP1 Universal Protocol": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Universal%20Patient%20Care.pdf",
+      "UP10 Fever": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Fever-Infection%20Control.pdf",
+      "UP11 Pain Control": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Pain%20Control.pdf",
+      "UP12 Police Custody": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Police%20Custody.pdf",
+      "UP13 Seizure": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Seizure.pdf",
+      "UP14 Stroke": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Suspected%20Stroke.pdf",
+      "UP15 Sepsis": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Suspected%20Sepsis.pdf",
+      "UP16 Syncope": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Syncope.pdf",
+      "UP17 Behavioral Health Crisis": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Behavioral.pdf",
+      "UP2 Triage": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Triage.pdf",
+      "UP3 Abd Pain Vom and Diarrhea": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Abdominal%20Pain%20Vomiting%20and%20Diarrhea.pdf",
+      "UP4 Altered Mental status": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Altered%20Mental%20Status.pdf",
+      "UP5 Back Pain": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Back%20Pain.pdf",
+      "UP7 Dental Problems": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Dental%20Problems.pdf",
+      "UP8 Central Line Emergency": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Emergencies%20Involving%20Indwelling%20Central%20Lines.pdf",
+      "UP9 Epistaxis": "https://www.unionems.net/Files/UEMS-Protocols/Protocols/Universal%20Protocols/Epistaxis.pdf"
+    }
+  }
+}
