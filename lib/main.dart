@@ -7,6 +7,8 @@ import 'package:n_c_protocols/provider/revenuecat.dart';
 import 'package:n_c_protocols/service/ad_mob_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/models/purchases_configuration.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'api/purchase_api.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
@@ -16,12 +18,13 @@ import 'flutter_flow/nav/nav.dart';
 import 'globals.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-
+final _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await PurchaseApi.init();
+  await Purchases.configure(_configuration);
   usePathUrlStrategy();
   await GlobalVariables.initialize();
   await initFirebase();

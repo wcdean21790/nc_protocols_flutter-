@@ -1,6 +1,7 @@
   import 'package:n_c_protocols/globals.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class Coins {
   static const idCoins10 = '10_coins';
@@ -10,10 +11,19 @@ class Coins {
 }
 
 class PurchaseApi {
-  static final _configuration =
-      PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')
-        ..appUserID = 'testUser3';
 
+  static PurchasesConfiguration _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'testUser3';
+
+
+  static void _initializeConfiguration() {
+    if (Platform.isAndroid) {
+      _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'testUser3';
+    } else if (Platform.isIOS) {
+      _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'testUser3';
+    } else {
+      throw UnsupportedError('Unsupported platform');
+    }
+  }
   static Future init() async {
     await Purchases.configure(_configuration);
   }
