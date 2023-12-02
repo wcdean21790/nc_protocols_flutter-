@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
 
     
@@ -55,7 +55,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 33
+        versionCode 34
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }

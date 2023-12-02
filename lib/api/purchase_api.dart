@@ -12,19 +12,14 @@ class Coins {
 
 class PurchaseApi {
 
-  static PurchasesConfiguration _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'testUser3';
+  static PurchasesConfiguration _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'testUser3';
 
-
-  static void _initializeConfiguration() {
+  static Future init() async {
     if (Platform.isAndroid) {
       _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'testUser3';
     } else if (Platform.isIOS) {
       _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'testUser3';
-    } else {
-      throw UnsupportedError('Unsupported platform');
     }
-  }
-  static Future init() async {
     await Purchases.configure(_configuration);
   }
 

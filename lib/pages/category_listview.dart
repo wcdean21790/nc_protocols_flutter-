@@ -642,6 +642,7 @@ class PDFViewerWidget extends StatelessWidget {
                   swipeHorizontal: false,
                   autoSpacing: false,
                   pageFling: false,
+                  fitPolicy: FitPolicy.BOTH,
                   onRender: (pages) {
                     // PDF document is rendered
                   },
