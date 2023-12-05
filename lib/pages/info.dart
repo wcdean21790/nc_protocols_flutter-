@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../globals.dart';
@@ -37,6 +38,11 @@ class InfoState extends State<Info> {
   @override
   Widget build(BuildContext context) {
     final entitlement = context.watch<RevenueCatProvider>().entitlement;
+    Future<String> getDownloadTime() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // Retrieve the value associated with the key 'globalDownloadTime'
+      return prefs.getString('globalDownloadTime') ?? 'No download time available';
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +65,40 @@ class InfoState extends State<Info> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Last download of protocols was at: ',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    FutureBuilder<String>(
+                      future: getDownloadTime(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error loading download time');
+                        } else {
+                          String formattedTime = snapshot.data != null
+                              ? DateFormat('HH:mm dd/MM').format(DateTime.parse(snapshot.data!))
+                              : 'No download time available';
+
+                          return Text(
+                            formattedTime,
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(25.0),
@@ -69,9 +109,9 @@ class InfoState extends State<Info> {
                       "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
                           "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are in a few areas to help cover the fees to create and host the app. They will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
-                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 11/2/23",
+                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 12/5/23",
                       style: TextStyle(
-                        color: Colors.white60,
+                        color: Colors.white,
                         fontSize: 16.0,
                       ),
                     ),
@@ -121,6 +161,21 @@ class InfoState extends State<Info> {
                     ),
 
                   ),
+                  Padding(
+                    padding: EdgeInsets.all(10), // Padding for "Donate" button
+                    child: Container(
+                      width: 250.0, // Set your desired width here
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showPopup(context);
+                        },
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text('Restore Ads'),
+                      ),
+
+                    ),
+
+                  ),
                 ],
               ),
             ),
@@ -132,6 +187,7 @@ class InfoState extends State<Info> {
 
     );
   }
+
   Widget buildEntitlement(Entitlement entitlement) {
     switch (entitlement) {
       case Entitlement.allCourses:
@@ -160,8 +216,30 @@ class InfoState extends State<Info> {
         ],
       );
 
-
-
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Please Email'),
+          content: Text('Please email ncprotocols@gmail.com in regards to restoring previous ad purchases.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Future<String> getDownloadTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Retrieve the value associated with the key 'globalDownloadTime'
+    return prefs.getString('globalDownloadTime') ?? 'No download time available';
+  }
   Future fetchOffers() async {
     final offerings = await Purchases.getOfferings();
     if (!mounted) return;

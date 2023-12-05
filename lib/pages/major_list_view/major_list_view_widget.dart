@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:n_c_protocols/flutter_flow/flutter_flow_theme.dart';
 import 'package:n_c_protocols/pages/home_page/navigationbar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../../globals.dart';
 import '../../service/ad_mob_service.dart';
@@ -267,7 +268,12 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     appDocumentsDirectory = await getApplicationDocumentsDirectory();
   }
 
-  void fetchDataFromFirebase() {
+  Future<void> fetchDataFromFirebase() async {
+    DateTime currentTime = DateTime.now();
+    String formattedTime = currentTime.toLocal().toString();
+    // Save the current time to SharedPreferences
+    await saveDownloadTime(formattedTime);
+
     _databaseReference.once().then((DatabaseEvent event) {
       if (event.snapshot.value != null) {
         final data = event.snapshot.value;
@@ -293,9 +299,13 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       print('Error fetching data: $error');
     });
   }
-
+  Future<void> saveDownloadTime(String time) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('globalDownloadTime', time);
+  }
   Future<void> downloadMoreDataFromFirebase() async {
     print("Starting downloadMoreDataFromFirebase()");
+
 
     // Ensure Firebase is initialized before using it.
     await Firebase.initializeApp();

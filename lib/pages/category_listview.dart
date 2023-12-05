@@ -118,74 +118,83 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         decoration: BoxDecoration(
           color: Color(0xFF242935),
         ),
-        child: ListView.builder(
-          padding: const EdgeInsets.only(top: 10.0),
-          itemCount: subfolderNames.length,
-          itemBuilder: (context, index) {
-            final subfolderName = subfolderNames[index];
-            return Column(
-              children: [
-                SizedBox(
-                  width: 250, // Set the desired fixed width here
-                  child: Container(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) {
-                              return SubfolderContentsPage(
-                                agencyName: widget.agencyName,
-                                subfolderName: subfolderName,
-                                pdfIndex: index,
-                                subfolderNames: subfolderNames,
-                                isFavoriteList: isFavoriteList,
+        child: Column(
+          children: [
+            Expanded(
+        child: Padding(
+        padding: EdgeInsets.only(top: 15.0),
+              child: ListView.builder(
+                itemCount: subfolderNames.length,
+                itemBuilder: (context, index) {
+                  final subfolderName = subfolderNames[index];
+                  return Column(
+                    children: [
+                      SizedBox(
+                        width: 250, // Set the desired fixed width here
+                        child: Container(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                    return SubfolderContentsPage(
+                                      agencyName: widget.agencyName,
+                                      subfolderName: subfolderName,
+                                      pdfIndex: index,
+                                      subfolderNames: subfolderNames,
+                                      isFavoriteList: isFavoriteList,
+                                    );
+                                  },
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    const beginOpacity = 0.0;
+                                    const endOpacity = 1.0;
+                                    var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
+                                    var fadeAnimation = animation.drive(opacityTween);
+                                    return FadeTransition(
+                                      opacity: fadeAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
                               );
                             },
-                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                              const beginOpacity = 0.0;
-                              const endOpacity = 1.0;
-                              var opacityTween = Tween<double>(begin: beginOpacity, end: endOpacity);
-                              var fadeAnimation = animation.drive(opacityTween);
-                              return FadeTransition(
-                                opacity: fadeAnimation,
-                                child: child,
-                              );
-                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.transparent,
+                              onPrimary: Color(0xA510D3FA),
+                              onSurface: Colors.transparent,
+                              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
+                              elevation: 3.0,
+                              side: BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            child: Text(
+                              subfolderName,
+                              style: TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        onPrimary: Color(0xA510D3FA),
-                        onSurface: Colors.transparent,
-                        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
-                        elevation: 3.0,
-                        side: BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      child: Text(
-                        subfolderName,
-                        style: TextStyle(
-                          color: Color(0xFFFFFFFF),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                if (index == subfolderNames.length - 1)
-                  buildAdContainer(), // Add the ad container below the last button
-              ],
-            );
-          },
+                      SizedBox(height: 10),
+                    ],
+                  );
+                },
+              ),
+            ),
+            ),
+            buildAdContainer(),
+          ],
         ),
       ),
+
+
 
 
       bottomNavigationBar: BottomBar(),
@@ -312,6 +321,8 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         child: Column(
           children: [
             Expanded(
+        child: Padding(
+        padding: EdgeInsets.only(top: 16.0),
               child: Container(
                 color: Colors.transparent,
                 child: Padding(
@@ -431,7 +442,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                   ),
                 ),
               ),
-
+        ),
             ),
             SizedBox(height: 20),
             buildAdContainer(), // You should replace this with your actual widget
@@ -640,8 +651,8 @@ class PDFViewerWidget extends StatelessWidget {
                   filePath: pdfFilePath,
                   enableSwipe: true,
                   swipeHorizontal: false,
-                  autoSpacing: false,
-                  pageFling: false,
+                  autoSpacing: true,
+                  pageFling: true,
                   fitPolicy: FitPolicy.BOTH,
                   onRender: (pages) {
                     // PDF document is rendered
