@@ -211,7 +211,10 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
               ),
             ),
           ),
-          buildAdContainer(),
+          Align(
+            alignment: Alignment.center,
+            child: buildAdContainer(),
+          ),
         ],
 
       ),

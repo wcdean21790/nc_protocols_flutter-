@@ -32,7 +32,7 @@ class Info extends StatefulWidget {
 
 class InfoState extends State<Info> {
   bool isLoading = false;
-  final Uri _url = Uri.parse('https://www.buymeacoffee.com/wcdean217');
+
 
 
   @override
@@ -135,20 +135,7 @@ class InfoState extends State<Info> {
                         child: Text('Contact'),
                       ),
                     ),
-                  ), // 10 pixels of padding below "Contact" button
-                  Padding(
-                    padding: EdgeInsets.all(10), // Padding for "Donate" button
-                    child: Container(
-                      width: 250.0, // Set your desired width here
-                      child: ElevatedButton(
-                        style: ButtonStyles.customButtonStyle(context),
-                        onPressed: () {
-                          _launchUrl();// Pass the context
-                        },
-                        child: Text('Donate'),
-                      ),
-                    ),
-                  ), // 10 pixels of padding below "Contact" button
+                  ), // 10 pixels of padding below "Contact" button// 10 pixels of padding below "Contact" button
                   Padding(
                     padding: EdgeInsets.all(10), // Padding for "Donate" button
                     child: Container(
@@ -301,11 +288,7 @@ class InfoState extends State<Info> {
     }
   }
 
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
+
 
   final Email email = Email(
     body: '*-----Please.include.your.agency.and.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
