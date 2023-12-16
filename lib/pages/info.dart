@@ -85,7 +85,7 @@ class InfoState extends State<Info> {
                           return Text('Error loading download time');
                         } else {
                           String formattedTime = snapshot.data != null
-                              ? DateFormat('HH:mm dd/MM').format(DateTime.parse(snapshot.data!))
+                              ? DateFormat('HH:mm on MM/dd.').format(DateTime.parse(snapshot.data!))
                               : 'No download time available';
 
                           return Text(
@@ -109,7 +109,7 @@ class InfoState extends State<Info> {
                       "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
                           "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are in a few areas to help cover the fees to create and host the app. They will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
-                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 12/5/23",
+                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 12/15/23",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,

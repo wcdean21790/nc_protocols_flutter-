@@ -156,7 +156,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .titleLarge
                                       .override(
                                     fontFamily: 'Readex Pro',
-                                    color: Color(0xAE00FFFF),
+                                    color: Color(0xFF00FFFF),
                                   ),
                                   elevation: 3.0,
                                   borderSide: BorderSide(
@@ -200,7 +200,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .titleMedium
                                       .override(
                                     fontFamily: 'Readex Pro',
-                                    color: Color(0xAE00FFFF),
+                                    color: Color(0xE800F8F8),
                                   ),
                                   elevation: 3.0,
                                   borderSide: BorderSide(

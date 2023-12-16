@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/globals.dart';
+
+import '../service/ad_mob_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,4 +88,83 @@ class _PasswordDialogState extends State<PasswordDialog> {
       ),
     );
   }
+}
+
+
+
+class ConfirmDialog extends StatelessWidget {
+  InterstitialAd? _interstitialAd;
+  int maxFailedLoadAttempts = 3;
+// TODO: replace this test ad unit with your own ad unit.
+
+
+  late DatabaseReference _databaseReference;
+  List<String> agencyNames = [];
+  String downloadStatus = ''; // Define the downloadStatus variable
+  String Moredata = "Data will be displayed here";
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Confirm download?'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Total download size is <200 MB.'),
+          SizedBox(height: 16),  // Add some spacing between the text and buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _showInterstitialAd();
+                  // Add your download logic here
+                  // For example: downloadFile();
+                  Navigator.of(context).pop(true); // Close the AlertDialog with success
+                },
+                child: Text('Confirm'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Close the AlertDialog with failure
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  void _showInterstitialAd() {
+
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+
+      if (_interstitialAd != null) {
+        _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+          onAdDismissedFullScreenContent: (ad) {
+            ad.dispose();
+            _createInterstitialAd();
+          },
+          onAdFailedToShowFullScreenContent: (ad, error) {
+            ad.dispose();
+            _createInterstitialAd();
+          },
+        );
+        _interstitialAd!.show();
+        _interstitialAd = null;
+      }}
+  }
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdMobService.interstitialAdUnitId!,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) => _interstitialAd = ad,
+        onAdFailedToLoad: (error) => _interstitialAd = null,
+      ),
+    );
+  }
+
 }

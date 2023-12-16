@@ -63,33 +63,37 @@ class _HospitalsState extends State<Hospitals> {
         title: Text(
           'Hospitals',
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF242935),
       ),
-      body: SingleChildScrollView(
-
-        child: Center(
-
-          child: Padding(
-
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Generate hospital buttons dynamically from the sorted list
-                for (Hospital hospital in hospitals)
-                  Column(
-                    children: [
-                      buildHospitalButton(hospital),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-              ],
+      body: Scrollbar(
+        thumbVisibility: true,
+        thickness: 10,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Generate hospital buttons dynamically from the sorted list
+                  for (Hospital hospital in hospitals)
+                    Column(
+                      children: [
+                        buildHospitalButton(hospital),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
         ),
@@ -99,9 +103,10 @@ class _HospitalsState extends State<Hospitals> {
     );
   }
 
+
   Widget buildHospitalButton(Hospital hospital) {
     return SizedBox(
-      width: 250,
+      width: 350,
       child: ElevatedButton(
         onPressed: () {
           launchMaps(hospital.latitude, hospital.longitude);
@@ -121,6 +126,7 @@ class _HospitalsState extends State<Hospitals> {
       ),
     );
   }
+
 
 }
 

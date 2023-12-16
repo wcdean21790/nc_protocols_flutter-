@@ -92,9 +92,12 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
         title: Text(
           'More Categories',
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
@@ -188,12 +191,22 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         width: 250, // Set the button width
                         child: ElevatedButton(
                           onPressed: () {
-                            // Navigate to the PhoneNumbersListView when the button is clicked
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Hospitals()),
-                            );
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return WarningDialog();
+                              },
+                            ).then((value) {
+                              if (value != null && value) {
+                                // User confirmed, you can proceed with your logic
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Hospitals()),
+                                );
+                              }
+                            });
                           },
+
                           style: ButtonStyles.customButtonStyle(context),
                           child: Text(
                             "Directions",
@@ -307,9 +320,12 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         title: Text(
           widget.subfolderName, // Set the title to the current folder name
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
           textAlign: TextAlign.center,
         ),
         backgroundColor: Color(0xFF242935),
@@ -410,9 +426,12 @@ class PDFViewerWidget extends StatelessWidget {
         title: Text(
           "$pdfFileName",
           style: TextStyle(
-            color: Color(0xFF242935),
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
         ),
         backgroundColor: Color(0xFF242935),
         centerTitle: true,
@@ -477,7 +496,13 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
         backgroundColor: Color(0xFF242935), // Make the app bar background transparent
         title: Text(
           "Phone Numbers",
-          style: TextStyle(color: Colors.white), // Set text color to black
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
+          ),
+          // Set text color to black
         ),
         titleSpacing: 50, // Add left padding
       ),
@@ -502,7 +527,10 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 75),
                     child: OutlinedButton(
-                      style: ButtonStyles.customButtonStyle(context),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),
+                        side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Black outline
+                      ),
                       onPressed: () {
                         _makePhoneCall(phoneNumber!);
                       },
@@ -516,6 +544,7 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
                         ),
                       ),
                     ),
+
                   ),
                 ),
               );
@@ -567,3 +596,43 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
 
 
 
+class WarningDialog extends StatefulWidget {
+  @override
+  _WarningDialogState createState() => _WarningDialogState();
+}
+
+class _WarningDialogState extends State<WarningDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'This app is not to be used while operating a motor vehicle. By continuing you acknowledge you are not using this app while operating a motor vehicle.',
+          ),
+          SizedBox(height: 16), // Add some spacing between the text and buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Add your download logic here
+                  // For example: downloadFile();
+                  Navigator.of(context).pop(true); // Close the AlertDialog with success
+                },
+                child: Text('Confirm'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Close the AlertDialog with failure
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -43,7 +43,13 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
       appBar: AppBar(
         title: Text(
           'Favorite Protocols',
-          style: TextStyle(color: Color(0xFFFFFFFF)), // Set app bar text color to black
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
+          ),
+// Set app bar text color to black
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF242935), // Set app bar background color to white

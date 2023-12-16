@@ -23,7 +23,6 @@ class MajorListViewWidget extends StatefulWidget {
 
 class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   InterstitialAd? _interstitialAd;
-  BannerAd? _banner;
   int maxFailedLoadAttempts = 3;
 // TODO: replace this test ad unit with your own ad unit.
 
@@ -39,7 +38,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   void initState() {
     super.initState();
     MobileAds.instance.initialize();
-    _createBannerAd();
     _createInterstitialAd();
     Firebase.initializeApp();
     initializeAppDocumentsDirectory();
@@ -119,7 +117,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                           ElevatedButton(
                             onPressed: () async {
                               // Show Ad
-                              _showInterstitialAd();
+                              //_showInterstitialAd();
                               print("Ad code should have run");
                               GlobalVariables.globalAgencyName = agencyName;
                               // Save the changes to SharedPreferences
@@ -183,8 +181,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                     },
                   ),
                 ),
-                buildAdContainer(),
-
               ],
             ),
           ),
@@ -196,38 +192,6 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       ),
     );
   }
-
-
-
-
-
-
-
-  Widget buildAdContainer() {
-    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
-      return _banner == null
-          ? Container()
-          : Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        height: 52,
-        child: AdWidget(ad: _banner!),
-      );
-    } else {
-      // Return an empty container or another widget if ads are disabled
-      return Container();
-    }
-  }
-
-  void _createBannerAd() {
-    if (GlobalVariables.globalPurchaseAds != "True") {
-    _banner = BannerAd(
-      size: AdSize.fullBanner,
-      adUnitId: AdMobService.bannerAdUnitId!,
-      listener: AdMobService.bannerListener,
-      request: const AdRequest(),
-    )..load();
-  } }
 
   void _createInterstitialAd() {
     InterstitialAd.load(
@@ -344,7 +308,10 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
       EasyLoading.show(status: downloadStatus);
     }
 
-    updateStatus('Downloading $downloadStatus...do NOT close out of the app, as protocols are downloading in the background. May take several minutes depending on internet speed. Please report any bugs to ncprotocols@gmail.com (can be found in settings). Ads do not interfere with accessing any protocol and help fund hosting/development of the app.');
+    updateStatus('Downloading Protocols. \n Do NOT close out of the app, as protocols are downloading in '
+        ' background. \n May take several minutes depending on internet speed. \n Please report any bugs to '
+        'ncprotocols@gmail.com (can be found in settings). \n Ads do not interfere with accessing any protocols and '
+        'help fund hosting/developmental of the app.');
 
     final appDocumentsDirectory = await getApplicationDocumentsDirectory();
     final directoryToDelete = Directory('${appDocumentsDirectory.path}/$agencyName');
@@ -420,7 +387,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
             style: TextStyle(
               color: Colors.black, // Change the text color to blue
             ),),
-          content: Text("Are you sure you want to delete application directory data?"),
+          content: Text("Are you sure you want to delete the protocols? You will have to re-download them again."),
           actions: [
             TextButton(
               onPressed: () {
@@ -542,14 +509,26 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   }
 
   Future<void> _showPasswordDialog(String agencyName) async {
-    _showInterstitialAd;
+    // _showInterstitialAd;
     GlobalVariables.globalAgencyName = agencyName;
+    print(GlobalVariables.globalAgencyName);
 
     if (GlobalVariables.globalAgencyName == "State") {
-      // If agencyName is "state," directly call downloadMoreDataFromFirebas
-      downloadMoreDataFromFirebase();
-      downloadProtocols(agencyName);
-      _getHomescreenPictureLink(agencyName);
+      //_showInterstitialAd();
+      // Show the ConfirmDialog only if the agencyName is "State"
+      final success = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return ConfirmDialog();
+        },
+      );
+
+      if (success != null && success) {
+        downloadMoreDataFromFirebase();
+        downloadProtocols(agencyName);
+        _getHomescreenPictureLink(agencyName);
+        _showInterstitialAd();
+      }
     } else {
       final success = await showDialog<bool>(
         context: context,
@@ -562,9 +541,11 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
         downloadMoreDataFromFirebase();
         downloadProtocols(agencyName);
         _getHomescreenPictureLink(agencyName);
+        _showInterstitialAd();
       }
     }
   }
+
 
 
 

@@ -74,9 +74,12 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         title: Text(
           'Protocol Categories',
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 24,
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
 
           textAlign: TextAlign.center,
         ),
@@ -175,7 +178,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                             child: Text(
                               subfolderName,
                               style: TextStyle(
-                                color: Color(0xFFFFFFFF),
+                                color: Color(0xF4FFFFFF),
                                 fontSize: 18,
                               ),
                             ),
@@ -274,10 +277,12 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         title: Text(
           widget.subfolderName,
           style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 24,
             decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF242935),
@@ -393,7 +398,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                         width: 1.0,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        borderRadius: BorderRadius.circular(25.0),
                                       ),
                                     ),
                                     child: Row(
@@ -629,10 +634,12 @@ class PDFViewerWidget extends StatelessWidget {
         title: Text(
           "$pdfFileName",
           style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 24,
             decoration: TextDecoration.underline,
+            decorationColor: Colors.white, // Set the underline color to white
           ),
+
         ),
         backgroundColor: Color(0xFF242935),
         iconTheme: IconThemeData(color: Colors.black),

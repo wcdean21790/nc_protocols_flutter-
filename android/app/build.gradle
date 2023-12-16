@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '36'
+    flutterVersionCode = '39'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '36.0'
+    flutterVersionName = '39'
 }
 
 apply plugin: 'com.android.application'
@@ -35,10 +35,6 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 34
-
-
-    
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -55,7 +51,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 36
+        versionCode 39
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }
