@@ -57,7 +57,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Enter password to download'),
+      title: Text('Enter password to download. \n Total size <200 mb.'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
