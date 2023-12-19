@@ -49,7 +49,7 @@ class InfoState extends State<Info> {
         title: Text(
           'Info',
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontWeight: FontWeight.bold, // Make the title bold
             decoration: TextDecoration.underline, // Add underline to the title
           ),
@@ -109,7 +109,8 @@ class InfoState extends State<Info> {
                       "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
                           "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are in a few areas to help cover the fees to create and host the app. They will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
-                          "Some features may not be included in all versions of the app currently. \n \n  Version updated 12/15/23",
+                          "Some features may not be included in all versions of the app currently. \n \n (Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n \n"
+                          "(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n \n \nVersion updated 12/19/23",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
