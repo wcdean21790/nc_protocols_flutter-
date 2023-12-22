@@ -60,6 +60,7 @@ class _HospitalsState extends State<Hospitals> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Hospitals',
           style: TextStyle(
@@ -106,20 +107,20 @@ class _HospitalsState extends State<Hospitals> {
 
   Widget buildHospitalButton(Hospital hospital) {
     return SizedBox(
-      width: 350,
+      width: 250,
       child: ElevatedButton(
         onPressed: () {
           launchMaps(hospital.latitude, hospital.longitude);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),
-          side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Black outline
+          side: MaterialStateProperty.all(BorderSide(color: Color(0xFF000000))), // Black outline
         ),
         child: Text(
           hospital.name,
           style: TextStyle(
             color: Color(0xFFFFFFFF),
-            fontSize: 18,
+            fontSize: 14,
           ),
           textAlign: TextAlign.center, // Center the text
         ),

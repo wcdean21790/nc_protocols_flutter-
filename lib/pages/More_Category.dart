@@ -89,6 +89,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'More Categories',
           style: TextStyle(
@@ -317,6 +318,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           widget.subfolderName, // Set the title to the current folder name
           style: TextStyle(
@@ -386,7 +388,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                     fileName.replaceAll('.pdf', ''),
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Color(0xA510D3FA), // Use the same text color
+                                      color: Color(0xFFFFFFFF), // Use the same text color
                                     ),
                                   ),
                                 ),
@@ -423,6 +425,7 @@ class PDFViewerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           "$pdfFileName",
           style: TextStyle(
@@ -493,6 +496,8 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF242935), // Make the app bar background transparent
         title: Text(
           "Phone Numbers",

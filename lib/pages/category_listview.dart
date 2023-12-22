@@ -75,12 +75,8 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
           'Protocol Categories',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
-            decoration: TextDecoration.underline,
-            decorationColor: Colors.white, // Set the underline color to white
+            fontSize: 22,
           ),
-
-
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
@@ -89,8 +85,8 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
               icon: ImageIcon(
-                AssetImage('assets/images/favicon.png'), // Replace with your icon path
-                color: Colors.red, // Icon colors
+                AssetImage('assets/images/favicon.png'),
+                color: Colors.red,
               ),
               onPressed: () async {
                 Navigator.push(
@@ -116,7 +112,10 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
             ),
           ),
         ],
+        iconTheme: IconThemeData(color: Colors.white), // Set the color of the back button to white
       ),
+
+
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF242935),
@@ -169,10 +168,10 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                               elevation: 3.0,
                               side: BorderSide(
                                 color: Colors.black,
-                                width: 1.0,
+                                width: 1.25,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
                             ),
                             child: Text(
@@ -274,6 +273,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           widget.subfolderName,
           style: TextStyle(
@@ -327,7 +327,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
           children: [
             Expanded(
         child: Padding(
-        padding: EdgeInsets.only(top: 16.0),
+        padding: EdgeInsets.only(top: 20),
               child: Container(
                 color: Colors.transparent,
                 child: Padding(
@@ -360,9 +360,9 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                               final fileName = pdfFile.path.split('/').last;
 
                               return Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
+                                margin: EdgeInsets.symmetric(vertical: 10),
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  padding: EdgeInsets.symmetric(horizontal: 50),
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -391,7 +391,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                       primary: Colors.transparent,
                                       onPrimary: Color(0xFFFFFFFF),
                                       onSurface: Colors.transparent,
-                                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                                       elevation: 3.0,
                                       side: BorderSide(
                                         color: Colors.black,
@@ -413,14 +413,14 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                                 fileName.replaceAll('.pdf', ''),
                                                 style: TextStyle(
                                                   color: Color(0xFFFFFFFF),
-                                                  fontSize: 18,
+                                                  fontSize: 14,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(right: 0),
+                                          padding: EdgeInsets.only(right: 15),
                                           child: IconButton(
                                             icon: Icon(Icons.add, size: 18, color: Colors.red),
                                             onPressed: () {
@@ -458,8 +458,6 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     );
   }
 
-
-
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
     if (GlobalVariables.globalPurchaseAds != "True") {
@@ -484,15 +482,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         request: const AdRequest(),
       )..load();
     } }
-
-
-
-
-
-
-  // Define a globalFavorites list to store the PDF paths
   List<String> globalFavorites = [];
-
   // Function to add a PDF path to globalFavorites
   Future<void> addToFavoritesAndShowDialog(String pdfPath, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -513,20 +503,12 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     );
   }
 
-
-
-
-
   // Function to remove a PDF path from globalFavorites
   void removeFromFavorites(String pdfPath) {
     setState(() {
       globalFavorites.remove(pdfPath);
     });
   }
-
-
-
-
 
   Future<List<File>> fetchPDFFiles() async {
     final appDocumentsDirectory = await getApplicationDocumentsDirectory();
@@ -545,15 +527,6 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       return [];
     }
   }
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -606,43 +579,30 @@ class PopupDialog extends StatelessWidget {
 
 }
 
-
-
-
-
-
-
-
 class PDFViewerWidget extends StatelessWidget {
   final String pdfFilePath;
   final String pdfFileName;
 
-
-
-
   PDFViewerWidget({required this.pdfFilePath, required this.pdfFileName});
-
-
-
-
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text(
           "$pdfFileName",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 16,
             decoration: TextDecoration.underline,
             decorationColor: Colors.white, // Set the underline color to white
           ),
 
         ),
         backgroundColor: Color(0xFF242935),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
       ),
       body: Column(

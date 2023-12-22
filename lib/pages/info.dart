@@ -37,6 +37,10 @@ class InfoState extends State<Info> {
 
   @override
   Widget build(BuildContext context) {
+    final commonButtonStyle = ButtonStyles.customButtonStyle(context).copyWith(
+      // Set your common button style properties here
+      // For example, you can set the background color
+        backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),);
     final entitlement = context.watch<RevenueCatProvider>().entitlement;
     Future<String> getDownloadTime() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,6 +50,7 @@ class InfoState extends State<Info> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Info',
           style: TextStyle(
@@ -68,35 +73,43 @@ class InfoState extends State<Info> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Last download of protocols was at: ',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    SizedBox(height: 10),
-                    FutureBuilder<String>(
-                      future: getDownloadTime(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error loading download time');
-                        } else {
-                          String formattedTime = snapshot.data != null
-                              ? DateFormat('HH:mm on MM/dd.').format(DateTime.parse(snapshot.data!))
-                              : 'No download time available';
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFF4D7DF5)), // Add black border
+                    borderRadius: BorderRadius.circular(8), // Optional: Add border radius for rounded corners
+                  ),
+                  padding: EdgeInsets.all(8), // Optional: Add padding for space around the column
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Last download of protocols was at: ',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      SizedBox(height: 10),
+                      FutureBuilder<String>(
+                        future: getDownloadTime(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading download time');
+                          } else {
+                            String formattedTime = snapshot.data != null
+                                ? DateFormat('HH:mm on MM/dd.').format(DateTime.parse(snapshot.data!))
+                                : 'No download time available';
 
-                          return Text(
-                            formattedTime,
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                            return Text(
+                              formattedTime,
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+
               ),
             ),
             Expanded(
@@ -106,14 +119,20 @@ class InfoState extends State<Info> {
                   child: Padding(
                     padding: EdgeInsets.all(10.0), // Padding for this text
                     child: Text(
-                      "North Carolina EMS Protocol Hub was designed and created by Wills Dean. This app is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
+                      "North Carolina EMS Protocol Hub is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
-                          "For those interested, you may buy me a coffee to support the creation of this app through the donation button below. Ads are in a few areas to help cover the fees to create and host the app. They will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n\n"
-                          "Some features may not be included in all versions of the app currently. \n \n (Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n \n"
-                          "(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n \n \nVersion updated 12/19/23",
+                          "Ads are in a few areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
+                          "\nVersion updated 12/19/23\n\n"
+                          "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
+                          "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
+                          "\nPayment will be charged to users Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"
+                          "Account will be charged for renewal within 24 hours prior to the end of the current period, and identify the cost of the renewal.\n"
+                          'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
+                          "If the user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
+                        // Add more style properties as needed
                       ),
                     ),
                   ),
@@ -122,18 +141,21 @@ class InfoState extends State<Info> {
             ),
             SizedBox(height: 25), // Spacing
             Center(
-              child: Column(
+              child: Column (
                 children: [
                   Padding(
                     padding: EdgeInsets.all(0), // Padding for "Contact" button
                     child: Container(
                       width: 250.0, // Set your desired width here
                       child: ElevatedButton(
-                        style: ButtonStyles.customButtonStyle(context),
+                        style: commonButtonStyle,
                         onPressed: () {
                           _launchEmail(context); // Pass the context
                         },
-                        child: Text('Contact'),
+                        child: Text(
+                          'Contact',
+                          style: TextStyle(color: Color(0xFF4D7DF5)), // Change text color here
+                        ),
                       ),
                     ),
                   ), // 10 pixels of padding below "Contact" button// 10 pixels of padding below "Contact" button
@@ -142,23 +164,30 @@ class InfoState extends State<Info> {
                     child: Container(
                       width: 250.0, // Set your desired width here
                       child: ElevatedButton(
-                        style: ButtonStyles.customButtonStyle(context),
+                        style: commonButtonStyle,
                         onPressed: isLoading ? null : fetchOffers,
-                        child: Text('Remove Ads'),
+                        child: Text(
+                          'Remove Ads',
+                          style: TextStyle(color: Color(0xFF4D7DF5)), // Set the text color to red
+                        ),
                       ),
+
                     ),
 
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10), // Padding for "Donate" button
+                    padding: EdgeInsets.only(left:10, right: 10, bottom: 10), // Padding for "Donate" button
                     child: Container(
                       width: 250.0, // Set your desired width here
                       child: ElevatedButton(
                         onPressed: () {
                           _showPopup(context);
                         },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text('Restore Ads'),
+                        style: commonButtonStyle,
+                        child: Text(
+                          'Restore Ads',
+                          style: TextStyle(color: Color(0xFF4D7DF5)), // Change text color here
+                        ),
                       ),
 
                     ),
@@ -244,7 +273,10 @@ class InfoState extends State<Info> {
             (context) => PaywallWidget(
           packages: packages,
           title: '⭐  Remove Ads ⭐',
-          description: 'Support app development by removing ads!',
+          description: 'Payment will be charged to users Apple account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period'
+              'Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal'
+              'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
+              'If user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com',
           onClickedPackage: (package) async {
             await PurchaseApi.purchasePackage(package);
             if (!mounted) return;

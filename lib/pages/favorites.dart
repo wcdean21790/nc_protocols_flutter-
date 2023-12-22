@@ -41,10 +41,11 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
     print(globalFavorites);
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Favorite Protocols',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFFFFFFFF),
             fontSize: 24,
             decoration: TextDecoration.underline,
             decorationColor: Colors.white, // Set the underline color to white
@@ -112,6 +113,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
                             fileName.replaceAll('.pdf', ''),
                             style: TextStyle(
                               fontSize: 14,
+                              color: Color(0xFFF1F4FF),
                             ),
                           ),
                         ),
@@ -148,7 +150,6 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
         ),
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
