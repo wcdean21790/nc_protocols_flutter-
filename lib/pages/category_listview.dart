@@ -67,7 +67,6 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
   @override
   Widget build(BuildContext context) {
     subfolderNames.sort(); // Sort the subfolderNames list alphabetically
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF242935),
@@ -82,7 +81,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         centerTitle: true,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0, left: 0),
             child: IconButton(
               icon: ImageIcon(
                 AssetImage('assets/images/favicon.png'),
@@ -115,7 +114,6 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
         iconTheme: IconThemeData(color: Colors.white), // Set the color of the back button to white
       ),
 
-
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF242935),
@@ -129,6 +127,46 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                 itemCount: subfolderNames.length,
                 itemBuilder: (context, index) {
                   final subfolderName = subfolderNames[index];
+                  Color backgroundColor;
+                  switch (subfolderName) {
+                    case "Adult Cardiac":
+                      backgroundColor = Color(0xFF0D78EF);
+                      break;
+                    case "Adult Medical":
+                      backgroundColor =  Color(0xFF516029);
+                      break;
+                    case "Adult Obstetrical":
+                      backgroundColor = Color(0xFF7230A4);
+                      break;
+                    case "Adult Respiratory":
+                      backgroundColor = Color(0xFF00B1F5);
+                      break;
+                    case "Pediatric Cardiac":
+                      backgroundColor = Color(0xFF5189D4);
+                      break;
+                    case "Pediatric Medical":
+                      backgroundColor = Color(0xFF49ADC4);
+                      break;
+                    case "Special Circumstances":
+                      backgroundColor = Color(0xFFFFFFFF);
+                      break;
+                    case "Special Operations":
+                      backgroundColor = Color(0xFFFDC100);
+                      break;
+                    case "Toxic - Environmental":
+                      backgroundColor = Color(0xFFFDC100);
+                      break;
+                    case "Trauma and Burns":
+                      backgroundColor = Color(0x8BFD0000);
+                      break;
+                    case "Universal Protocols":
+                      backgroundColor = Color(0xFF93D151);
+                      break;
+                    default:
+                      backgroundColor = Colors.transparent;
+                      break;
+                  }
+
                   return Column(
                     children: [
                       SizedBox(
@@ -161,7 +199,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.transparent,
+                              primary: backgroundColor, // Set the background color dynamically
                               onPrimary: Color(0xA510D3FA),
                               onSurface: Colors.transparent,
                               padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
@@ -174,11 +212,13 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
                             ),
+
                             child: Text(
                               subfolderName,
                               style: TextStyle(
-                                color: Color(0xF4FFFFFF),
+                                color: Colors.black,
                                 fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -271,6 +311,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   }
 
   Widget build(BuildContext context) {
+    double yourIconSizeVariable = 24.0;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -290,9 +331,13 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
           Padding(
             padding: const EdgeInsets.only(right: 0.0), // Add padding to the right
             child: IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/images/favicon.png'), // Replace with your icon path
-                color: Colors.red, // Icon colors
+              icon: Container(
+                width: 26, // Set the width of the container
+                height: 26, // Set the height of the container
+                child: Image.asset(
+                  'assets/images/favicon.png', // Replace with your icon path
+                  color: Colors.red, // Icon color
+                ),
               ),
               onPressed: () async {
                 Navigator.push(
@@ -323,18 +368,20 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         decoration: BoxDecoration(
           color: Color(0xFF242935),
         ),
+
         child: Column(
           children: [
             Expanded(
         child: Padding(
-        padding: EdgeInsets.only(top: 20),
+        padding: EdgeInsets.only(top: 20, left:15, right: 15),
               child: Container(
                 color: Colors.transparent,
                 child: Padding(
-                  padding: EdgeInsets.all(0),
+                  padding: EdgeInsets.only(),
                   child: FutureBuilder<List<File>>(
                     future: fetchPDFFiles(),
                     builder: (context, snapshot) {
+
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
@@ -343,7 +390,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                         return Center(child: Text('No PDF files in this subfolder.'));
                       } else {
                         return Padding(
-                          padding: EdgeInsets.only(bottom: 20), // Add spacing between ListView and BottomNavigationBar
+                          padding: EdgeInsets.only(bottom: 20, left: 25), // Add spacing between ListView and BottomNavigationBar
                           child: ListView.builder(
                             itemCount: snapshot.data?.length,
                             itemBuilder: (context, index) {
@@ -362,7 +409,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 50),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -388,41 +435,41 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.transparent,
+                                      primary: getButtonBackgroundColor(widget.subfolderName),
                                       onPrimary: Color(0xFFFFFFFF),
                                       onSurface: Colors.transparent,
                                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                                       elevation: 3.0,
                                       side: BorderSide(
-                                        color: Colors.black,
-                                        width: 1.0,
+                                        color: Colors.grey,
+                                        width: 2.0,
                                       ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(25.0),
                                       ),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
+                                          flex: 3, // Takes up 4/5 of the available space
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 25),
+                                            padding: EdgeInsets.only(left: 15), // Adjusted padding
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               child: Text(
                                                 fileName.replaceAll('.pdf', ''),
                                                 style: TextStyle(
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontSize: calculateFontSize(context, fileName), // Use the dynamic font size
                                                 ),
                                               ),
                                             ),
                                           ),
+
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(right: 15),
-                                          child: IconButton(
-                                            icon: Icon(Icons.add, size: 18, color: Colors.red),
+                                          padding: EdgeInsets.only(right: 10), // Adjusted padding
+                                          child: CustomBottomButton(
                                             onPressed: () {
                                               addToFavoritesAndShowDialog(pdfFile.path, context);
                                               ScaffoldMessenger.of(context).showSnackBar(
@@ -432,6 +479,8 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                                 ),
                                               );
                                             },
+                                            iconPath: 'assets/images/favorites.png',
+                                            iconSize: yourIconSizeVariable, // Replace with the correct variable
                                           ),
                                         ),
                                       ],
@@ -439,6 +488,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                   ),
                                 ),
                               );
+
                             },
                           ),
                         );
@@ -457,6 +507,32 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       bottomNavigationBar: BottomBar(),
     );
   }
+  double calculateFontSize(BuildContext context, String fileName) {
+    // You can adjust the scaleFactor as needed to fit the text within the container
+    double scaleFactor = 0.9;
+
+    // Calculate available width in the container
+    double availableWidth = MediaQuery.of(context).size.width * scaleFactor;
+
+    // Set a default font size
+    double fontSize = 14;
+
+    // Adjust the font size dynamically based on available width
+    while (getTextWidth(fileName, TextStyle(fontSize: fontSize)).width > availableWidth) {
+      fontSize -= 1;
+    }
+
+    return fontSize;
+  }
+
+  Size getTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
+  }
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
@@ -473,6 +549,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       return Container();
     }
   }
+
   void _createBannerAd() {
     if (GlobalVariables.globalPurchaseAds != "True") {
       _banner = BannerAd(
@@ -502,7 +579,6 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       },
     );
   }
-
   // Function to remove a PDF path from globalFavorites
   void removeFromFavorites(String pdfPath) {
     setState(() {
@@ -527,6 +603,51 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       return [];
     }
   }
+  Color getButtonBackgroundColor(String subfolderName) {
+    Color backgroundColor;
+    switch (subfolderName) {
+      case "Adult Cardiac":
+        backgroundColor = Color(0xFF0D78EF);
+        break;
+      case "Adult Medical":
+        backgroundColor = Color(0xFF516029);
+        break;
+      case "Adult Obstetrical":
+        backgroundColor = Color(0xFF7230A4);
+        break;
+      case "Adult Respiratory":
+        backgroundColor = Color(0xFF00B1F5);
+        break;
+      case "Pediatric Cardiac":
+        backgroundColor = Color(0xFF5189D4);
+        break;
+      case "Pediatric Medical":
+        backgroundColor = Color(0xFF49ADC4);
+        break;
+      case "Special Circumstances":
+        backgroundColor = Color(0xFFFFFFFF);
+        break;
+      case "Special Operations":
+        backgroundColor = Color(0xFFFDC100);
+        break;
+      case "Toxic - Environmental":
+        backgroundColor = Color(0xFFFDC100);
+        break;
+      case "Trauma and Burns":
+        backgroundColor = Color(0xC8FF2F2F);
+        break;
+      case "Universal Protocols":
+        backgroundColor = Color(0xFF93D151);
+        break;
+      default:
+        backgroundColor = Colors.transparent;
+        break;
+    }
+    return backgroundColor; // Add this line to ensure a Color is always returned
+  }
+
+
+
 
 }
 
@@ -585,27 +706,91 @@ class PDFViewerWidget extends StatelessWidget {
 
   PDFViewerWidget({required this.pdfFilePath, required this.pdfFileName});
 
+  double calculateFontSize(BuildContext context) {
+    // You can adjust the scaleFactor as needed to fit the text within the app bar
+    double scaleFactor = .7;
+
+    // Calculate available width in the app bar
+    double availableWidth = MediaQuery.of(context).size.width * scaleFactor;
+
+    // Set a default font size
+    double fontSize = 22;
+
+    // Adjust the font size dynamically based on available width
+    while (getTextWidth("$pdfFileName", TextStyle(fontSize: fontSize)).width > availableWidth) {
+      fontSize -= 4;
+    }
+
+    return fontSize;
+  }
+
+  Size getTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text(
-          "$pdfFileName",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            decoration: TextDecoration.underline,
-            decorationColor: Colors.white, // Set the underline color to white
+        title: Container(
+          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75), // Set maximum width for the text
+          child: Text(
+            "$pdfFileName",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: calculateFontSize(context), // Use a function to calculate dynamic font size
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.white,
+            ),
           ),
-
         ),
         backgroundColor: Color(0xFF242935),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0), // Add padding to the right
+            child: IconButton(
+              icon: Container(
+                width: 26, // Set the width of the container
+                height: 26, // Set the height of the container
+                child: Image.asset(
+                  'assets/images/favicon.png', // Replace with your icon path
+                  color: Colors.red, // Icon color
+                ),
+              ),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        FavoriteProtocols(globalFavorites: []),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const beginOpacity = 0.0;
+                      const endOpacity = 1.0;
+                      var opacityTween = Tween<double>(
+                          begin: beginOpacity, end: endOpacity);
+                      var fadeAnimation = animation.drive(opacityTween);
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
-      body: Column(
+
+        body: Column(
         children: [
           Expanded(
             child: Container(

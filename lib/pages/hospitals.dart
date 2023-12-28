@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../flutter_flow/flutter_flow_widgets.dart';
+import '../globals.dart';
+import '../service/ad_mob_service.dart';
 import 'home_page/navigationbar.dart';
 
 class Hospitals extends StatefulWidget {
@@ -9,6 +13,7 @@ class Hospitals extends StatefulWidget {
 }
 
 class _HospitalsState extends State<Hospitals> {
+  BannerAd? _banner;
   // Define a list of hospitals with their names and coordinates
   List<Hospital> hospitals = [
     Hospital(name: "Cone Health - Alamance Regional Medical Center", latitude: 36.06129754540937, longitude: -79.50215638771189),
@@ -43,6 +48,37 @@ class _HospitalsState extends State<Hospitals> {
     Hospital(name: "Rowan Regional Hospital", latitude: 35.68131243508168, longitude: -80.47138289044727)
   ];
 
+  void initState() {
+    super.initState();
+    _createBannerAd();
+
+  }
+
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
   Future<void> launchMaps(double hospitalLat, double hospitalLong) async {
     final String mapsUrl = 'https://www.google.com/maps/search/?api=1&query=$hospitalLat,$hospitalLong';
 
@@ -75,30 +111,35 @@ class _HospitalsState extends State<Hospitals> {
         centerTitle: true,
         backgroundColor: Color(0xFF242935),
       ),
-      body: Scrollbar(
-        thumbVisibility: true,
-        thickness: 10,
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // Generate hospital buttons dynamically from the sorted list
-                  for (Hospital hospital in hospitals)
-                    Column(
-                      children: [
-                        buildHospitalButton(hospital),
-                        SizedBox(height: 10),
-                      ],
+      body: Column(
+        children: [
+          Expanded(
+            child: Scrollbar(
+              thumbVisibility: true,
+              thickness: 10,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 75),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: hospitals.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 25); // Adjust the height for space between buttons
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildHospitalButton(hospitals[index]);
+                      },
                     ),
-                ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+          buildAdContainer(),
+        ],
       ),
+
       bottomNavigationBar: BottomBar(),
       backgroundColor: Color(0xFF242935), // Set the background color to black
     );
@@ -108,23 +149,29 @@ class _HospitalsState extends State<Hospitals> {
   Widget buildHospitalButton(Hospital hospital) {
     return SizedBox(
       width: 250,
-      child: ElevatedButton(
+      child: FFButtonWidget(
         onPressed: () {
           launchMaps(hospital.latitude, hospital.longitude);
         },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),
-          side: MaterialStateProperty.all(BorderSide(color: Color(0xFF000000))), // Black outline
-        ),
-        child: Text(
-          hospital.name,
-          style: TextStyle(
+        text: hospital.name,
+        options: FFButtonOptions(
+          alignment: Alignment.center,
+          height: 40.0,
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+          color: Color(0xFF242935),
+          textStyle: TextStyle(
             color: Color(0xFFFFFFFF),
             fontSize: 14,
           ),
-          textAlign: TextAlign.center, // Center the text
+          elevation: 3.0,
+          borderSide: BorderSide(
+            color: Color(0xFF000000), // Black outline
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(10.0), // Adjust the border radius as needed
         ),
       ),
+
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../flutter_flow/flutter_flow_widgets.dart';
 import '../globals.dart';
 import '../service/ad_mob_service.dart';
 import 'home_page/navigationbar.dart';
@@ -113,7 +114,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                 color: Color(0xFF242935),
               ),
               child: Padding(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.only(top: 25, right: 15, left: 15),
                 child: Column(
                   children: <Widget>[
                     Expanded(
@@ -229,6 +230,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
             alignment: Alignment.center,
             child: buildAdContainer(),
           ),
+
         ],
 
       ),
@@ -287,30 +289,14 @@ class SubfolderContentsPage extends StatefulWidget {
 
 class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   List<File>? pdfFiles;
-
+  BannerAd? _banner;
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     fetchPDFFiles(widget.agencyName);
   }
 
-  Future<List<File>> fetchPDFFiles(String agencyName) async {
-    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    final subfolderDirectory =
-    Directory('${appDocumentsDirectory.path}/More/${widget.subfolderName}');
-
-    if (await subfolderDirectory.exists()) {
-      final pdfFiles = subfolderDirectory
-          .listSync()
-          .where((file) => file is File && file.path.endsWith('.pdf'))
-          .map((file) => File(file.path))
-          .toList();
-
-      return pdfFiles; // Return the list of files here
-    } else {
-      return []; // Return an empty list if no files found
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +339,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                       return Center(child: Text('No PDF files in this subfolder.'));
                     } else {
                       return Padding(
-                        padding: EdgeInsets.only(bottom: 25),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25), // Add padding here
                         child: ListView.builder(
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
@@ -400,15 +386,65 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                     }
                   },
                 ),
-
               ),
             ),
+            buildAdContainer(),
           ],
         ),
       ),
+
+
       bottomNavigationBar: BottomBar(), // Use your custom BottomBar widget here
     );
   }
+
+
+
+  Future<List<File>> fetchPDFFiles(String agencyName) async {
+    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    final subfolderDirectory =
+    Directory('${appDocumentsDirectory.path}/More/${widget.subfolderName}');
+
+    if (await subfolderDirectory.exists()) {
+      final pdfFiles = subfolderDirectory
+          .listSync()
+          .where((file) => file is File && file.path.endsWith('.pdf'))
+          .map((file) => File(file.path))
+          .toList();
+
+      return pdfFiles; // Return the list of files here
+    } else {
+      return []; // Return an empty list if no files found
+    }
+  }
+
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId!,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest(),
+      )..load();
+    } }
+
+
+
 }
 
 
@@ -478,11 +514,13 @@ class PhoneNumbersListView extends StatefulWidget {
   _PhoneNumbersListViewState createState() => _PhoneNumbersListViewState();
 }
 class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
+  BannerAd? _banner;
   Map<String, String> data = {}; // Declare data at the class level
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     fetchPhoneNumbers().then((phoneData) {
       setState(() {
         data = phoneData;
@@ -496,7 +534,6 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF242935), // Make the app bar background transparent
         title: Text(
@@ -507,56 +544,69 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
             decoration: TextDecoration.underline,
             decorationColor: Colors.white, // Set the underline color to white
           ),
-          // Set text color to black
+          // Set text color to white
         ),
-        titleSpacing: 50, // Add left padding
+        centerTitle: true, // Center the title horizontally
       ),
+
       body: data.isEmpty
           ? Center(child: CircularProgressIndicator())
-          : Container(
-        decoration: BoxDecoration(
-          color: Color(0xFF242935),
-        ),
-        child: Scrollbar(
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final sortedKeys = data.keys.toList()..sort(); // Sort the keys alphabetically
-              final key = sortedKeys[index];
-              final phoneNumber = data[key];
+          : Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF242935),
+              ),
+              child: Scrollbar(
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final sortedKeys = data.keys.toList()..sort(); // Sort the keys alphabetically
+                    final key = sortedKeys[index];
+                    final phoneNumber = data[key];
 
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: SizedBox(
-                  width: 50,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 75),
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),
-                        side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Black outline
-                      ),
-                      onPressed: () {
-                        _makePhoneCall(phoneNumber!);
-                      },
-                      child: Center(
-                        child: Text(
-                          key,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: SizedBox(
+                        width: 50,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 75),
+                          child: FFButtonWidget(
+                            onPressed: () {
+                              _makePhoneCall(phoneNumber!);
+                            },
+                            text: key,
+                            options: FFButtonOptions(
+                              alignment: Alignment.center,
+                              height: 40.0,
+                              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
+                              iconPadding: EdgeInsets.zero,
+                              color: Colors.transparent,
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                              elevation: 3.0,
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 1.25,
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
+          buildAdContainer(),
+        ],
       ),
+
 
 
 
@@ -571,7 +621,29 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
     final url = 'tel:$phoneNumber';
     launch(url);
   }
-
+  Widget buildAdContainer() {
+    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    if (GlobalVariables.globalPurchaseAds != "True") {
+      return _banner == null
+          ? Container()
+          : Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 52,
+        child: AdWidget(ad: _banner!),
+      );
+    } else {
+      // Return an empty container or another widget if ads are disabled
+      return Container();
+    }
+  }
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
   Future<Map<String, String>> fetchPhoneNumbers() async {
     // Replace with your Firebase Database reference path
     DatabaseEvent event = await FirebaseDatabase.instance

@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '41'
+    flutterVersionCode = '42'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '41'
+    flutterVersionName = '42'
 }
 
 apply plugin: 'com.android.application'
@@ -51,7 +51,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 41
+        versionCode 42
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }

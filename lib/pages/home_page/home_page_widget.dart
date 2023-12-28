@@ -68,7 +68,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 25.0),
+                padding: EdgeInsets.only(right: 15.0),
                 child: IconButton(
                   onPressed: () async {
                     Navigator.push(
@@ -91,8 +91,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   icon: ClipOval(
                     child: Image.asset(
                       'assets/images/settingsicon.png',
-                      width: 35.0,
-                      height: 35.0,
+                      width: 50.0,
+                      height: 50.0,
                     ),
                   ),
                 ),
@@ -205,7 +205,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   elevation: 3.0,
                                   borderSide: BorderSide(
                                     color: Colors.black,
-                                    width: 2.0,
+                                    width: 1.0,
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
