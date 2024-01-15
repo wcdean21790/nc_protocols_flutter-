@@ -634,7 +634,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         backgroundColor = Color(0xFFFDC100);
         break;
       case "Trauma and Burns":
-        backgroundColor = Color(0xC8FF2F2F);
+        backgroundColor = Color(0xFFFFFFFF);
         break;
       case "Universal Protocols":
         backgroundColor = Color(0xFF93D151);

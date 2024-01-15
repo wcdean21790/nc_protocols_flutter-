@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.7"
+  ansicolor:
+    dependency: transitive
+    description:
+      name: ansicolor
+      sha256: "8bf17a8ff6ea17499e40a2d2542c2f481cd7615760c6d34065cb22bfd22e6880"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   archive:
     dependency: transitive
     description:
@@ -437,6 +445,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  injector:
+    dependency: transitive
+    description:
+      name: injector
+      sha256: "2a683124c716e93b45521794f55bfe770e069cb3d871fc4fbc65b5acef78e832"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -517,6 +533,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  msix:
+    dependency: "direct dev"
+    description:
+      name: msix
+      sha256: "6ce876cbe3dd407edcecbb8865c126d32617a015c618e557ef5d5304d486da10"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.3"
   nested:
     dependency: transitive
     description:
@@ -533,6 +557,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  package_config:
+    dependency: transitive
+    description:
+      name: package_config
+      sha256: "1c5b77ccc91e4823a5af61ee74e6b972db1ef98c2ff5a18d3161c982a55448bd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   page_transition:
     dependency: "direct main"
     description:

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 42.0.0+42
+version: 43.0.0+43
 
 
 
@@ -84,6 +84,7 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
+  msix: ^2.1.1
 
 
   flutter_test:
@@ -114,6 +115,16 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "assets/images/statelogo.png"
+
+msix_config:
+  display_name: Nc Protocol Hub
+  publisher_display_name: Dean Apps
+  publisher: CN=69FC1453-E56D-4253-B21C-A093772F57E5
+  logo_path: C:\Users\Wills\Desktop\AppCodeGeneral\GitHub\n_c_protocols\assets\images\statelogo.png
+  identity_name: 37417DeanApps.FoECompanion
+  msix_version: 1.0.1.0
+  store: true
+
 
 flutter:
 

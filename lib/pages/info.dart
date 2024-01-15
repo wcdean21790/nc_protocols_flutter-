@@ -21,6 +21,13 @@ import '../provider/revenuecat.dart';
 import '../utils.dart';
 import '../widget/paywall_widget.dart';
 
+String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map((MapEntry<String, String> e) =>
+  '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      .join('&');
+}
+
 
 
 class Info extends StatefulWidget {
@@ -31,9 +38,9 @@ class Info extends StatefulWidget {
 }
 
 class InfoState extends State<Info> {
+
+
   bool isLoading = false;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -150,11 +157,11 @@ class InfoState extends State<Info> {
                       child: ElevatedButton(
                         style: commonButtonStyle,
                         onPressed: () {
-                          _launchEmail(context); // Pass the context
+                          launchUrl(emailLaunchUri);
                         },
                         child: Text(
                           'Contact',
-                          style: TextStyle(color: Color(0xFF4D7DF5)), // Change text color here
+                          style: TextStyle(color: Color(0xFF00FFFF)), // Change text color here
                         ),
                       ),
                     ),
@@ -168,7 +175,7 @@ class InfoState extends State<Info> {
                         onPressed: isLoading ? null : fetchOffers,
                         child: Text(
                           'Support and remove ads',
-                          style: TextStyle(color: Color(0xFF4D7DF5)), // Set the text color to red
+                          style: TextStyle(color: Color(0xFFFFEA00)), // Set the text color to red
                         ),
                       ),
 
@@ -288,7 +295,14 @@ class InfoState extends State<Info> {
     }
   }
 
-
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: 'ncprotocols@gmail.com',
+    query: encodeQueryParameters(<String, String>{
+      'subject': 'NC Protocol Hub',
+      'body': 'Please include device type (Android, iOS, Desktop) and add questions, comments, or concerns below.'
+    }),
+  );
   _launchEmail(BuildContext context) async {
     final Uri _emailLaunchUri = Uri(
       scheme: 'mailto',
