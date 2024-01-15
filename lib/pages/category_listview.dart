@@ -170,7 +170,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                   return Column(
                     children: [
                       SizedBox(
-                        width: 250, // Set the desired fixed width here
+                        width: 275, // Set the desired fixed width here
                         child: Container(
                           child: ElevatedButton(
                             onPressed: () {
