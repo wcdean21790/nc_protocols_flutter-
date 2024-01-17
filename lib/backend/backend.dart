@@ -51,20 +51,27 @@ Future<List<AgenciesRecord>> queryAgenciesRecordOnce({
     );
 
 Future<int> queryCollectionCount(
-  Query collection, {
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) {
-  final builder = queryBuilder ?? (q) => q;
-  var query = builder(collection);
-  if (limit > 0) {
-    query = query.limit(limit);
-  }
+    Query collection, {
+      Query Function(Query)? queryBuilder,
+      int limit = -1,
+    }) async {
+  try {
+    final builder = queryBuilder ?? (q) => q;
+    var query = builder(collection);
 
-  return query.count().get().catchError((err) {
-    print('Error querying $collection: $err');
-  }).then((value) => value.count);
+    if (limit > 0) {
+      query = query.limit(limit);
+    }
+
+    final querySnapshot = await query.get();
+    return querySnapshot.size;
+  } catch (error) {
+    print('Error querying $collection: $error');
+    // Handle the error case, return a default value or throw an exception if needed.
+    return 0; // Default value, adjust based on your requirements.
+  }
 }
+
 
 Stream<List<T>> queryCollection<T>(
   Query collection,
@@ -140,38 +147,32 @@ class FFFirestorePage<T> {
 }
 
 Future<FFFirestorePage<T>> queryCollectionPage<T>(
-  Query collection,
-  RecordBuilder<T> recordBuilder, {
-  Query Function(Query)? queryBuilder,
-  DocumentSnapshot? nextPageMarker,
-  required int pageSize,
-  required bool isStream,
-}) async {
+    Query collection,
+    RecordBuilder<T> recordBuilder, {
+      Query Function(Query)? queryBuilder,
+      DocumentSnapshot? nextPageMarker,
+      required int pageSize,
+    }) async {
   final builder = queryBuilder ?? (q) => q;
   var query = builder(collection).limit(pageSize);
   if (nextPageMarker != null) {
     query = query.startAfterDocument(nextPageMarker);
   }
-  Stream<QuerySnapshot>? docSnapshotStream;
-  QuerySnapshot docSnapshot;
-  if (isStream) {
-    docSnapshotStream = query.snapshots();
-    docSnapshot = await docSnapshotStream.first;
-  } else {
-    docSnapshot = await query.get();
-  }
+
+  final docSnapshot = await query.get();
   final getDocs = (QuerySnapshot s) => s.docs
       .map(
         (d) => safeGet(
           () => recordBuilder(d),
           (e) => print('Error serializing doc ${d.reference.path}:\n$e'),
-        ),
-      )
+    ),
+  )
       .where((d) => d != null)
       .map((d) => d!)
       .toList();
+
   final data = getDocs(docSnapshot);
-  final dataStream = docSnapshotStream?.map(getDocs);
   final nextPageToken = docSnapshot.docs.isEmpty ? null : docSnapshot.docs.last;
-  return FFFirestorePage(data, dataStream, nextPageToken);
+  return FFFirestorePage(data, null, nextPageToken);
 }
+
