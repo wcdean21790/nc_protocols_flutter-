@@ -1,19 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:n_c_protocols/pages/home_page/home_page_widget.dart';
 import 'package:n_c_protocols/provider/revenuecat.dart';
 import 'package:n_c_protocols/service/ad_mob_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'api/purchase_api.dart';
-import 'flutter_flow/flutter_flow_theme.dart';
-import 'flutter_flow/internationalization.dart';
-import 'globals.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
-
+import 'api/purchase_api.dart';
+import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,10 @@ void main() async {
   usePathUrlStrategy();
   await GlobalVariables.initialize();
   EasyLoading.init();
-  //await FlutterFlowTheme.initialize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
 
   runApp(
     MultiProvider(
@@ -38,33 +41,24 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
-  // This widget is the root of your application.
   @override
-  State<MyApp> createState() => _MyAppState();
-
-  static _MyAppState of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>()!;
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
-
+  ThemeMode _themeMode = ThemeMode.system; // Default to system theme
 
   late Directory appDocumentsDirectory;
-
   InterstitialAd? _interstitialAd;
   BannerAd? _banner;
 
-
   @override
   void initState() {
-    print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
+    super.initState();
     _createBannerAd();
     _createInterstitialAd();
-    super.initState();
-    initializeAppDocumentsDirectory(); // Call this method to initialize appDocumentsDirectory
+    initializeAppDocumentsDirectory();
   }
 
   Future<void> initializeAppDocumentsDirectory() async {
@@ -72,33 +66,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setLocale(String language) {
-    setState(() => _locale = createLocale(language));
+    setState(() => _locale = Locale(language));
   }
 
-  void setThemeMode(ThemeMode mode) => setState(() {
-        _themeMode = mode;
-        FlutterFlowTheme.saveThemeMode(mode);
-      });
-
+  void setThemeMode(ThemeMode mode) => setState(() => _themeMode = mode);
 
   @override
   Widget build(BuildContext context) {
-    final Gradient backgroundGradient = LinearGradient(
-      colors: [Colors.blue, Colors.black],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      stops: [0.0, 1.0],
-      tileMode: TileMode.clamp,
-    );
-
     return Container(
-      decoration: BoxDecoration(
-        gradient: backgroundGradient,
-      ),
       child: MaterialApp.router(
         title: 'NC Protocols',
         localizationsDelegates: [
-          FFLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
@@ -107,18 +85,18 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: const [Locale('en', '')],
         theme: ThemeData(
           brightness: Brightness.light,
-          scrollbarTheme: ScrollbarThemeData(),
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
-          scrollbarTheme: ScrollbarThemeData(),
         ),
         themeMode: _themeMode,
-        builder: EasyLoading.init(), // Initialize EasyLoading
+        routerDelegate: _DummyRouterDelegate(),
+        routeInformationParser: _DummyRouteInformationParser(),
+        builder: EasyLoading.init(),
       ),
+
     );
   }
-
 
   void _createBannerAd() {
     _banner = BannerAd(
@@ -128,6 +106,7 @@ class _MyAppState extends State<MyApp> {
       request: const AdRequest(),
     )..load();
   }
+
   void _createInterstitialAd() {
     InterstitialAd.load(
       adUnitId: AdMobService.interstitialAdUnitId!,
@@ -138,6 +117,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
   void _showInterstitialAd() {
     if (_interstitialAd != null) {
       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
@@ -154,8 +134,31 @@ class _MyAppState extends State<MyApp> {
       _interstitialAd = null;
     }
   }
-
-
-
-
 }
+
+class _DummyRouterDelegate extends RouterDelegate<Object> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Object> {
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      pages: [
+        MaterialPage(child: HomePageWidget()), // Use your actual home page widget here
+      ],
+      onPopPage: (route, result) => false,
+    );
+  }
+
+  @override
+  Future<void> setNewRoutePath(Object configuration) async {}
+
+  @override
+  GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
+}
+
+class _DummyRouteInformationParser extends RouteInformationParser<Object> {
+  @override
+  Future<Object> parseRouteInformation(RouteInformation routeInformation) async {
+    return Object();
+  }
+}
+
+
