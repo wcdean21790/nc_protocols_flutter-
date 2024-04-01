@@ -202,7 +202,7 @@ class _CustomBottomButtonState extends State<CustomBottomButton> {
         widget.onPressed();
       },
       style: ElevatedButton.styleFrom(
-        primary: _isPressed ? Colors.grey : Colors.transparent,
+        backgroundColor: _isPressed ? Colors.grey : Colors.transparent,
         elevation: 0, // Remove the button elevation
       ),
       child: Image.asset(

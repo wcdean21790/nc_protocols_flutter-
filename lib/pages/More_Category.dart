@@ -78,8 +78,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
 
   ButtonStyle customButtonStyle(BuildContext context) {
     return TextButton.styleFrom(
-      backgroundColor: Color(0xFF242935), // Background color
-      primary: Color(0xA510D3FA), // Text color
+      foregroundColor: Color(0xA510D3FA), backgroundColor: Color(0xFF242935), // Text color
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25), // Adjust the border radius as needed
       ),

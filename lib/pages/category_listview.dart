@@ -199,9 +199,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: backgroundColor, // Set the background color dynamically
-                              onPrimary: Color(0xA510D3FA),
-                              onSurface: Colors.transparent,
+                              foregroundColor: Color(0xA510D3FA), backgroundColor: backgroundColor, disabledForegroundColor: Colors.transparent.withOpacity(0.38), disabledBackgroundColor: Colors.transparent.withOpacity(0.12),
                               padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
                               elevation: 3.0,
                               side: BorderSide(
@@ -435,9 +433,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: getButtonBackgroundColor(widget.subfolderName),
-                                      onPrimary: Color(0xFFFFFFFF),
-                                      onSurface: Colors.transparent,
+                                      foregroundColor: Color(0xFFFFFFFF), backgroundColor: getButtonBackgroundColor(widget.subfolderName), disabledForegroundColor: Colors.transparent.withOpacity(0.38), disabledBackgroundColor: Colors.transparent.withOpacity(0.12),
                                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                                       elevation: 3.0,
                                       side: BorderSide(

@@ -128,7 +128,7 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
                             _navigateToSubfolderContents(subfolderName);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF639BDC),
+                            backgroundColor: Color(0xFF639BDC),
                           ),
                           child: Text(
                             subfolderName,

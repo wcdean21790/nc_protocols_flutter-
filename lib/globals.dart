@@ -51,7 +51,7 @@ class GlobalVariables {
 class ButtonStyles {
   static ButtonStyle customButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
-      primary: Colors.transparent,
+      backgroundColor: Colors.transparent,
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0), // Match the padding
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0), // Match the borderRadius

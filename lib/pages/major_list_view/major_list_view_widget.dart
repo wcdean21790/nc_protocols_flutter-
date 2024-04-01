@@ -126,7 +126,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
                               _showPasswordDialog(agencyName);
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xD78EF), // Background color
+                              backgroundColor: Color(0xD78EF), // Background color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10), // Round the button
                                 side: BorderSide(color: Colors.black), // Add black outline
