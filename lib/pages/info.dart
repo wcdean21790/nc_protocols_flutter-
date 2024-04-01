@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../globals.dart';
 import 'home_page/navigationbar.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

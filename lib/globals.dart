@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'backend/backend.dart';
 
 class GlobalVariables {
   static late SharedPreferences _prefs;

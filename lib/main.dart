@@ -8,11 +8,8 @@ import 'package:n_c_protocols/service/ad_mob_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'api/purchase_api.dart';
-import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
-import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
-import 'flutter_flow/nav/nav.dart';
 import 'globals.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -24,9 +21,8 @@ void main() async {
   await PurchaseApi.init();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
-  await initFirebase();
   EasyLoading.init();
-  await FlutterFlowTheme.initialize();
+  //await FlutterFlowTheme.initialize();
 
   runApp(
     MultiProvider(
@@ -55,8 +51,7 @@ class _MyAppState extends State<MyApp> {
   Locale? _locale;
   ThemeMode _themeMode = FlutterFlowTheme.themeMode;
 
-  late AppStateNotifier _appStateNotifier;
-  late GoRouter _router;
+
   late Directory appDocumentsDirectory;
 
   InterstitialAd? _interstitialAd;
@@ -70,8 +65,6 @@ class _MyAppState extends State<MyApp> {
     _createInterstitialAd();
     super.initState();
     initializeAppDocumentsDirectory(); // Call this method to initialize appDocumentsDirectory
-    _appStateNotifier = AppStateNotifier.instance;
-    _router = createRouter(_appStateNotifier);
   }
 
   Future<void> initializeAppDocumentsDirectory() async {
@@ -121,7 +114,6 @@ class _MyAppState extends State<MyApp> {
           scrollbarTheme: ScrollbarThemeData(),
         ),
         themeMode: _themeMode,
-        routerConfig: _router,
         builder: EasyLoading.init(), // Initialize EasyLoading
       ),
     );

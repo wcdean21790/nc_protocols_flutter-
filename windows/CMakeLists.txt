@@ -1,5 +1,5 @@
 # Project-level configuration.
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.14)
 project(ncprotocols_flutter LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change

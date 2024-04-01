@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/pages/category_listview.dart';
-import '../../flutter_flow/flutter_flow_util.dart';
 import '../../globals.dart';
 import '../../service/ad_mob_service.dart';
 import '../favorites.dart';
