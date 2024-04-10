@@ -723,7 +723,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         textColor = Colors.black;
         break;
       case "Trauma and Burns":
-        textColor = Colors.white70;
+        textColor = Colors.black;
         break;
       case "Universal Protocols":
         textColor = Colors.black;
