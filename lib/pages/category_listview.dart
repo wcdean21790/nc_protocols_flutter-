@@ -163,10 +163,10 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                       backgroundColor = Color(0xFF93D151);
                       break;
                     default:
-                      backgroundColor = Colors.transparent;
+                      backgroundColor = Colors.white;
                       break;
                   }
-
+                  Color textColor = getButtonTextColor(subfolderName);
                   return Column(
                     children: [
                       SizedBox(
@@ -177,7 +177,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   pageBuilder: (context, animation, secondaryAnimation) {
-                                    return SubfolderContentsPage(
+                                     return SubfolderContentsPage(
                                       agencyName: widget.agencyName,
                                       subfolderName: subfolderName,
                                       pdfIndex: index,
@@ -214,7 +214,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
                             child: Text(
                               subfolderName,
                               style: TextStyle(
-                                color: Colors.black,
+                                color: textColor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -240,6 +240,53 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
       bottomNavigationBar: BottomBar(),
     );
   }
+
+  Color getButtonTextColor(String subfolderName) {
+    Color textColor;
+    switch (subfolderName) {
+      case "Adult Cardiac":
+        textColor = Colors.black;
+        break;
+      case "Adult Medical":
+        textColor = Colors.white70;
+        break;
+      case "Adult Obstetrical":
+        textColor = Colors.white70;
+        break;
+      case "Adult Respiratory":
+        textColor = Colors.black;
+        break;
+      case "Pediatric Cardiac":
+        textColor = Colors.black;
+        break;
+      case "Pediatric Medical":
+        textColor = Colors.black;
+        break;
+      case "Special Circumstances":
+        textColor = Colors.black;
+        break;
+      case "Special Operations":
+        textColor = Colors.black;
+        break;
+      case "Toxic - Environmental":
+        textColor = Colors.black;
+        break;
+      case "Trauma and Burns":
+        textColor = Colors.white70;
+        break;
+      case "Universal Protocols":
+        textColor = Colors.black;
+        break;
+      default:
+        textColor = Colors.black; // Default color
+        break;
+    }
+    return textColor;
+  }
+
+
+
+
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
@@ -288,9 +335,6 @@ class SubfolderContentsPage extends StatefulWidget {
   @override
   _SubfolderContentsPageState createState() => _SubfolderContentsPageState();
 }
-
-
-
 
 class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   bool isFavorite = false;
@@ -403,6 +447,8 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
                               final pdfFile = pdfFiles[index];
                               final fileName = pdfFile.path.split('/').last;
+                              final dynamicFontSize = calculateFontSize(context, fileName);
+                              final double buttonVerticalPadding = dynamicFontSize / 2;
 
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -433,8 +479,11 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      foregroundColor: Color(0xFFFFFFFF), backgroundColor: getButtonBackgroundColor(widget.subfolderName), disabledForegroundColor: Colors.transparent.withOpacity(0.38), disabledBackgroundColor: Colors.transparent.withOpacity(0.12),
-                                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                                      foregroundColor: Color(0xFFFFFFFF),
+                                      backgroundColor: getButtonBackgroundColor(widget.subfolderName),
+                                      disabledForegroundColor: Colors.transparent.withOpacity(0.38),
+                                      disabledBackgroundColor: Colors.transparent.withOpacity(0.12),
+                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjusted padding
                                       elevation: 3.0,
                                       side: BorderSide(
                                         color: Colors.grey,
@@ -447,43 +496,39 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          flex: 3, // Takes up 4/5 of the available space
-                                          child: Container(
-                                            padding: EdgeInsets.only(left: 15), // Adjusted padding
-                                            child: FittedBox(
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                fileName.replaceAll('.pdf', ''),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: calculateFontSize(context, fileName), // Use the dynamic font size
-                                                ),
+                                          flex: 3, // Adjust as needed for layout
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 15, right: 5), // Adjusted padding for text
+                                            child: Text(
+                                              fileName.replaceAll('.pdf', ''),
+                                              style: TextStyle(
+                                                color: getButtonTextColor(widget.subfolderName),
+                                                fontSize: dynamicFontSize, // Use the dynamic font size
                                               ),
+                                              softWrap: true, // Allow text wrapping
+                                              overflow: TextOverflow.fade, // Handle text overflow
                                             ),
                                           ),
-
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 10), // Adjusted padding
-                                          child: CustomBottomButton(
-                                            onPressed: () {
-                                              addToFavoritesAndShowDialog(pdfFile.path, context);
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text('Protocol added to favorites!'),
-                                                  duration: Duration(seconds: 2),
-                                                ),
-                                              );
-                                            },
-                                            iconPath: 'assets/images/favorites.png',
-                                            iconSize: yourIconSizeVariable, // Replace with the correct variable
-                                          ),
+                                        IconButton(
+                                          icon: Icon(Icons.favorite_border), // Replace with your favorite icon
+                                          color: Colors.red, // Icon color
+                                          onPressed: () {
+                                            addToFavoritesAndShowDialog(pdfFile.path, context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text('Protocol added to favorites!'),
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               );
+
 
                             },
                           ),
@@ -503,6 +548,9 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       bottomNavigationBar: BottomBar(),
     );
   }
+
+
+
   double calculateFontSize(BuildContext context, String fileName) {
     // You can adjust the scaleFactor as needed to fit the text within the container
     double scaleFactor = 0.9;
@@ -511,7 +559,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     double availableWidth = MediaQuery.of(context).size.width * scaleFactor;
 
     // Set a default font size
-    double fontSize = 14;
+    double fontSize = 18;
 
     // Adjust the font size dynamically based on available width
     while (getTextWidth(fileName, TextStyle(fontSize: fontSize)).width > availableWidth) {
@@ -599,6 +647,8 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
       return [];
     }
   }
+
+
   Color getButtonBackgroundColor(String subfolderName) {
     Color backgroundColor;
     switch (subfolderName) {
@@ -636,16 +686,66 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
         backgroundColor = Color(0xFF93D151);
         break;
       default:
-        backgroundColor = Colors.transparent;
+        backgroundColor = Colors.white;
         break;
     }
     return backgroundColor; // Add this line to ensure a Color is always returned
+  }
+
+  Color getButtonTextColor(String subfolderName) {
+    Color textColor;
+    switch (subfolderName) {
+      case "Adult Cardiac":
+        textColor = Colors.black;
+        break;
+      case "Adult Medical":
+        textColor = Colors.white70;
+        break;
+      case "Adult Obstetrical":
+        textColor = Colors.white70;
+        break;
+      case "Adult Respiratory":
+        textColor = Colors.black;
+        break;
+      case "Pediatric Cardiac":
+        textColor = Colors.black;
+        break;
+      case "Pediatric Medical":
+        textColor = Colors.black;
+        break;
+      case "Special Circumstances":
+        textColor = Colors.black;
+        break;
+      case "Special Operations":
+        textColor = Colors.black;
+        break;
+      case "Toxic - Environmental":
+        textColor = Colors.black;
+        break;
+      case "Trauma and Burns":
+        textColor = Colors.white70;
+        break;
+      case "Universal Protocols":
+        textColor = Colors.black;
+        break;
+      default:
+        textColor = Colors.black; // Default color
+        break;
+    }
+    return textColor;
   }
 
 
 
 
 }
+
+
+
+
+
+
+
 
 class IconButtonWithPopup extends StatelessWidget {
 
