@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '42'
+    flutterVersionCode = '45'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '42'
+    flutterVersionName = '45'
 }
 
 apply plugin: 'com.android.application'
@@ -48,10 +48,10 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.fcems.poweruser.stateprotocolsandroid"
         minSdkVersion 29
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        versionCode 42
+        versionCode 45
 
         namespace 'com.fcems.poweruser.stateprotocolsandroid'
     }
