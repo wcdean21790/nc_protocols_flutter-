@@ -90,11 +90,11 @@ class _ProtocolListViewWidgetState extends State<ProtocolListViewWidget> {
           backgroundColor: Colors.black,
         ),
         textTheme: TextTheme(
-          headline6: TextStyle(
+          titleLarge: TextStyle(
             color: Color(0xA510D3FA),
             fontSize: 24,
           ),
-          button: TextStyle(
+          labelLarge: TextStyle(
             color: Colors.black,
             fontSize: 18,
           ),
