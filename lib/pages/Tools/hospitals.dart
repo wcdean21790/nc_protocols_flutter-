@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../globals.dart';
-import '../service/ad_mob_service.dart';
-import 'home_page/navigationbar.dart';
+import '../../flutter_flow/flutter_flow_widgets.dart';
+import '../../globals.dart';
+import '../../service/ad_mob_service.dart';
+import '../home_page/navigationbar.dart';
 
 class Hospitals extends StatefulWidget {
   @override

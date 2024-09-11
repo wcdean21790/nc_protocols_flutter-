@@ -11,15 +11,8 @@ import '../api/purchase_api.dart';
 import '../model/entitlement.dart';
 import '../utils.dart';
 import '../widget/paywall_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
-
-import '../api/purchase_api.dart';
-import '../model/entitlement.dart';
 import '../provider/revenuecat.dart';
-import '../utils.dart';
-import '../widget/paywall_widget.dart';
 
 String? encodeQueryParameters(Map<String, String> params) {
   return params.entries
@@ -90,7 +83,7 @@ class InfoState extends State<Info> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Last download of protocols was at: ',
+                        'Protocols last downloaded: ',
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                       SizedBox(height: 10),
@@ -128,8 +121,10 @@ class InfoState extends State<Info> {
                     child: Text(
                       "North Carolina EMS Protocol Hub is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                           "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
-                          "Ads are in a few areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
-                          "\nVersion updated 4/10/24\n\n"
+                          "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. "
+                          "Joining and using this apps service is free. "
+                          "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
+                          "\nVersion updated 9/09/24\n\n"
                           "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
                           "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
                           "\nPayment will be charged to users Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"

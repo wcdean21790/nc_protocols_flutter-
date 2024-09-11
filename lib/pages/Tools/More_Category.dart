@@ -1,16 +1,18 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:n_c_protocols/pages/Tools/TimeTempo.dart';
+import 'package:n_c_protocols/pages/Tools/timestamp.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../globals.dart';
-import '../service/ad_mob_service.dart';
-import 'home_page/navigationbar.dart';
+import '../../flutter_flow/flutter_flow_widgets.dart';
+import '../../globals.dart';
+import '../../service/ad_mob_service.dart';
+import '../home_page/navigationbar.dart';
 import 'hospitals.dart';
 
 class MoreListViewWidget extends StatefulWidget {
@@ -88,6 +90,8 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF242935),
+
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
@@ -105,138 +109,241 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
         backgroundColor: Color(0xFF242935), // Set the background color here
       ),
 
-        body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF242935),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(top: 25, right: 15, left: 15),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: subfolderNames.length,
-                        itemBuilder: (context, index) {
-                          final subfolderName = subfolderNames[index];
-                          return Column(
-                            children: [
-                              SizedBox(
-                                width: 250,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation, secondaryAnimation) {
-                                          return SubfolderContentsPage(
-                                            agencyName: widget.agencyName,
-                                            subfolderName: subfolderName,
-                                          );
-                                        },
-                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                          return FadeTransition(
-                                            opacity: animation,
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  style: ButtonStyles.customButtonStyle(context),
-                                  child: Text(
-                                    subfolderName,
-                                    style: TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 18,
-                                    ),
+        body: Container(
+          color: Color(0xFF242935), // Set the background color here
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                // ListView wrapped in a constrained height
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 300), // Adjust height as needed
+                  child: ListView.builder(
+                    shrinkWrap: true, // Ensures the list view takes minimal height
+                    physics: NeverScrollableScrollPhysics(), // Disable internal scrolling
+                    itemCount: subfolderNames.length,
+                    itemBuilder: (context, index) {
+                      final subfolderName = subfolderNames[index];
+                      return Column(
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                      return SubfolderContentsPage(
+                                        agencyName: widget.agencyName,
+                                        subfolderName: subfolderName,
+                                      );
+                                    },
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      );
+                                    },
                                   ),
+                                );
+                              },
+                              style: ButtonStyles.customButtonStyle(context),
+                              child: Text(
+                                subfolderName,
+                                style: TextStyle(
+                                  color: Color(0xFFFFFFFF),
+                                  fontSize: 18,
                                 ),
                               ),
-                              SizedBox(height: 10),
-                            ],
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+
+                // Buttons section wrapped in Column with even spacing
+                Column(
+                  children: [
+                    SizedBox(height: 10), // Optional space at the top
+
+                    // Button: Phone Numbers
+                    SizedBox(
+                      width: 250, // Set the button width
+                      child: ElevatedButton(
+                        onPressed: () {
+                          fetchPhoneNumbers();
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return PhoneNumbersListView();
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(0.0, 1.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                           );
                         },
-                      ),
-                    ),
-
-                    SizedBox(height: 10), // Add spacing after the ListView
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 10), // Add bottom padding
-                      child: SizedBox(
-                        width: 250, // Set the button width
-                        child: ElevatedButton(
-                          onPressed: () {
-                            fetchPhoneNumbers();
-                            // Navigate to the PhoneNumbersListView when the button is clicked
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PhoneNumbersListView()),
-                            );
-                          },
-                          style: ButtonStyles.customButtonStyle(context),
-                          child: Text(
-                            "Phone Numbers",
-                            style: TextStyle(
-                              color: Color(0xFFFFEA00),
-                              fontSize: 16,
-                            ),
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text(
+                          "Phone Numbers",
+                          style: TextStyle(
+                            color: Color(0xFFFFEA00),
+                            fontSize: 16,
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 300), // Add bottom padding
-                      child: SizedBox(
-                        width: 250, // Set the button width
-                        child: ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return WarningDialog();
+                    SizedBox(height: 10),
+
+                    // Button: Directions
+                    SizedBox(
+                      width: 250, // Set the button width
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return WarningDialog();
+                            },
+                          ).then((value) {
+                            if (value != null && value) {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                    return Hospitals();
+                                  },
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    const begin = Offset(0.0, 1.0);
+                                    const end = Offset.zero;
+                                    const curve = Curves.ease;
+
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                          });
+                        },
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text(
+                          "Directions",
+                          style: TextStyle(
+                            color: Color(0xFF36AD8D),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+
+                    // Button: Time Stamper
+                    SizedBox(
+                      width: 250, // Set the button width
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return TimeStampWidget(); // Replace with actual page
                               },
-                            ).then((value) {
-                              if (value != null && value) {
-                                // User confirmed, you can proceed with your logic
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Hospitals()),
-                                );
-                              }
-                            });
-                          },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(0.0, 1.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
 
-                          style: ButtonStyles.customButtonStyle(context),
-                          child: Text(
-                            "Directions",
-                            style: TextStyle(
-                              color: Color(0xFF36AD8D),
-                              fontSize: 18,
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
                             ),
+                          );
+                        },
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text(
+                          "Action Logger",
+                          style: TextStyle(
+                            color: Color(0xFF00FFFF),
+                            fontSize: 16,
                           ),
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
 
+                    // Button: Calculations
+                    SizedBox(
+                      width: 250, // Set the button width
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return BPMCalculator(); // Replace with actual page
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(0.0, 1.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text(
+                          "Tempo Tool",
+                          style: TextStyle(
+                            color: Color(0xFF8A2BE2),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20), // Optional space at the bottom
                   ],
                 ),
-              ),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: buildAdContainer(),
+                ),
+              ],
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: buildAdContainer(),
-          ),
-
-        ],
-
-      ),
+        ),
 
 
 
-      // Bottom Navigation Bar
+
+
+
+
+        // Bottom Navigation Bar
       bottomNavigationBar: BottomBar(),
     );
   }
