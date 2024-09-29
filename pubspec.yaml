@@ -126,6 +126,8 @@ flutter:
     - assets/lottie_animations/
     - assets/rive_animations/
     - assets/pdfs/
+    - assets/images/info/
+
 
 
 

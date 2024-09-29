@@ -52,6 +52,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xFF242935), // Scaffold background color
+
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: AppBar(
@@ -62,7 +63,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               style: GoogleFonts.poppins().override(
                 fontFamily: 'Work Sans',
                 color: Color(0xFFFFFFFF),
-                fontSize: 22.0,
+                fontSize: 25.0,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
@@ -91,9 +92,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   },
                   icon: ClipOval(
                     child: Image.asset(
-                      'assets/images/settingsicon.png',
-                      width: 50.0,
-                      height: 50.0,
+                      'assets/icon/settings_icon.png',
+                      width: 40.0,
+                      height: 40.0,
                     ),
                   ),
                 ),
@@ -101,6 +102,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ],
           ),
         ),
+
         body: Container( // Wrap body in a Container to apply background color
           color: Color(0xFF242935), // Set body background color to red
           child: SingleChildScrollView(

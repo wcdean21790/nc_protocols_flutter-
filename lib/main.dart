@@ -71,33 +71,6 @@ class _MyAppState extends State<MyApp> {
 
   void setThemeMode(ThemeMode mode) => setState(() => _themeMode = mode);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: MaterialApp.router(
-        title: 'NC Protocols',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: _locale,
-        supportedLocales: const [Locale('en', '')],
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-        ),
-        themeMode: _themeMode,
-        routerDelegate: _DummyRouterDelegate(),
-        routeInformationParser: _DummyRouteInformationParser(),
-        builder: EasyLoading.init(),
-      ),
-
-    );
-  }
-
   void _createBannerAd() {
     _banner = BannerAd(
       size: AdSize.fullBanner,
@@ -134,6 +107,36 @@ class _MyAppState extends State<MyApp> {
       _interstitialAd = null;
     }
   }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: MaterialApp.router(
+        title: 'NC Protocols',
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        supportedLocales: const [Locale('en', '')],
+        theme: ThemeData(
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        themeMode: _themeMode,
+        routerDelegate: _DummyRouterDelegate(),
+        routeInformationParser: _DummyRouteInformationParser(),
+        builder: EasyLoading.init(),
+      ),
+
+    );
+  }
+
+
 }
 
 class _DummyRouterDelegate extends RouterDelegate<Object> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Object> {

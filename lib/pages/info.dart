@@ -35,178 +35,6 @@ class InfoState extends State<Info> {
 
   bool isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
-    final commonButtonStyle = ButtonStyles.customButtonStyle(context).copyWith(
-      // Set your common button style properties here
-      // For example, you can set the background color
-        backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),);
-    final entitlement = context.watch<RevenueCatProvider>().entitlement;
-    Future<String> getDownloadTime() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      // Retrieve the value associated with the key 'globalDownloadTime'
-      return prefs.getString('globalDownloadTime') ?? 'No download time available';
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'Info',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold, // Make the title bold
-            decoration: TextDecoration.underline, // Add underline to the title
-          ),
-        ),
-
-        centerTitle: true,
-        backgroundColor: Color(0xFF242935),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFF242935),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFF4D7DF5)), // Add black border
-                    borderRadius: BorderRadius.circular(8), // Optional: Add border radius for rounded corners
-                  ),
-                  padding: EdgeInsets.all(8), // Optional: Add padding for space around the column
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Protocols last downloaded: ',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                      SizedBox(height: 10),
-                      FutureBuilder<String>(
-                        future: getDownloadTime(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error loading download time');
-                          } else {
-                            String formattedTime = snapshot.data != null
-                                ? DateFormat('HH:mm on MM/dd.').format(DateTime.parse(snapshot.data!))
-                                : 'No download time available';
-
-                            return Text(
-                              formattedTime,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(25.0),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0), // Padding for this text
-                    child: Text(
-                      "North Carolina EMS Protocol Hub is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
-                          "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
-                          "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates will continue to be made for this app to improve user interface. "
-                          "Joining and using this apps service is free. "
-                          "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
-                          "\nVersion updated 9/09/24\n\n"
-                          "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
-                          "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
-                          "\nPayment will be charged to users Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"
-                          "Account will be charged for renewal within 24 hours prior to the end of the current period, and identify the cost of the renewal.\n"
-                          'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
-                          "If the user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        // Add more style properties as needed
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 25), // Spacing
-            Center(
-              child: Column (
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(0), // Padding for "Contact" button
-                    child: Container(
-                      width: 250.0, // Set your desired width here
-                      child: ElevatedButton(
-                        style: commonButtonStyle,
-                        onPressed: () {
-                          launchUrl(emailLaunchUri);
-                        },
-                        child: Text(
-                          'Contact',
-                          style: TextStyle(color: Color(0xFF00FFFF)), // Change text color here
-                        ),
-                      ),
-                    ),
-                  ), // 10 pixels of padding below "Contact" button// 10 pixels of padding below "Contact" button
-                  Padding(
-                    padding: EdgeInsets.all(10), // Padding for "Donate" button
-                    child: Container(
-                      width: 250.0, // Set your desired width here
-                      child: ElevatedButton(
-                        style: commonButtonStyle,
-                        onPressed: isLoading ? null : fetchOffers,
-                        child: Text(
-                          'Support and remove ads',
-                          style: TextStyle(color: Color(0xFFFFEA00)), // Set the text color to red
-                        ),
-                      ),
-
-                    ),
-
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left:10, right: 10, bottom: 10), // Padding for "Donate" button
-                    child: Container(
-                      width: 250.0, // Set your desired width here
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showPopup(context);
-                        },
-                        style: commonButtonStyle,
-                        child: Text(
-                          'Restore ads',
-                          style: TextStyle(color: Color(0xFF4D7DF5)), // Change text color here
-                        ),
-                      ),
-
-                    ),
-
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-
-      ),
-      bottomNavigationBar: BottomBar(),
-
-    );
-  }
-
   Widget buildEntitlement(Entitlement entitlement) {
     switch (entitlement) {
       case Entitlement.allCourses:
@@ -330,8 +158,6 @@ class InfoState extends State<Info> {
     }
   }
 
-
-
   final Email email = Email(
     body: '*-----Please.include.your.agency.and.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
     subject: 'NC.Protocol.Hub',
@@ -339,8 +165,227 @@ class InfoState extends State<Info> {
     isHTML: false,
   );
 
+  void showInfoAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('App Information'),
+          content: SingleChildScrollView(
+            child: Text(
+              "North Carolina EMS Protocol Hub is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
+                  "Please ensure that every protocol correctly downloaded prior to using app, and please email any errors that need to be fixed.\n\n"
+                  "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
+                  "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates with new features will continue to be made for this app to improve user interface."
+                  "Joining and using this app's service is free. "
+                  "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
+                  "\nVersion updated 9/19/24\n\n"
+                  "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
+                  "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
+                  "\nPayment will be charged to users' Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"
+                  "Account will be charged for renewal within 24 hours prior to the end of the current period, and identify the cost of the renewal.\n"
+                  "Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab."
+                  "If the user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com",
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 
+
+  @override
+  Widget build(BuildContext context) {
+    final commonButtonStyle = ButtonStyles.customButtonStyle(context).copyWith(
+      // Set your common button style properties here
+      // For example, you can set the background color
+      backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),);
+    final entitlement = context.watch<RevenueCatProvider>().entitlement;
+    Future<String> getDownloadTime() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // Retrieve the value associated with the key 'globalDownloadTime'
+      return prefs.getString('globalDownloadTime') ?? 'No download time available';
+    }
+
+    return Scaffold(
+
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Info',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold, // Make the title bold
+            decoration: TextDecoration.underline, // Add underline to the title
+          ),
+        ),
+
+        centerTitle: true,
+        backgroundColor: Color(0xFF242935),
+      ),
+
+        body: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF242935),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF4D7DF5)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: EdgeInsets.all(16), // Increased padding for balance
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        Text(
+                          'Protocols last downloaded:',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        FutureBuilder<String>(
+                          future: getDownloadTime(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error loading download time', style: TextStyle(color: Colors.red));
+                            } else {
+                              String formattedTime = snapshot.data != null
+                                  ? DateFormat('HH:mm on MM/dd.').format(DateTime.parse(snapshot.data!))
+                                  : 'No download time available';
+
+                              return Text(
+                                formattedTime,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                              );
+                            }
+                          },
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 50), // Even spacing between sections
+              Center(
+                child: ElevatedButton(
+                  style: commonButtonStyle.copyWith(
+                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50, vertical: 0)),
+                  ),
+                  onPressed: () {
+                    showInfoAlert(context);
+                  },
+                  child: const Text('App Information',
+                    style: TextStyle(color: Color(0xFF00FFFF)),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 50), // Increased spacing for visual separation
+              Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 0), // Consistent vertical padding for buttons
+                      child: Container(
+                        width: 250.0,
+                        child: ElevatedButton(
+                          style: commonButtonStyle.copyWith(
+                            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10)),
+                          ),
+                          onPressed: () {
+                            launchUrl(emailLaunchUri);
+                          },
+                          child: Text(
+                            'Contact',
+                            style: TextStyle(color: Color(0xFF639BDC)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 50),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10), // Consistent vertical padding for buttons
+                      child: Container(
+                        width: 250.0,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xFFC0C0C0), // Gold border color
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFFFD700).withOpacity(0.1), // Glowing effect
+                              spreadRadius: 2,
+                              blurRadius: 20,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ElevatedButton(
+                          style: commonButtonStyle.copyWith(
+                            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 14)),
+                          ),
+                          onPressed: isLoading ? null : fetchOffers,
+                          child: Text(
+                            'Support App!',
+                            style: TextStyle(color: Color(0xFFFFEA00)),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                    SizedBox(height: 50),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10), // Consistent vertical padding for buttons
+                      child: Container(
+                        width: 250.0,
+                        child: ElevatedButton(
+                          style: commonButtonStyle.copyWith(
+                            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 14)),
+                          ),
+                          onPressed: () {
+                            _showPopup(context);
+                          },
+                          child: Text(
+                            'Restore ads',
+                            style: TextStyle(color: Color(0xFF4D7DF5)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+
+        bottomNavigationBar: BottomBar(),
+
+    );
+  }
 
 
 
