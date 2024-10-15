@@ -35,10 +35,10 @@ class _TimeStampWidgetState extends State<TimeStampWidget> {
     ],
 
     //Airway
-    ['King/BIAD Airway','BMV','ET Tube','Nasal Cannula','NRB','Other'],
+    ['King/i-Gel Airway', 'BIAD', 'BMV','ET Tube','Nasal Cannula','NRB','Other'],
 
     //Procedures
-    ['12-Lead ECG', 'BIAD - Combitube', 'BIAD - I-Gel', 'BIAD - KING', 'BIAD - LMA', 'Capnography', 'Cardioversion', 'Cricothyrotomy',
+    ['12-Lead ECG', 'Capnography', 'Cardioversion', 'Cricothyrotomy',
       'Defibrillation', 'Drug Assisted Airway', 'Endotracheal Tube Introducer', 'Foreign Body Obstruction', 'Intraosseous IV',
       'Intubation CO2 Detector', 'Intubation - Nasal', 'Intubation - Oral', 'IV', 'Laryngoscopy - Video', 'Mechanical CPR', 'Pacing',
       'Tracheostomy Tube Change'],

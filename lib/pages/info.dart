@@ -22,7 +22,6 @@ String? encodeQueryParameters(Map<String, String> params) {
 }
 
 
-
 class Info extends StatefulWidget {
   const Info({Key? key}) : super(key: key);
 
@@ -32,8 +31,8 @@ class Info extends StatefulWidget {
 
 class InfoState extends State<Info> {
 
-
   bool isLoading = false;
+  bool app_supporter = false;
 
   Widget buildEntitlement(Entitlement entitlement) {
     switch (entitlement) {
@@ -87,36 +86,9 @@ class InfoState extends State<Info> {
     // Retrieve the value associated with the key 'globalDownloadTime'
     return prefs.getString('globalDownloadTime') ?? 'No download time available';
   }
-  Future fetchOffers() async {
-    final offerings = await Purchases.getOfferings();
-    if (!mounted) return;
 
-    if (offerings.current == null) {
-      const snackBar = SnackBar(content: Text('No Plans Found'));
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else {
-      final packages = offerings.current!.availablePackages;
 
-      Utils.showSheet(
-        context,
-            (context) => PaywallWidget(
-          packages: packages,
-          title: '⭐  Remove Ads ⭐',
-          description: 'Payment will be charged to users Apple account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period'
-              'Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal'
-              'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
-              'If user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com',
-          onClickedPackage: (package) async {
-            await PurchaseApi.purchasePackage(package);
-            if (!mounted) return;
-
-            Navigator.pop(context);
-          },
-        ),
-      );
-    }
-  }
 
   final Uri emailLaunchUri = Uri(
     scheme: 'mailto',
@@ -126,37 +98,6 @@ class InfoState extends State<Info> {
       'body': 'Please include device type (Android, iOS, Desktop) and add questions, comments, or concerns below.'
     }),
   );
-  _launchEmail(BuildContext context) async {
-    final Uri _emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'ncprotocols@gmail.com', // Replace with your email address
-      queryParameters: {
-        'subject': 'NC.Protocol.Hub',
-        'body': '*-----Please.include.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
-      },
-    );
-
-    if (await canLaunch(_emailLaunchUri.toString())) {
-      await launch(_emailLaunchUri.toString());
-    } else {
-      // Handle error: Unable to launch the email
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Unable to open the email client.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator of;(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
 
   final Email email = Email(
     body: '*-----Please.include.your.agency.and.the.type.of.phone.you.have.(iOS/Android).in.your.reply-----*',
@@ -179,7 +120,7 @@ class InfoState extends State<Info> {
                   "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates with new features will continue to be made for this app to improve user interface."
                   "Joining and using this app's service is free. "
                   "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
-                  "\nVersion updated 9/19/24\n\n"
+                  "\nVersion updated 10/15/24\n\n"
                   "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
                   "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
                   "\nPayment will be charged to users' Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"
@@ -201,13 +142,42 @@ class InfoState extends State<Info> {
     );
   }
 
+  Future fetchOffers() async {
+    final offerings = await Purchases.getOfferings();
+    if (!mounted) return;
+
+    if (offerings.current == null) {
+      const snackBar = SnackBar(content: Text('No Plans Found'));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final packages = offerings.current!.availablePackages;
+
+      Utils.showSheet(
+        context,
+            (context) => PaywallWidget(
+          packages: packages,
+          title: '⭐  Support Development ⭐',
+          description: 'Payment will be charged to users Apple/Google account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period'
+              'Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal'
+              'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
+              'If user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com',
+          onClickedPackage: (package) async {
+            await PurchaseApi.purchasePackage(package);
+            if (!mounted) return;
+
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
+
     final commonButtonStyle = ButtonStyles.customButtonStyle(context).copyWith(
-      // Set your common button style properties here
-      // For example, you can set the background color
       backgroundColor: MaterialStateProperty.all(Color(0xFF242935)),);
     final entitlement = context.watch<RevenueCatProvider>().entitlement;
     Future<String> getDownloadTime() async {
@@ -276,8 +246,7 @@ class InfoState extends State<Info> {
                               );
                             }
                           },
-                        ),
-
+                        )
                       ],
                     ),
                   ),
@@ -347,7 +316,7 @@ class InfoState extends State<Info> {
                           ),
                           onPressed: isLoading ? null : fetchOffers,
                           child: Text(
-                            'Support App!',
+                            'Support Development',
                             style: TextStyle(color: Color(0xFFFFEA00)),
                           ),
                         ),
@@ -386,8 +355,6 @@ class InfoState extends State<Info> {
 
     );
   }
-
-
 
 
 }
