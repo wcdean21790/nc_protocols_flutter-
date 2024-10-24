@@ -12,13 +12,13 @@ class Coins {
 
 class PurchaseApi {
 
-  static PurchasesConfiguration _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'testUser3';
+  static PurchasesConfiguration _configuration = PurchasesConfiguration('')..appUserID = 'Oct2024';
 
   static Future init() async {
     if (Platform.isAndroid) {
-      _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'testUser3';
+      _configuration = PurchasesConfiguration('goog_ddKETmScjCJwnxZwxYBcwDoFhbH')..appUserID = 'Android_Oct2024';
     } else if (Platform.isIOS) {
-      _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'testUser3';
+      _configuration = PurchasesConfiguration('appl_TsgDckZzHJUlHVWMbVzrXgBAaba')..appUserID = 'ios_Oct2024';
     }
     await Purchases.configure(_configuration);
   }
@@ -49,10 +49,12 @@ class PurchaseApi {
     try {
       await Purchases.purchasePackage(package);
       final prefs = await SharedPreferences.getInstance();
+      print("successful purchase");
       prefs.setString('globalPurchaseAds', "True" );
       GlobalVariables.globalPurchaseAds = "True";
       return true;
     } catch (e) {
+      print("NOT a successful purchase");
       return false;
     }
   }
