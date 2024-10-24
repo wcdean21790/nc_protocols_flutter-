@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -14,6 +14,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
+
+
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +63,13 @@ class _MyAppState extends State<MyApp> {
     _createBannerAd();
     _createInterstitialAd();
     initializeAppDocumentsDirectory();
+    //Remove this method to stop OneSignal Debugging
+    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
+    OneSignal.initialize("<a06e33e4-84d5-405f-9ab2-4c15e5654056>");
+
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    OneSignal.Notifications.requestPermission(true);
   }
 
   Future<void> initializeAppDocumentsDirectory() async {

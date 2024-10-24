@@ -179,7 +179,7 @@ class InfoState extends State<Info> {
                   "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates with new features will continue to be made for this app to improve user interface."
                   "Joining and using this app's service is free. "
                   "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
-                  "\nVersion updated 9/19/24\n\n"
+                  "\nVersion updated 10/24/24\n\n"
                   "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
                   "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
                   "\nPayment will be charged to users' Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"

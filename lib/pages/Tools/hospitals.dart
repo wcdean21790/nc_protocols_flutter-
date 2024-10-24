@@ -95,6 +95,7 @@ class _HospitalsState extends State<Hospitals> {
     hospitals.sort((a, b) => a.name.compareTo(b.name));
 
     return Scaffold(
+
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
@@ -111,6 +112,7 @@ class _HospitalsState extends State<Hospitals> {
         centerTitle: true,
         backgroundColor: Color(0xFF242935),
       ),
+
       body: Column(
         children: [
           Expanded(
@@ -156,12 +158,12 @@ class _HospitalsState extends State<Hospitals> {
         text: hospital.name,
         options: FFButtonOptions(
           alignment: Alignment.center,
-          height: 40.0,
+          height: 50.0,
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
-          color: Color(0xFF242935),
+          color: Color(0xFF639BDC),
           textStyle: TextStyle(
-            color: Color(0xFFFFFFFF),
-            fontSize: 14,
+            color: Color(0xFF000000),
+            fontSize: 18,
           ),
           elevation: 3.0,
           borderSide: BorderSide(
