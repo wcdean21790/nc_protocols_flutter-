@@ -290,7 +290,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
@@ -304,7 +304,7 @@ class _CategoryListViewWidgetState extends State<CategoryListViewWidget> {
     }
   }
   void _createBannerAd() {
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       _banner = BannerAd(
         size: AdSize.fullBanner,
         adUnitId: AdMobService.bannerAdUnitId!,
@@ -580,7 +580,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
@@ -595,7 +595,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
   }
 
   void _createBannerAd() {
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       _banner = BannerAd(
         size: AdSize.fullBanner,
         adUnitId: AdMobService.bannerAdUnitId!,

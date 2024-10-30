@@ -124,6 +124,47 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
     );
   }
 
+  Future<bool> showRestrictedFeatureDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Restricted Feature'),
+          content: Text(
+            'This feature requires an in-app purchase to be enabled. Please purchase to proceed.',
+          ),
+          actions: [
+            // "OK" Button to close the dialog without proceeding
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false
+              },
+              child: Text('OK'),
+            ),
+            // "Support" Button to initiate the purchase
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true and proceed with purchase
+                fetchOffers(); // Call fetchOffers to show purchase options
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent, // Button color
+              ),
+              child: Text(
+                'Support',
+                style: TextStyle(
+                  color: Colors.white, // Set button text color
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    return result ?? false; // Default to false if dialog is dismissed
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,82 +247,41 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                     SizedBox(height: 10), // Optional space at the top
 
                     // Button: Phone Numbers
+                    // Example for "Phone Numbers" button
                     SizedBox(
-                      width: 250, // Set the button width
+                      width: 250,
                       child: ElevatedButton(
                         onPressed: () async {
-                          // Debug print statements
-                          print("Test1");
-
-                          // Load globalPurchaseAds value from SharedPreferences
                           final prefs = await SharedPreferences.getInstance();
                           bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
 
-                          // Debugging print to verify the value
-                          print("globalPurchaseAds value from SharedPreferences: $globalPurchaseSupport");
-
-                          // Check if the purchase status is not set (null) or false
+                          // Check if the feature is restricted
                           if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
-                            // Show dialog indicating that the purchase is required
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Restricted Feature'),
-                                  content: Text(
-                                    'This feature requires an in-app purchase to be enabled. Please purchase to proceed.',
-                                  ),
-                                  actions: [
-                                    // "OK" Button to close the dialog
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('OK'),
-                                    ),
-                                    // "Support" Button to initiate the purchase
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog before showing the purchase options
-                                        fetchOffers(); // Call fetchOffers to show purchase options
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueAccent, // Button color
-                                      ),
-                                      child: Text(
-                                        'Support',
-                                        style: TextStyle(
-                                          color: Colors.white, // Set button text color
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                            final proceed = await showRestrictedFeatureDialog(context);
+                            if (!proceed) return; // Stop if user did not proceed
+                          }
+
+                          // Continue with the normal action if purchase is allowed or user proceeds
+                          fetchPhoneNumbers();
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return PhoneNumbersListView();
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(0.0, 1.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
                                 );
                               },
-                            );
-                          } else {
-                            // If purchase is done, proceed with the normal action
-                            fetchPhoneNumbers();
-                            Navigator.of(context).push(
-                              PageRouteBuilder(
-                                pageBuilder: (context, animation, secondaryAnimation) {
-                                  return PhoneNumbersListView();
-                                },
-                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                  const begin = Offset(0.0, 1.0);
-                                  const end = Offset.zero;
-                                  const curve = Curves.ease;
-
-                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                              ),
-                            );
-                          }
+                            ),
+                          );
                         },
                         style: ButtonStyles.customButtonStyle(context),
                         child: Text(
@@ -296,13 +296,24 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
 
 
 
+
                     SizedBox(height: 10),
 
                     // Button: Directions
                     SizedBox(
                       width: 250, // Set the button width
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                          // Check if the feature is restricted
+                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                            final proceed = await showRestrictedFeatureDialog(context);
+                            if (!proceed) return; // Stop if user did not proceed
+                          }
+
+                          // If access is allowed, show WarningDialog and continue as usual
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -342,13 +353,24 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         ),
                       ),
                     ),
+
                     SizedBox(height: 10),
 
                     // Button: Time Stamper
                     SizedBox(
                       width: 250, // Set the button width
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                          // Check if the feature is restricted
+                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                            final proceed = await showRestrictedFeatureDialog(context);
+                            if (!proceed) return; // Stop if user did not proceed
+                          }
+
+                          // Proceed to TimeStampWidget if the user has access
                           Navigator.of(context).push(
                             PageRouteBuilder(
                               pageBuilder: (context, animation, secondaryAnimation) {
@@ -379,13 +401,24 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         ),
                       ),
                     ),
+
                     SizedBox(height: 10),
 
-                    // Button: Calculations
+                    // Button: Tempo Tool
                     SizedBox(
                       width: 250, // Set the button width
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                          // Check if the feature is restricted
+                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                            final proceed = await showRestrictedFeatureDialog(context);
+                            if (!proceed) return; // Stop if user did not proceed
+                          }
+
+                          // Proceed to BPMCalculator if the user has access
                           Navigator.of(context).push(
                             PageRouteBuilder(
                               pageBuilder: (context, animation, secondaryAnimation) {
@@ -416,7 +449,60 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20), // Optional space at the bottom
+
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: 250, // Set the button width
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.grey[900], // Set background color of the dialog
+                                title: Text(
+                                  "Feature Coming Soon",
+                                  style: TextStyle(
+                                    color: Colors.white, // Set title font color
+                                  ),
+                                ),
+                                content: Text(
+                                  "This experimental feature will be coming soon and is a supplemental addition to study your protocols with the use of AI. "
+                                      "This app is not responsible for any incorrect information generated within this experimental feature.",
+                                  style: TextStyle(
+                                    color: Colors.white70, // Set content font color
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Close the dialog
+                                    },
+                                    child: Text(
+                                      "OK",
+                                      style: TextStyle(
+                                        color: Colors.blueAccent, // Set action button font color
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ButtonStyles.customButtonStyle(context),
+                        child: Text(
+                          "ProStudy",
+                          style: TextStyle(
+                            color: Color(0xFF8A2BE2),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+
+                    ),
+
+            SizedBox(height: 50),// Optional space at the bottom
                   ],
                 ),
 
@@ -427,6 +513,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
               ],
             ),
           ),
+
         ),
 
 
@@ -436,13 +523,14 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
 
 
         // Bottom Navigation Bar
+
       bottomNavigationBar: BottomBar(),
     );
   }
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
@@ -618,7 +706,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
@@ -632,7 +720,7 @@ class _SubfolderContentsPageState extends State<SubfolderContentsPage> {
     }
   }
   void _createBannerAd() {
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       _banner = BannerAd(
         size: AdSize.fullBanner,
         adUnitId: AdMobService.bannerAdUnitId!,
@@ -821,7 +909,7 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
   }
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(

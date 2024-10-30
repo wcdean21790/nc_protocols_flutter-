@@ -60,12 +60,27 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
     _createBannerAd();
     _createInterstitialAd();
-    initializeAppDocumentsDirectory();
+    await initializeAppDocumentsDirectory();
+
+    // Await the initialization to ensure Purchases is configured before checking subscription
+    await PurchaseApi.init();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkFirstTimeOpen(); // Ensure that this is called after everything is ready
+      _checkSubscriptionStatus(); // Check the subscription status each time app opens
     });
+  }
+
+
+  Future<void> _checkSubscriptionStatus() async {
+    // This will refresh purchase information and update your local variables if needed
+    await PurchaseApi.refreshPurchaseInfo();
   }
 
   Future<void> initializeAppDocumentsDirectory() async {
@@ -107,8 +122,8 @@ class _MyAppState extends State<MyApp> {
       // Show alert dialog if it's the first time opening the app
       _showFirstTimeDialog();
 
-      // Set 'First_Time_Open' to false so this doesn't happen again
-      await prefs.setBool('First_Time_Open', true);
+      // Set 'First_Time_Open' to FALSE so user DOES NOT see dialog.
+      await prefs.setBool('First_Time_Open', false);
     }
   }
 

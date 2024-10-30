@@ -207,7 +207,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
   void _showInterstitialAd() {
 
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
 
       if (_interstitialAd != null) {
         _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(

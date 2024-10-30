@@ -81,14 +81,13 @@ class InfoState extends State<Info> {
       },
     );
   }
+
+
   Future<String> getDownloadTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Retrieve the value associated with the key 'globalDownloadTime'
     return prefs.getString('globalDownloadTime') ?? 'No download time available';
   }
-
-
-
 
   final Uri emailLaunchUri = Uri(
     scheme: 'mailto',

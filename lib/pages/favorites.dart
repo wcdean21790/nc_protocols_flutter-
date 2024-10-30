@@ -155,7 +155,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
@@ -169,7 +169,7 @@ class _FavoriteProtocolsState extends State<FavoriteProtocols> {
     }
   }
   void _createBannerAd() {
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       _banner = BannerAd(
         size: AdSize.fullBanner,
         adUnitId: AdMobService.bannerAdUnitId!,

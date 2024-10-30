@@ -199,7 +199,7 @@ class _BottomBarState extends State<BottomBar> {
 
   void _showInterstitialAd() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       if (_interstitialAd != null) {
         _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
           onAdDismissedFullScreenContent: (ad) {

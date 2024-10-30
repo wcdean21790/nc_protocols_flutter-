@@ -46,19 +46,11 @@ class PurchaseApi {
   // Function to initiate a purchase of a specific package
   static Future<bool> purchasePackage(Package package) async {
     try {
+      print("Attempting to purchase package...");
       await Purchases.purchasePackage(package);
-      final prefs = await SharedPreferences.getInstance();
       print("Successful purchase");
 
-      // Update globalPurchaseAds to true, indicating the ads are disabled
-      prefs.setBool('globalPurchaseAds', true);
-
-      // Update globalPurchaseSupport to true, indicating the support feature is purchased
-      prefs.setBool('globalPurchaseSupport', true);
-      print("Successful app supporter");
-
-      Future.delayed(1500 as Duration);
-      // Refresh customer info after purchase
+      // Refresh customer info after purchase to verify subscription status
       await refreshPurchaseInfo();
 
       return true;
@@ -68,26 +60,52 @@ class PurchaseApi {
     }
   }
 
-
   // Manually refresh purchaser information, useful to check the latest subscription status
   static Future<void> refreshPurchaseInfo() async {
     try {
+      print("Attempting to refresh customer info...");
+      await Purchases.syncPurchases(); // Force synchronization with server
       final purchaserInfo = await Purchases.getCustomerInfo();
-      final hasAccess = purchaserInfo.entitlements.all['entlf356705c4b']?.isActive ?? false;
+      print("Customer info refreshed: ${purchaserInfo.toString()}");
 
+      // Log each entitlement for debugging purposes
+      purchaserInfo.entitlements.all.forEach((key, entitlement) {
+        print("Entitlement ID: $key, Active: ${entitlement.isActive}");
+      });
+
+      // Correctly identify the entitlement to check ('No ads')
+      final hasAccess = purchaserInfo.entitlements.all['No ads']?.isActive ?? false;
+      print("Just checked for entitlement access: $hasAccess");
+
+      // Update SharedPreferences with the new subscription status
       final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('globalPurchaseSupport', hasAccess);
+      await prefs.setBool('globalPurchaseAds', hasAccess);  // Update ads status
+
+      // Update global variables
+      GlobalVariables.globalPurchaseAds = hasAccess;
+
+      // Additional debug logs to verify changes
+      print("Updated SharedPreferences: globalPurchaseSupport = ${prefs.getBool('globalPurchaseSupport')}");
+      print("Updated SharedPreferences: globalPurchaseAds = ${prefs.getBool('globalPurchaseAds')}");
+      print("GlobalVariables updated: globalPurchaseAds = ${GlobalVariables.globalPurchaseAds}");
+
       if (hasAccess) {
-        prefs.setBool('globalPurchaseSupport', true);
-        GlobalVariables.globalPurchaseAds = true; // Corrected assignment to bool
         print("Subscription is active.");
       } else {
-        prefs.setBool('globalPurchaseSupport', false);
-        GlobalVariables.globalPurchaseAds = false; // Corrected assignment to bool
-        print("Subscription has been cancelled or expired.");
+        print("Subscription is inactive.");
       }
+
+      // If using a provider, notify it about the subscription status change
+      // Example if using ChangeNotifierProvider:
+      // final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+      // subscriptionProvider.updateSubscriptionStatus(hasAccess);
+
     } catch (e) {
       print("Failed to refresh purchase info: $e");
     }
   }
+
+
 
 }

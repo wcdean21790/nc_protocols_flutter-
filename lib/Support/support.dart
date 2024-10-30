@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Support {
   // List of variables that will be loaded at startup
-  static const String appName = 'MyApp';
+  //static const String appName = 'MyApp';
 
   // Default values
   static bool firstTimeOpen = true;
@@ -22,11 +22,11 @@ class Support {
   }
 
   // Method to set and save 'globalPurchaseAds' value using SharedPreferences
-  static Future<void> setGlobalPurchaseAds(bool value) async {
+ /* static Future<void> setGlobalPurchaseAds(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('globalPurchaseSupport', value);
     globalPurchaseSupport = value;
-  }
+  } */
 
   // Method to load 'globalPurchaseAds' value using SharedPreferences
   static Future<void> loadGlobalPurchaseAds() async {

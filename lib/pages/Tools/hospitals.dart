@@ -57,7 +57,7 @@ class _HospitalsState extends State<Hospitals> {
 
   Widget buildAdContainer() {
     print("Ad Status: ${GlobalVariables.globalPurchaseAds}");
-    if (GlobalVariables.globalPurchaseAds != "True") {
+    if (GlobalVariables.globalPurchaseAds != true) {
       return _banner == null
           ? Container()
           : Container(
