@@ -30,7 +30,7 @@ class Info extends StatefulWidget {
 }
 
 class InfoState extends State<Info> {
-
+  bool? globalPurchaseSupport;
   bool isLoading = false;
   bool app_supporter = false;
 
@@ -106,6 +106,14 @@ class InfoState extends State<Info> {
     isHTML: false,
   );
 
+  // Method to load 'globalPurchaseSupport' from SharedPreferences
+  Future<void> _loadSupportStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      globalPurchaseSupport = prefs.getBool('globalPurchaseSupport') ?? false;
+    });
+  }
+
   void showInfoAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -116,11 +124,10 @@ class InfoState extends State<Info> {
             child: Text(
               "North Carolina EMS Protocol Hub is NOT intended for diagnosing or direct treatment orders, and is to be ONLY used as reference to the state or your local protocols.\n\n"
                   "Please ensure that every protocol correctly downloaded prior to using app, and please email any errors that need to be fixed.\n\n"
-                  "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding your county protocols to the app. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
-                  "Ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates with new features will continue to be made for this app to improve user interface."
-                  "Joining and using this app's service is free. "
+                  "This app has been designed to display every county's protocols if they are available. Please have an admin representative send an email through the app to discuss adding specific agency protocols to the app for free. You may now download protocols when an update is released through the 'Settings' icon on the top right of the homepage. Upon downloading, the specific protocols will be available to be accessed even when no internet is available.\n\n"
+                  "Subscription benefits and ads are in select areas to help cover the fees to create and host the app, and they will never interfere when trying to view a protocol. Updates with new features will continue to be made for this app to improve user interface."
                   "For questions, comments, or concerns, please email: ncprotocols@gmail.com or through the 'Contact' button in 'Info'.\n"
-                  "\nVersion updated 10/15/24\n\n"
+                  "\nVersion updated 10/29/24\n\n"
                   "\n(Privacy Policy: https://www.freeprivacypolicy.com/live/a056dab4-49f8-491e-85a1-1078cad34b8f) \n "
                   "\n(Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) \n "
                   "\nPayment will be charged to users' Apple account at confirmation of purchase. The subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.\n"
@@ -160,8 +167,8 @@ class InfoState extends State<Info> {
           title: '⭐  Support Development ⭐',
           description: 'Payment will be charged to users Apple/Google account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period'
               'Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal'
-              'Subscriptions may be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App Store or by opening up the Settings app -> click their name at the top above “Apple ID, iCloud+, Media & Purchases.” -> click the Subscriptions tab.'
-              'If user needs to restore their subscription, they may reach out to customer support at ncprotocols@gmail.com',
+              'Subscriptions are be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App/Play Store or by opening up the device Settings -> Search for device subscriptions.'
+              'If user needs to restore their subscription, go through device store first, then user may reach out to customer support at ncprotocols@gmail.com',
           onClickedPackage: (package) async {
             await PurchaseApi.purchasePackage(package);
             if (!mounted) return;
@@ -173,6 +180,14 @@ class InfoState extends State<Info> {
     }
   }
 
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSupportStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +261,12 @@ class InfoState extends State<Info> {
                               );
                             }
                           },
-                        )
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'App Supporter: $globalPurchaseSupport',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ],
                     ),
                   ),

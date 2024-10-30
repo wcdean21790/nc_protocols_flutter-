@@ -233,23 +233,3 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   }
 }
-
-
-
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GlobalVariables.initialize(); // Initialize global variables from SharedPreferences
-
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Your App Title',
-      home: HomePageWidget(), // Your app's home page
-    );
-  }
-}
