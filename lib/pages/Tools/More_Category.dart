@@ -7,11 +7,15 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../api/purchase_api.dart';
 import '../../flutter_flow/flutter_flow_widgets.dart';
 import '../../globals.dart';
 import '../../service/ad_mob_service.dart';
+import '../../utils.dart';
+import '../../widget/paywall_widget.dart';
 import '../home_page/navigationbar.dart';
 import 'hospitals.dart';
 
@@ -39,6 +43,39 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
     _databaseReference = FirebaseDatabase.instance.reference();
     fetchDataFromLocalDirectory();
     _createBannerAd();
+  }
+
+
+  //Revenue cat offers
+  Future fetchOffers() async {
+    final offerings = await Purchases.getOfferings();
+    if (!mounted) return;
+
+    if (offerings.current == null) {
+      const snackBar = SnackBar(content: Text('No Plans Found'));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final packages = offerings.current!.availablePackages;
+
+      Utils.showSheet(
+        context,
+            (context) => PaywallWidget(
+          packages: packages,
+          title: '⭐  Support Development ⭐',
+          description: 'Payment will be charged to users Apple/Google account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period'
+              'Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal'
+              'Subscriptions are be managed by the user and auto-renewal may be turned off or the subscription canceled by the user either through App/Play Store or by opening up the device Settings -> Search for device subscriptions.'
+              'If user needs to restore their subscription, go through device store first, then user may reach out to customer support at ncprotocols@gmail.com',
+          onClickedPackage: (package) async {
+            await PurchaseApi.purchasePackage(package);
+            if (!mounted) return;
+
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
   }
 
   void fetchDataFromLocalDirectory() async {
@@ -172,27 +209,79 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                     SizedBox(
                       width: 250, // Set the button width
                       child: ElevatedButton(
-                        onPressed: () {
-                          fetchPhoneNumbers();
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) {
-                                return PhoneNumbersListView();
-                              },
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                const begin = Offset(0.0, 1.0);
-                                const end = Offset.zero;
-                                const curve = Curves.ease;
+                        onPressed: () async {
+                          // Debug print statements
+                          print("Test1");
 
-                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          // Load globalPurchaseAds value from SharedPreferences
+                          final prefs = await SharedPreferences.getInstance();
+                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
 
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
+                          // Debugging print to verify the value
+                          print("globalPurchaseAds value from SharedPreferences: $globalPurchaseSupport");
+
+                          // Check if the purchase status is not set (null) or false
+                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                            // Show dialog indicating that the purchase is required
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Restricted Feature'),
+                                  content: Text(
+                                    'This feature requires an in-app purchase to be enabled. Please purchase to proceed.',
+                                  ),
+                                  actions: [
+                                    // "OK" Button to close the dialog
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                    // "Support" Button to initiate the purchase
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close the dialog before showing the purchase options
+                                        fetchOffers(); // Call fetchOffers to show purchase options
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueAccent, // Button color
+                                      ),
+                                      child: Text(
+                                        'Support',
+                                        style: TextStyle(
+                                          color: Colors.white, // Set button text color
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               },
-                            ),
-                          );
+                            );
+                          } else {
+                            // If purchase is done, proceed with the normal action
+                            fetchPhoneNumbers();
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) {
+                                  return PhoneNumbersListView();
+                                },
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  const begin = Offset(0.0, 1.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.ease;
+
+                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          }
                         },
                         style: ButtonStyles.customButtonStyle(context),
                         child: Text(
@@ -204,6 +293,9 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         ),
                       ),
                     ),
+
+
+
                     SizedBox(height: 10),
 
                     // Button: Directions

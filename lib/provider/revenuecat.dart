@@ -9,7 +9,6 @@ class RevenueCatProvider extends ChangeNotifier {
     init();
   }
 
-  int coins = 0;
 
   Entitlement _entitlement = Entitlement.free;
   Entitlement get entitlement => _entitlement;
@@ -24,32 +23,12 @@ class RevenueCatProvider extends ChangeNotifier {
   }
 
   Future updatePurchaseStatus() async {
+    print("Revenucat.dart)");
     final customerInfo = await Purchases.getCustomerInfo();
 
     final entitlements = customerInfo.entitlements.active.values.toList();
     _entitlement =
         entitlements.isEmpty ? Entitlement.free : Entitlement.allCourses;
-
-    notifyListeners();
-  }
-
-  void addCoinsPackage(Package package) {
-    switch (package.offeringIdentifier) {
-      case Coins.idCoins10:
-        coins += 10;
-        break;
-      case Coins.idCoins100:
-        coins += 100;
-        break;
-      default:
-        break;
-    }
-
-    notifyListeners();
-  }
-
-  void spend10Coins() {
-    coins -= 10;
 
     notifyListeners();
   }

@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class GlobalVariables {
   static late SharedPreferences _prefs;
 
   static String globalAgencyName = "";
-  static String globalPurchaseAds = "";
   static String globalAgencyLogo = "";
   static String globalAgencyCode = "";
+  static bool globalPurchaseAds = false;  // Changed to `bool` for consistency
   static List<String> globalFavorites = [];
   static List<Color> colorTheme = [Colors.grey, Color(0xFF242935)];
-
-
 
   // Initialize SharedPreferences in a static initializer
   static Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+
     // Load values from SharedPreferences
     globalAgencyName = _prefs.getString('globalAgencyName') ?? "";
     globalAgencyLogo = _prefs.getString('globalAgencyLogo') ?? "";
     globalAgencyCode = _prefs.getString('globalAgencyCode') ?? "";
-    globalPurchaseAds = _prefs.getString('globalPurchaseAds') ?? "";
+
+    // Load globalPurchaseAds from SharedPreferences as a bool
+    globalPurchaseAds = _prefs.getBool('globalPurchaseAds') ?? false;
 
     // Load globalFavorites from SharedPreferences
     final favorites = _prefs.getStringList('globalFavorites');
     if (favorites != null) {
       globalFavorites = favorites;
     }
-
-
   }
 
   // Store global variables in SharedPreferences
@@ -37,7 +35,6 @@ class GlobalVariables {
     await _prefs.setString('globalAgencyName', globalAgencyName);
     await _prefs.setString('globalAgencyLogo', globalAgencyLogo);
     await _prefs.setString('globalAgencyCode', globalAgencyCode);
-    await _prefs.setString('globalPurchaseAds', globalPurchaseAds);
 
     // Store globalFavorites in SharedPreferences
     await _prefs.setStringList('globalFavorites', globalFavorites);

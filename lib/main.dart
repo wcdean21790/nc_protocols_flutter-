@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -15,21 +16,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
 
-
-
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await PurchaseApi.init();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
+
   EasyLoading.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
 
   runApp(
     MultiProvider(
@@ -57,19 +54,18 @@ class _MyAppState extends State<MyApp> {
   InterstitialAd? _interstitialAd;
   BannerAd? _banner;
 
+  // Add a GlobalKey to manage the context safely
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
     _createBannerAd();
     _createInterstitialAd();
     initializeAppDocumentsDirectory();
-    //Remove this method to stop OneSignal Debugging
-    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-
-    OneSignal.initialize("<a06e33e4-84d5-405f-9ab2-4c15e5654056>");
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-    OneSignal.Notifications.requestPermission(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkFirstTimeOpen(); // Ensure that this is called after everything is ready
+    });
   }
 
   Future<void> initializeAppDocumentsDirectory() async {
@@ -102,29 +98,65 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _showInterstitialAd() {
-    if (_interstitialAd != null) {
-      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          ad.dispose();
-          _createInterstitialAd();
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          ad.dispose();
-          _createInterstitialAd();
-        },
-      );
-      _interstitialAd!.show();
-      _interstitialAd = null;
+  Future<void> _checkFirstTimeOpen() async {
+    print("USERs FIRST TIME!");
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstTimeOpen = prefs.getBool('First_Time_Open') ?? true;
+    print('Users first time: $isFirstTimeOpen');
+    if (isFirstTimeOpen) {
+      // Show alert dialog if it's the first time opening the app
+      _showFirstTimeDialog();
+
+      // Set 'First_Time_Open' to false so this doesn't happen again
+      await prefs.setBool('First_Time_Open', true);
     }
   }
+
+  void _showFirstTimeDialog() {
+    // Use the navigatorKey to access the correct context
+    _navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Color(0xFF242935), // Set background color
+            title: Text(
+              'Welcome!',
+              style: TextStyle(color: Colors.white), // Change text color for visibility
+            ),
+            content: Text(
+              'Thank you for installing NC Protocols. Viewing the protocols in this app is a free resource for all users, however, the extra tools provided require payment as this supports further development of the app.\n'
+                  'Please email ncprotocols@gmail.com with any questions, comments, or concerns.',
+              style: TextStyle(color: Colors.white), // Change content text color for visibility
+            ),
+            contentPadding: EdgeInsets.all(16.0),
+            actionsPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            actions: [
+              Center( // Wrap the button in a Center widget
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white), // Set button text color
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: MaterialApp.router(
+      child: MaterialApp(
         title: 'NC Protocols',
+        navigatorKey: _navigatorKey, // Attach the navigator key here
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -139,40 +171,14 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
         ),
         themeMode: _themeMode,
-        routerDelegate: _DummyRouterDelegate(),
-        routeInformationParser: _DummyRouteInformationParser(),
+        home: HomePageWidget(), // Set your home page widget here
         builder: EasyLoading.init(),
       ),
-
     );
   }
 
-
 }
 
-class _DummyRouterDelegate extends RouterDelegate<Object> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Object> {
-  @override
-  Widget build(BuildContext context) {
-    return Navigator(
-      pages: [
-        MaterialPage(child: HomePageWidget()), // Use your actual home page widget here
-      ],
-      onPopPage: (route, result) => false,
-    );
-  }
 
-  @override
-  Future<void> setNewRoutePath(Object configuration) async {}
-
-  @override
-  GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
-}
-
-class _DummyRouteInformationParser extends RouteInformationParser<Object> {
-  @override
-  Future<Object> parseRouteInformation(RouteInformation routeInformation) async {
-    return Object();
-  }
-}
 
 
