@@ -40,7 +40,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
   @override
   void initState() {
     super.initState();
-    _databaseReference = FirebaseDatabase.instance.reference();
+    _databaseReference = FirebaseDatabase.instance.ref();
     fetchDataFromLocalDirectory();
     _createBannerAd();
   }
@@ -131,7 +131,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
         return AlertDialog(
           title: Text('Restricted Feature'),
           content: Text(
-            'This feature requires an in-app purchase to be enabled. Please purchase to proceed.',
+            'This feature requires an in-app purchase to be enabled. Please support development and purchase subscription to proceed.',
           ),
           actions: [
             // "OK" Button to close the dialog without proceeding
@@ -467,7 +467,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                                   ),
                                 ),
                                 content: Text(
-                                  "This experimental feature will be coming soon and is a supplemental addition to study your protocols with the use of AI. "
+                                  "This experimental feature will be coming soon and is a supplemental addition to study the protocols with the use of AI."
                                       "This app is not responsible for any incorrect information generated within this experimental feature.",
                                   style: TextStyle(
                                     color: Colors.white70, // Set content font color
@@ -933,7 +933,7 @@ class _PhoneNumbersListViewState extends State<PhoneNumbersListView> {
   Future<Map<String, String>> fetchPhoneNumbers() async {
     // Replace with your Firebase Database reference path
     DatabaseEvent event = await FirebaseDatabase.instance
-        .reference()
+        .ref()
         .child('Agency_Information')
         .child(GlobalVariables.globalAgencyName)
         .child('Data')

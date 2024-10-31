@@ -42,7 +42,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     Firebase.initializeApp();
     initializeAppDocumentsDirectory();
     _databaseReference =
-        FirebaseDatabase.instance.reference().child('Agency_Information');
+        FirebaseDatabase.instance.ref().child('Agency_Information');
     fetchDataFromFirebase();
     downloadMoreDataFromFirebase();
   }
@@ -275,7 +275,7 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     await Firebase.initializeApp();
 
     DatabaseReference databaseReference =
-    FirebaseDatabase.instance.reference().child('More');
+    FirebaseDatabase.instance.ref().child('More');
 
     try {
       DataSnapshot snapshot = await databaseReference.get();

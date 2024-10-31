@@ -15,18 +15,28 @@ import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase first
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
+  // Initialize OneSignal
+  OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
+
+  // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt
+  OneSignal.Notifications.requestPermission(true);
+
   MobileAds.instance.initialize();
   await PurchaseApi.init();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
-
-  EasyLoading.init();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   runApp(
     MultiProvider(
@@ -77,7 +87,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-
   Future<void> _checkSubscriptionStatus() async {
     // This will refresh purchase information and update your local variables if needed
     await PurchaseApi.refreshPurchaseInfo();
@@ -114,10 +123,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkFirstTimeOpen() async {
-    print("USERs FIRST TIME!");
+    print("USER's FIRST TIME!");
     final prefs = await SharedPreferences.getInstance();
     bool isFirstTimeOpen = prefs.getBool('First_Time_Open') ?? true;
-    print('Users first time: $isFirstTimeOpen');
+    print('User\'s first time: $isFirstTimeOpen');
     if (isFirstTimeOpen) {
       // Show alert dialog if it's the first time opening the app
       _showFirstTimeDialog();
@@ -164,8 +173,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -191,9 +198,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
 }
-
-
-
-

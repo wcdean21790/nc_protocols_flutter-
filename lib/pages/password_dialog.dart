@@ -33,7 +33,7 @@ class PasswordDialog extends StatefulWidget {
 
 class _PasswordDialogState extends State<PasswordDialog> {
   final TextEditingController _passwordController = TextEditingController();
-  final DatabaseReference _databaseRef = FirebaseDatabase.instance.reference().child("NC_Protocols").child(GlobalVariables.globalAgencyName);
+  final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref().child("NC_Protocols").child(GlobalVariables.globalAgencyName);
 
   Future<void> checkPasswordAndPrintData() async {
     final snapshot = await _databaseRef.get();
