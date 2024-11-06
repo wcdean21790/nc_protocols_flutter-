@@ -451,7 +451,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                     ),
 
                     SizedBox(height: 10),
-                    SizedBox(
+                   /* SizedBox(
                       width: 250, // Set the button width
                       child: ElevatedButton(
                         onPressed: () {
@@ -500,7 +500,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                         ),
                       ),
 
-                    ),
+                    ),*/
 
             SizedBox(height: 50),// Optional space at the bottom
                   ],
