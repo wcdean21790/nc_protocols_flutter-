@@ -20,7 +20,14 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase first
-  await Firebase.initializeApp();
+  try {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+} catch (e) {
+  print('Firebase initialization failed: $e');
+  // Handle the error (e.g., show an error dialog or fallback logic)
+}
+
 
 
   // Remove this method to stop OneSignal Debugging
