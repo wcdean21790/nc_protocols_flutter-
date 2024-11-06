@@ -1,5 +1,4 @@
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:n_c_protocols/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +8,7 @@ class PurchaseApi {
 
   // Initialization function to configure Purchases with a unique appUserID
   static Future<void> init() async {
-    // Get a unique appUserID based on Firebase UID or generate a fallback ID
+    // Get a unique appUserID based on a locally generated unique ID
     String appUserID = await _getUniqueUserID();
 
     // Configure Purchases based on platform with the unique appUserID
@@ -98,20 +97,14 @@ class PurchaseApi {
     }
   }
 
-  // Helper function to get a unique user ID, e.g., Firebase UID or generated UUID
+  // Helper function to get a unique user ID (locally generated UUID if no Firebase UID is available)
   static Future<String> _getUniqueUserID() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return user.uid; // Firebase UID if authenticated
-    } else {
-      // Generate a fallback ID if not authenticated
-      final prefs = await SharedPreferences.getInstance();
-      String? fallbackID = prefs.getString('uniqueUserID');
-      if (fallbackID == null) {
-        fallbackID = 'user_${DateTime.now().millisecondsSinceEpoch}';
-        await prefs.setString('uniqueUserID', fallbackID);
-      }
-      return fallbackID;
+    final prefs = await SharedPreferences.getInstance();
+    String? uniqueUserID = prefs.getString('uniqueUserID');
+    if (uniqueUserID == null) {
+      uniqueUserID = 'user_${DateTime.now().millisecondsSinceEpoch}';
+      await prefs.setString('uniqueUserID', uniqueUserID);
     }
+    return uniqueUserID;
   }
 }

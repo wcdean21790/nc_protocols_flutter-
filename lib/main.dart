@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -19,13 +17,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase first
-  try {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-} catch (e) {
-  print('Firebase initialization failed: $e');
-  // Handle the error (e.g., show an error dialog or fallback logic)
-}
 
 
 
