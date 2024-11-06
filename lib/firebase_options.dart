@@ -70,7 +70,7 @@ class DefaultFirebaseOptions {
     projectId: 'ncprotocols-661da',
     databaseURL: 'https://ncprotocols-661da-default-rtdb.firebaseio.com',
     storageBucket: 'ncprotocols-661da.appspot.com',
-    iosBundleId: 'com.mycompany.ncprotocols',
+    iosBundleId: 'com.deanapps.ncstateprotocols',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -80,6 +80,6 @@ class DefaultFirebaseOptions {
     projectId: 'ncprotocols-661da',
     databaseURL: 'https://ncprotocols-661da-default-rtdb.firebaseio.com',
     storageBucket: 'ncprotocols-661da.appspot.com',
-    iosBundleId: 'com.mycompany.nCProtocols.RunnerTests',
+    iosBundleId: 'com.deanapps.ncstateprotocols',
   );
 }
