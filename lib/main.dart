@@ -16,7 +16,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase first
+  
 
 
 
