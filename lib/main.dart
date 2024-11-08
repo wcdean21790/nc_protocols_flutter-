@@ -18,12 +18,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase first
 
-
-
-
-  // Remove this method to stop OneSignal Debugging
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-
   // Initialize OneSignal
   OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
 
@@ -31,6 +25,7 @@ void main() async {
   OneSignal.Notifications.requestPermission(true);
 
   MobileAds.instance.initialize();
+
   await PurchaseApi.init();
   usePathUrlStrategy();
   await GlobalVariables.initialize();
