@@ -12,17 +12,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase first
 
   // Initialize OneSignal
-  OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
+ // OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
 
   // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt
-  OneSignal.Notifications.requestPermission(true);
+ // OneSignal.Notifications.requestPermission(true);
 
   MobileAds.instance.initialize();
 
