@@ -129,7 +129,8 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Color(0xFF242935),
             title: Text('Welcome!', style: TextStyle(color: Colors.white)),
             content: Text(
-              'Thank you for installing NC Protocols. This app is designed to provide you with the best experience.',
+              'Thank you for installing NC Protocol Hub! You must manually download initial protocol set.\n'
+                  'Subscription required for premium content supports continuous development.',
               style: TextStyle(color: Colors.white),
             ),
             actions: [

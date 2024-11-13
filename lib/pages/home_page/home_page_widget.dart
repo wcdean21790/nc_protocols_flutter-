@@ -117,6 +117,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          //Protocols button
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 25.0),
                             child: FFButtonWidget(
@@ -139,7 +140,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 );
                               },
-                              text: 'Protocols',
+                              text: 'Protocol',
                               options: FFButtonOptions(
                                 alignment: Alignment.center,
                                 height: 40.0,
@@ -159,6 +160,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ),
                             ),
                           ),
+                          //More button
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(25.0, 25.0, 25.0, 50.0),
                             child: FFButtonWidget(
@@ -201,6 +203,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ),
                             ),
                           ),
+                          //Image
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Image(
@@ -209,13 +212,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               height: 400.0,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/icon/statelogo.jpg',
-                                  width: 350.0,
-                                  height: 400.0,
-                                  fit: BoxFit.cover,
+                                return Center(
+                                  child: Text(
+                                    'Select protocols through gear icon',
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.bungeeInline( // Change font
+                                      fontSize: 44,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.red, // Adjust color as needed
+                                    ),
+                                  ),
                                 );
                               },
+
                             ),
                           ),
                         ],
