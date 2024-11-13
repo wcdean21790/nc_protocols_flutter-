@@ -59,7 +59,7 @@ class _BottomBarState extends State<BottomBar> {
           // Scrollable navigation bar with buttons
           Scrollbar(
             thickness: 4.0,
-            thumbVisibility: true,
+            thumbVisibility: false,
             controller: _scrollController,
             child: SingleChildScrollView(
               controller: _scrollController,
@@ -246,7 +246,7 @@ class _CustomBottomButtonState extends State<CustomBottomButton> {
         widget.onPressed();
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: _isPressed ? Colors.grey : Colors.transparent,
+        backgroundColor: _isPressed ? Colors.cyan : Colors.transparent,
         elevation: 0, // Remove the button elevation
       ),
       child: Image.asset(
