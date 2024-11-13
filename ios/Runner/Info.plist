@@ -56,21 +56,5 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
-
-    <!-- OneSignal Configuration -->
-    <key>OneSignalAppId</key>
-    <string>YOUR_ONESIGNAL_APP_ID</string>
-
-    <!-- Firebase Cloud Messaging (FCM) for OneSignal Push Notifications -->
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>fetch</string>
-        <string>remote-notification</string>
-    </array>
-
-    <!-- OneSignal Required Key for Notification Settings -->
-    <key>UIUserInterfaceStyle</key>
-    <string>Light</string>
-
 </dict>
 </plist>
