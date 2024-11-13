@@ -50,6 +50,10 @@
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-9944401739416572~8171761388</string>
 
+    <!-- User Tracking Usage Description (iOS 14+) -->
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
+
     <!-- App Transport Security for debugging -->
     <key>NSAppTransportSecurity</key>
     <dict>

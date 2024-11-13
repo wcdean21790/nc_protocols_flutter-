@@ -12,11 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize();
-
+  // Request tracking authorization
+  final status = await AppTrackingTransparency.requestTrackingAuthorization();
   // Initialize OneSignal
  // OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
 

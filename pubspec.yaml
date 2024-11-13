@@ -61,6 +61,7 @@ dependencies:
   will_it_run: ^1.0.4
   firebase_database: ^11.1.4
   cupertino_icons: ^1.0.0
+  app_tracking_transparency: ^2.0.6
 
 
 
