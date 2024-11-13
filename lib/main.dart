@@ -12,10 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:firebase_core/firebase_core.dart'; // Firebase import
-// Import other Firebase services if needed
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
