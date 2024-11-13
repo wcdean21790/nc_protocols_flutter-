@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:n_c_protocols/pages/home_page/home_page_widget.dart';
 import 'package:n_c_protocols/provider/revenuecat.dart';
@@ -13,15 +12,25 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'api/purchase_api.dart';
 import 'globals.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:firebase_core/firebase_core.dart'; // Firebase import
+// Import other Firebase services if needed
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
 
+  // Initialize Firebase
+  await Firebase.initializeApp();
+
+  // Request tracking authorization
   final status = await AppTrackingTransparency.requestTrackingAuthorization();
 
+  // Initialize Mobile Ads SDK
+  await MobileAds.instance.initialize();
+
+  // Initialize other services
   await PurchaseApi.init();
-  usePathUrlStrategy();
   await GlobalVariables.initialize();
 
   runApp(
@@ -30,6 +39,7 @@ void main() async {
         ChangeNotifierProvider<RevenueCatProvider>(
           create: (_) => RevenueCatProvider(),
         ),
+        // Add other providers if needed
       ],
       child: MyApp(),
     ),
@@ -58,10 +68,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _initializeApp() async {
-    _createBannerAd();
-    _createInterstitialAd();
     await initializeAppDocumentsDirectory();
     await PurchaseApi.init();
+    _createBannerAd();
+    _createInterstitialAd();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkFirstTimeOpen();
@@ -121,7 +131,7 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Color(0xFF242935),
             title: Text('Welcome!', style: TextStyle(color: Colors.white)),
             content: Text(
-              'Thank you for installing NC Protocols...',
+              'Thank you for installing NC Protocols. This app is designed to provide you with the best experience.',
               style: TextStyle(color: Colors.white),
             ),
             actions: [
