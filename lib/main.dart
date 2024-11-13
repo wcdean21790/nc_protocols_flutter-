@@ -15,7 +15,7 @@ import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+  await MobileAds.instance.initialize();
 
   // Initialize OneSignal
  // OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
