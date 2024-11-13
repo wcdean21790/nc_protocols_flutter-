@@ -17,15 +17,8 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize();
-  // Request tracking authorization
+
   final status = await AppTrackingTransparency.requestTrackingAuthorization();
-  // Initialize OneSignal
- // OneSignal.initialize("a06e33e4-84d5-405f-9ab2-4c15e5654056");
-
-  // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt
- // OneSignal.Notifications.requestPermission(true);
-
-  MobileAds.instance.initialize();
 
   await PurchaseApi.init();
   usePathUrlStrategy();
@@ -37,7 +30,6 @@ void main() async {
         ChangeNotifierProvider<RevenueCatProvider>(
           create: (_) => RevenueCatProvider(),
         ),
-        // Add other providers if needed
       ],
       child: MyApp(),
     ),
@@ -51,13 +43,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  ThemeMode _themeMode = ThemeMode.system; // Default to system theme
+  ThemeMode _themeMode = ThemeMode.system;
 
   late Directory appDocumentsDirectory;
   InterstitialAd? _interstitialAd;
   BannerAd? _banner;
 
-  // Add a GlobalKey to manage the context safely
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -70,18 +61,15 @@ class _MyAppState extends State<MyApp> {
     _createBannerAd();
     _createInterstitialAd();
     await initializeAppDocumentsDirectory();
-
-    // Await the initialization to ensure Purchases is configured before checking subscription
     await PurchaseApi.init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkFirstTimeOpen(); // Ensure that this is called after everything is ready
-      _checkSubscriptionStatus(); // Check the subscription status each time app opens
+      _checkFirstTimeOpen();
+      _checkSubscriptionStatus();
     });
   }
 
   Future<void> _checkSubscriptionStatus() async {
-    // This will refresh purchase information and update your local variables if needed
     await PurchaseApi.refreshPurchaseInfo();
   }
 
@@ -116,47 +104,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkFirstTimeOpen() async {
-    print("USER's FIRST TIME!");
     final prefs = await SharedPreferences.getInstance();
     bool isFirstTimeOpen = prefs.getBool('First_Time_Open') ?? true;
-    print('User\'s first time: $isFirstTimeOpen');
-    if (isFirstTimeOpen) {
-      // Show alert dialog if it's the first time opening the app
-      _showFirstTimeDialog();
 
-      // Set 'First_Time_Open' to FALSE so user DOES NOT see dialog.
+    if (isFirstTimeOpen) {
+      _showFirstTimeDialog();
       await prefs.setBool('First_Time_Open', false);
     }
   }
 
   void _showFirstTimeDialog() {
-    // Use the navigatorKey to access the correct context
     _navigatorKey.currentState?.push(
       MaterialPageRoute(
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Color(0xFF242935), // Set background color
-            title: Text(
-              'Welcome!',
-              style: TextStyle(color: Colors.white), // Change text color for visibility
-            ),
+            backgroundColor: Color(0xFF242935),
+            title: Text('Welcome!', style: TextStyle(color: Colors.white)),
             content: Text(
-              'Thank you for installing NC Protocols. Viewing the protocols in this app is a free resource for all users, however, the extra tools provided require payment as this supports further development of the app.\n'
-                  'Please email ncprotocols@gmail.com with any questions, comments, or concerns.',
-              style: TextStyle(color: Colors.white), // Change content text color for visibility
+              'Thank you for installing NC Protocols...',
+              style: TextStyle(color: Colors.white),
             ),
-            contentPadding: EdgeInsets.all(16.0),
-            actionsPadding: EdgeInsets.symmetric(horizontal: 16.0),
             actions: [
-              Center( // Wrap the button in a Center widget
+              Center(
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: Colors.white), // Set button text color
-                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
@@ -168,27 +140,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: MaterialApp(
-        title: 'NC Protocols',
-        navigatorKey: _navigatorKey, // Attach the navigator key here
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: _locale,
-        supportedLocales: const [Locale('en', '')],
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-        ),
-        themeMode: _themeMode,
-        home: HomePageWidget(), // Set your home page widget here
-        builder: EasyLoading.init(),
-      ),
+    return MaterialApp(
+      title: 'NC Protocols',
+      navigatorKey: _navigatorKey,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [Locale('en', '')],
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: _themeMode,
+      home: HomePageWidget(),
+      builder: EasyLoading.init(),
     );
   }
 }
