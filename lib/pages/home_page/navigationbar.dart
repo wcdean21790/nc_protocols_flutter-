@@ -54,135 +54,122 @@ class _BottomBarState extends State<BottomBar> {
       width: double.infinity,
       height: 60.0,
       color: Color(0xFF242935),
-      child: Stack(
-        children: [
-          // Scrollable navigation bar with buttons
-          Scrollbar(
-            thickness: 4.0,
-            thumbVisibility: false,
-            controller: _scrollController,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ensures spacing is even
-                children: [
-                  CustomBottomButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              HomePageWidget(),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                            return FadeTransition(opacity: fadeAnimation, child: child);
-                          },
-                        ),
-                      );
-                    },
-                    iconPath: 'assets/images/homeicon.png',
-                    iconSize: iconSize,
-                  ), // Home button
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          bool isWideScreen = constraints.maxWidth > 600; // Threshold for tablet
 
-                  CustomBottomButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                            return FadeTransition(opacity: fadeAnimation, child: child);
-                          },
-                        ),
-                      );
-                    },
-                    iconPath: 'assets/images/protocolsicon.png',
-                    iconSize: iconSize,
-                  ), // Protocol button
+          return Row(
+            mainAxisAlignment: isWideScreen
+                ? MainAxisAlignment.spaceEvenly // Spread on wide screens
+                : MainAxisAlignment.start, // Default for mobile screens
+            children: [
+              if (isWideScreen) Spacer(),
 
-                  CustomBottomButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                            return FadeTransition(opacity: fadeAnimation, child: child);
-                          },
-                        ),
-                      );
-                    },
-                    iconPath: 'assets/icon/more_icon.png',
-                    iconSize: iconSize,
-                  ), // More button
-
-                  CustomBottomButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              FavoriteProtocols(globalFavorites: []),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                            return FadeTransition(opacity: fadeAnimation, child: child);
-                          },
-                        ),
-                      );
-                    },
-                    iconPath: 'assets/images/favicon.png',
-                    iconSize: iconSize,
-                  ), // Favorite button
-
-                  CustomBottomButton(
-                    onPressed: () async {
-                      _showInterstitialAd();
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              Info(),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                            return FadeTransition(opacity: fadeAnimation, child: child);
-                          },
-                        ),
-                      );
-                    },
-                    iconPath: 'assets/images/infoicon.png',
-                    iconSize: iconSize,
-                  ), // Info button
-                ],
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/homeicon.png',
+                iconSize: iconSize,
               ),
-            ),
-          ),
 
-          // Left arrow indicator
-          if (_showLeftArrow)
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: Icon(Icons.arrow_back_ios, color: Colors.white),
-            ),
+              if (isWideScreen) Spacer(),
 
-          // Right arrow indicator
-          if (_showRightArrow)
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Icon(Icons.arrow_forward_ios, color: Colors.white),
-            ),
-        ],
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/protocolsicon.png',
+                iconSize: iconSize,
+              ),
+
+              if (isWideScreen) Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/icon/more_icon.png',
+                iconSize: iconSize,
+              ),
+
+              if (isWideScreen) Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          FavoriteProtocols(globalFavorites: []),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/favicon.png',
+                iconSize: iconSize,
+              ),
+
+              if (isWideScreen) Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  _showInterstitialAd();
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => Info(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/infoicon.png',
+                iconSize: iconSize,
+              ),
+
+              if (isWideScreen) Spacer(),
+            ],
+          );
+        },
       ),
     );
   }
+
 
   void _createInterstitialAd() {
     InterstitialAd.load(

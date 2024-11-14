@@ -58,10 +58,11 @@ class _MajorListViewWidgetState extends State<MajorListViewWidget> {
     EasyLoading.init(); // Initialize EasyLoading
     return MaterialApp(
       home: Scaffold(
+
         appBar: AppBar(
           backgroundColor: Color(0xFF242935),
           title: Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
