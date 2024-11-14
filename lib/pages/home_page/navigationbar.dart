@@ -14,11 +14,10 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+  final ScrollController _scrollController = ScrollController();
   InterstitialAd? _interstitialAd;
   int _numInterstitialLoadAttempts = 0;
   int maxFailedLoadAttempts = 3;
-
-  final ScrollController _scrollController = ScrollController();
   bool _showLeftArrow = false;
   bool _showRightArrow = true;
 
@@ -46,129 +45,6 @@ class _BottomBarState extends State<BottomBar> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final iconSize = 50.0; // Set icon size
-
-    return Container(
-      width: double.infinity,
-      height: 60.0,
-      color: Color(0xFF242935),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          bool isWideScreen = constraints.maxWidth > 600; // Threshold for tablet
-
-          return Row(
-            mainAxisAlignment: isWideScreen
-                ? MainAxisAlignment.spaceEvenly // Spread on wide screens
-                : MainAxisAlignment.start, // Default for mobile screens
-            children: [
-              if (isWideScreen) Spacer(),
-
-              CustomBottomButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                        return FadeTransition(opacity: fadeAnimation, child: child);
-                      },
-                    ),
-                  );
-                },
-                iconPath: 'assets/images/homeicon.png',
-                iconSize: iconSize,
-              ),
-
-              if (isWideScreen) Spacer(),
-
-              CustomBottomButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                        return FadeTransition(opacity: fadeAnimation, child: child);
-                      },
-                    ),
-                  );
-                },
-                iconPath: 'assets/images/protocolsicon.png',
-                iconSize: iconSize,
-              ),
-
-              if (isWideScreen) Spacer(),
-
-              CustomBottomButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                        return FadeTransition(opacity: fadeAnimation, child: child);
-                      },
-                    ),
-                  );
-                },
-                iconPath: 'assets/icon/more_icon.png',
-                iconSize: iconSize,
-              ),
-
-              if (isWideScreen) Spacer(),
-
-              CustomBottomButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          FavoriteProtocols(globalFavorites: []),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                        return FadeTransition(opacity: fadeAnimation, child: child);
-                      },
-                    ),
-                  );
-                },
-                iconPath: 'assets/images/favicon.png',
-                iconSize: iconSize,
-              ),
-
-              if (isWideScreen) Spacer(),
-
-              CustomBottomButton(
-                onPressed: () async {
-                  _showInterstitialAd();
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => Info(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
-                        return FadeTransition(opacity: fadeAnimation, child: child);
-                      },
-                    ),
-                  );
-                },
-                iconPath: 'assets/images/infoicon.png',
-                iconSize: iconSize,
-              ),
-
-              if (isWideScreen) Spacer(),
-            ],
-          );
-        },
-      ),
-    );
-  }
 
 
   void _createInterstitialAd() {
@@ -201,6 +77,224 @@ class _BottomBarState extends State<BottomBar> {
       }
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final iconSize = 50.0; // Set icon size
+
+    return Container(
+      width: double.infinity,
+      height: 60.0,
+      color: Color(0xFF242935),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          bool isWideScreen = constraints.maxWidth > 600; // Threshold for tablet
+
+          return isWideScreen
+              ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing on tablet
+            children: [
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/homeicon.png',
+                iconSize: iconSize,
+              ),
+
+              // Add Spacer() between buttons for even spacing on tablet
+              Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/protocolsicon.png',
+                iconSize: iconSize,
+              ),
+
+              Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/icon/more_icon.png',
+                iconSize: iconSize,
+              ),
+
+              Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          FavoriteProtocols(globalFavorites: []),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/favicon.png',
+                iconSize: iconSize,
+              ),
+
+              Spacer(),
+
+              CustomBottomButton(
+                onPressed: () async {
+                  _showInterstitialAd();
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => Info(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                        return FadeTransition(opacity: fadeAnimation, child: child);
+                      },
+                    ),
+                  );
+                },
+                iconPath: 'assets/images/infoicon.png',
+                iconSize: iconSize,
+              ),
+            ],
+          )
+              : SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                CustomBottomButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => HomePageWidget(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  iconPath: 'assets/images/homeicon.png',
+                  iconSize: iconSize,
+                ),
+
+                CustomBottomButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            CategoryListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  iconPath: 'assets/images/protocolsicon.png',
+                  iconSize: iconSize,
+                ),
+
+                CustomBottomButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            MoreListViewWidget(agencyName: GlobalVariables.globalAgencyName),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  iconPath: 'assets/icon/more_icon.png',
+                  iconSize: iconSize,
+                ),
+
+                CustomBottomButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            FavoriteProtocols(globalFavorites: []),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  iconPath: 'assets/images/favicon.png',
+                  iconSize: iconSize,
+                ),
+
+                CustomBottomButton(
+                  onPressed: () async {
+                    _showInterstitialAd();
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => Info(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          var fadeAnimation = animation.drive(Tween(begin: 0.0, end: 1.0));
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  iconPath: 'assets/images/infoicon.png',
+                  iconSize: iconSize,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+
+
 }
 
 
