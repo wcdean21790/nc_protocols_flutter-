@@ -203,6 +203,7 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                       final subfolderName = subfolderNames[index];
                       return Column(
                         children: [
+
                           SizedBox(
                             width: 250,
                             child: ElevatedButton(
@@ -242,271 +243,192 @@ class _MoreListViewWidgetState extends State<MoreListViewWidget> {
                 ),
 
                 // Buttons section wrapped in Column with even spacing
-                Column(
-                  children: [
-                    SizedBox(height: 10), // Optional space at the top
+          Column(
+            children: [
+              SizedBox(height: 10),
 
-                    // Button: Phone Numbers
-                    // Example for "Phone Numbers" button
-                    SizedBox(
-                      width: 250,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+              // Button: Phone Numbers
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
 
-                          // Check if the feature is restricted
-                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
-                            final proceed = await showRestrictedFeatureDialog(context);
-                            if (!proceed) return; // Stop if user did not proceed
-                          }
-
-                          // Continue with the normal action if purchase is allowed or user proceeds
-                          fetchPhoneNumbers();
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) {
-                                return PhoneNumbersListView();
-                              },
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                const begin = Offset(0.0, 1.0);
-                                const end = Offset.zero;
-                                const curve = Curves.ease;
-
-                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text(
-                          "Phone Numbers",
-                          style: TextStyle(
-                            color: Color(0xFFFFEA00),
-                            fontSize: 16,
-                          ),
+                    // Prevent navigation if the user does not have a subscription
+                    if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                      final proceed = await showRestrictedFeatureDialog(context);
+                      if (!proceed) return; // Stop if user did not proceed
+                    } else {
+                      fetchPhoneNumbers();
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return PhoneNumbersListView();
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                            return FadeTransition(opacity: animation, child: child);
+                          },
                         ),
-                      ),
+                      );
+                    }
+                  },
+                  style: ButtonStyles.customButtonStyle(context),
+                  child: Text(
+                    "Phone Numbers",
+                    style: TextStyle(
+                      color: Color(0xFFFFEA00),
+                      fontSize: 16,
                     ),
-
-
-
-
-                    SizedBox(height: 10),
-
-                    // Button: Directions
-                    SizedBox(
-                      width: 250, // Set the button width
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
-
-                          // Check if the feature is restricted
-                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
-                            final proceed = await showRestrictedFeatureDialog(context);
-                            if (!proceed) return; // Stop if user did not proceed
-                          }
-
-                          // If access is allowed, show WarningDialog and continue as usual
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return WarningDialog();
-                            },
-                          ).then((value) {
-                            if (value != null && value) {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) {
-                                    return Hospitals();
-                                  },
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    const begin = Offset(0.0, 1.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.ease;
-
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          });
-                        },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text(
-                          "Directions",
-                          style: TextStyle(
-                            color: Color(0xFF36AD8D),
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-
-                    // Button: Time Stamper
-                    SizedBox(
-                      width: 250, // Set the button width
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
-
-                          // Check if the feature is restricted
-                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
-                            final proceed = await showRestrictedFeatureDialog(context);
-                            if (!proceed) return; // Stop if user did not proceed
-                          }
-
-                          // Proceed to TimeStampWidget if the user has access
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) {
-                                return TimeStampWidget(); // Replace with actual page
-                              },
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                const begin = Offset(0.0, 1.0);
-                                const end = Offset.zero;
-                                const curve = Curves.ease;
-
-                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text(
-                          "Action Logger",
-                          style: TextStyle(
-                            color: Color(0xFF00FFFF),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-
-                    // Button: Tempo Tool
-                    SizedBox(
-                      width: 250, // Set the button width
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
-
-                          // Check if the feature is restricted
-                          if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
-                            final proceed = await showRestrictedFeatureDialog(context);
-                            if (!proceed) return; // Stop if user did not proceed
-                          }
-
-                          // Proceed to BPMCalculator if the user has access
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) {
-                                return BPMCalculator(); // Replace with actual page
-                              },
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                const begin = Offset(0.0, 1.0);
-                                const end = Offset.zero;
-                                const curve = Curves.ease;
-
-                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text(
-                          "Tempo Tool",
-                          style: TextStyle(
-                            color: Color(0xFF8A2BE2),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-                   /* SizedBox(
-                      width: 250, // Set the button width
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.grey[900], // Set background color of the dialog
-                                title: Text(
-                                  "Feature Coming Soon",
-                                  style: TextStyle(
-                                    color: Colors.white, // Set title font color
-                                  ),
-                                ),
-                                content: Text(
-                                  "This experimental feature will be coming soon and is a supplemental addition to study the protocols with the use of AI."
-                                      "This app is not responsible for any incorrect information generated within this experimental feature.",
-                                  style: TextStyle(
-                                    color: Colors.white70, // Set content font color
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(); // Close the dialog
-                                    },
-                                    child: Text(
-                                      "OK",
-                                      style: TextStyle(
-                                        color: Colors.blueAccent, // Set action button font color
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        style: ButtonStyles.customButtonStyle(context),
-                        child: Text(
-                          "ProStudy",
-                          style: TextStyle(
-                            color: Color(0xFF8A2BE2),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-
-                    ),*/
-
-            SizedBox(height: 50),// Optional space at the bottom
-                  ],
+                  ),
                 ),
+              ),
 
-                Align(
+              SizedBox(height: 10),
+
+              // Button: Directions
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                    // Prevent navigation if the user does not have a subscription
+                    if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                      final proceed = await showRestrictedFeatureDialog(context);
+                      if (!proceed) return; // Stop if user did not proceed
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return WarningDialog();
+                        },
+                      ).then((value) {
+                        if (value != null && value) {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return Hospitals();
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(0.0, 1.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                            ),
+                          );
+                        }
+                      });
+                    }
+                  },
+                  style: ButtonStyles.customButtonStyle(context),
+                  child: Text(
+                    "Directions",
+                    style: TextStyle(
+                      color: Color(0xFF36AD8D),
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 10),
+
+              // Button: Time Stamper
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                    // Prevent navigation if the user does not have a subscription
+                    if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                      final proceed = await showRestrictedFeatureDialog(context);
+                      if (!proceed) return; // Stop if user did not proceed
+                    } else {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return TimeStampWidget(); // Replace with actual page
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                            return FadeTransition(opacity: animation, child: child);
+                          },
+                        ),
+                      );
+                    }
+                  },
+                  style: ButtonStyles.customButtonStyle(context),
+                  child: Text(
+                    "Action Logger",
+                    style: TextStyle(
+                      color: Color(0xFF00FFFF),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 10),
+
+              // Button: Tempo Tool
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    bool? globalPurchaseSupport = prefs.getBool('globalPurchaseSupport');
+
+                    // Prevent navigation if the user does not have a subscription
+                    if (globalPurchaseSupport == null || globalPurchaseSupport == false) {
+                      final proceed = await showRestrictedFeatureDialog(context);
+                      if (!proceed) return; // Stop if user did not proceed
+                    } else {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return BPMCalculator(); // Replace with actual page
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                            return FadeTransition(opacity: animation, child: child);
+                          },
+                        ),
+                      );
+                    }
+                  },
+                  style: ButtonStyles.customButtonStyle(context),
+                  child: Text(
+                    "Tempo Tool",
+                    style: TextStyle(
+                      color: Color(0xFF8A2BE2),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 50), // Optional space at the bottom
+            ],
+          ),
+
+
+          Align(
                   alignment: Alignment.center,
                   child: buildAdContainer(),
                 ),
