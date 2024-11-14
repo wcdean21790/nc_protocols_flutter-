@@ -65,9 +65,7 @@ class _BottomBarState extends State<BottomBar> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ensures spacing is even
                 children: [
                   CustomBottomButton(
                     onPressed: () async {
@@ -217,6 +215,7 @@ class _BottomBarState extends State<BottomBar> {
     }
   }
 }
+
 
 class CustomBottomButton extends StatefulWidget {
   final VoidCallback onPressed;

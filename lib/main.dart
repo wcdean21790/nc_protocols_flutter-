@@ -151,6 +151,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NC Protocols',
+      debugShowCheckedModeBanner: false, // Add this line to hide the debug banner
       navigatorKey: _navigatorKey,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -166,4 +167,5 @@ class _MyAppState extends State<MyApp> {
       builder: EasyLoading.init(),
     );
   }
+
 }
